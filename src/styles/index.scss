@@ -1,4 +1,121 @@
-body {
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+/* UTILITIES */
+
+$color-primary: #c81f3e;
+$color-secondary: #15a4be;
+$color-tertiary: #ff4e77;
+$color-white: #fff;
+$color-grey: #dcdcdc;
+$color-dark: #333;
+
+$padding-base: 1.5em;
+$margin-base: 1.5em;
+
+$font-size-base: 1rem;
+$font-size-heading: calc($font-size-base * 1.5);
+
+/*  RESET */
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
   margin: 0;
-  font-family: sans-serif;
+  padding: 0;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #dcdcdc;
+  color: $color-dark;
+  line-height: 1.6;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ol,
+ul {
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  text-decoration: none;
+  color: $color-primary;
+}
+
+a:hover {
+  color: $color-tertiary;
+}
+
+a:visited {
+  color: $color-primary;
+}
+
+/* */
+
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* COMPONENTS */
+
+header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: $color-primary;
+  color: $color-white;
+  padding: calc($padding-base * 0.5);
+
+  span {
+    font-size: calc($font-size-base * 0.8);
+  }
+
+  ul {
+    display: flex;
+    align-items: center;
+    font-size: $font-size-base;
+
+    li:not(:last-child)::after {
+      content: '|';
+      margin: 0 0.5em;
+    }
+  }
+
+  a {
+    color: inherit;
+
+    &:hover {
+      font-weight: 600;
+    }
+  }
+}
+
+.container {
+  width: clamp(200px, 100%, 600px);
+  min-height: 50vh;
+  margin: 0 auto;
+  padding: $padding-base calc($padding-base * 2);
+  background-color: $color-white;
 }
