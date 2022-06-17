@@ -1,7 +1,12 @@
+import Header from "./components/Header";
+
 function App() {
   return (
     <div className="App">
-      <p>This is a feedback</p>
+      <Header />
+      <div className="container">
+        <h1>My App</h1>
+      </div>
     </div>
   );
 }
