@@ -1,0 +1,34 @@
+{
+  "data": [
+    {
+      "id": "1",
+      "rating": "5",
+      "username": "John",
+      "body": "Cillum labore qui proident eiusmod."
+    },
+    {
+      "id": "2",
+      "rating": "10",
+      "username": "Mary",
+      "body": "Occaecat consequat aliqua ad esse ullamco id commodo fugiat duis cupidatat consequat fugiat cillum."
+    },
+    {
+      "id": "3",
+      "rating": "8",
+      "username": "Bob",
+      "body": "Proident nostrud esse culpa cillum Lorem consectetur anim magna."
+    },
+    {
+      "id": "4",
+      "rating": "2",
+      "username": "Travis",
+      "body": "Laborum do minim aliqua reprehenderit aute."
+    },
+    {
+      "id": "5",
+      "rating": "6",
+      "username": "Johanna",
+      "body": "Laborum laborum mollit labore elit exercitation proident commodo incididunt aute veniam."
+    }
+  ]
+}
