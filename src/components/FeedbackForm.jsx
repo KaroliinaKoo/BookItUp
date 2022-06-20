@@ -40,7 +40,7 @@ function FeedbackForm() {
             Submit
           </Button>
         </div>
-        {alert && <div>{alert}</div>}
+        {alert && <div className="alert">{alert}</div>}
       </form>
     </Card>
   );
