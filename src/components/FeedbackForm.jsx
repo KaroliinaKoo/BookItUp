@@ -6,9 +6,23 @@ import Button from "./shared/Button";
 function FeedbackForm() {
   const [text, setText] = useState("");
   const [rating, setRating] = useState(5);
+  const [alert, setAlert] = useState("");
+  const [submitDisabled, setSubmitDisabled] = useState(true);
 
-  const handleTextChange = (e) => {
-    setText(e.target.value);
+  const handleTextChange = ({ target: { value } }) => {
+    // target: { value } = the value of the input field (e.g. "I love React")
+    if (value === "") {
+      setSubmitDisabled(true);
+      setAlert(null);
+    } else if (value !== "" && value.trim().length < 10) {
+      // if the text is more than 10 characters long
+      setSubmitDisabled(true);
+      setAlert("Please enter at least 10 characters");
+    } else {
+      setSubmitDisabled(false);
+      setAlert(null);
+    }
+    setText(value);
   };
 
   return (
@@ -22,8 +36,11 @@ function FeedbackForm() {
             value={text} // value of text input is set to the value of the text state
             onChange={handleTextChange}
           />
-          <Button type="submit">Submit</Button>
+          <Button type="submit" isDisabled={submitDisabled}>
+            Submit
+          </Button>
         </div>
+        {alert && <div>{alert}</div>}
       </form>
     </Card>
   );
