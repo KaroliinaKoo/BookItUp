@@ -18,7 +18,6 @@ function Header({ user }) {
           </li>
         </ul>
       </nav>
-      <Outlet />
       <span>Welcome, {user}</span>
     </header>
   );

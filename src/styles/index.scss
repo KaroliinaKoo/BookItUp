@@ -107,6 +107,7 @@ header {
   display: flex;
   justify-content: space-around;
   align-items: center;
+  gap: 4vw;
   background-color: $color-primary;
   color: $color-white;
   padding: calc($padding-base * 0.5);
@@ -117,8 +118,11 @@ header {
 
   ul {
     display: flex;
-    align-items: center;
+    flex-wrap: wrap;
     font-size: $font-size-base;
+    justify-content: center;
+    align-items: center;
+    gap: 2vw;
 
     li {
       display: flex;
@@ -126,18 +130,12 @@ header {
 
       a {
         white-space: nowrap;
-        vertical-align: middle;
-        align-items: center;
-        justify-content: center;
-        display: flex;
-        line-height: 1em;
-        padding: 2px;
         color: $color-white;
-        border-bottom: 4px solid transparent;
+        border-bottom: 2px solid transparent;
 
         &:hover {
           color: $color-secondary;
-          border-bottom: 4px solid $color-white;
+          border-bottom: 2px solid $color-white;
         }
 
         &:visited {
@@ -145,15 +143,28 @@ header {
         }
 
         &.active {
-          background-color: $color-primary-light;
-          border-bottom: 4px solid transparent;
+          cursor: default;
+          border-bottom: 2px solid transparent;
+          font-weight: 600;
+
+          &::before {
+            content: '>';
+            margin-right: 5px;
+          }
+
+          &::after {
+            content: '<';
+            margin-left: 5px;
+          }
         }
+
       }
     }
 
     li:not(:last-child)::after {
       content: '|';
-      color: $color-primary-dark;
+      color: $color-primary-light;
+      margin-left: 2vw;
     }
   }
 }
