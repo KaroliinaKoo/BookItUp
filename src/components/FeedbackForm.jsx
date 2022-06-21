@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import Card from "./shared/Card";
 import Button from "./shared/Button";
+import RatingSelector from "./RatingSelector";
 
 function FeedbackForm() {
   const [text, setText] = useState("");
@@ -27,8 +28,8 @@ function FeedbackForm() {
 
   return (
     <Card>
-      <form>
         <h2>Leave Feedback</h2>
+        <RatingSelector />
         <div className="input-group">
           <input
             type="text"
