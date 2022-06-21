@@ -3,9 +3,10 @@ import Card from "./shared/Card";
 import Button from "./shared/Button";
 import RatingSelector from "./RatingSelector";
 
-function FeedbackForm() {
+function FeedbackForm({ handleAddItem }) {
   const [text, setText] = useState("");
   const [rating, setRating] = useState(5);
+  const [username, setUsername] = useState("Guest");
   const [alert, setAlert] = useState("");
   const [submitDisabled, setSubmitDisabled] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -29,7 +30,8 @@ function FeedbackForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (text.trim().length >= 10) {
-      const newFeedback = { text, rating }; // create a new feedback object with the text and rating values from the form fields
+      const newFeedback = { text, rating, username }; // create a new feedback object with the text and rating values from the form fields
+      handleAddItem(newFeedback); // add the feedback to the list of feedbacks
       setIsSubmitting(true);
     }
   };
