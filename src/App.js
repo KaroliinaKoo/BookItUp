@@ -26,7 +26,7 @@ function App() {
     <div className="App">
       <Header />
       <div className="container">
-        <FeedbackForm />
+        <FeedbackForm handleAddItem={addItem} />
         <FeedbackStats feedback={feedback} />
         <FeedbackList feedback={feedback} handleDelete={deleteItem} />
       </div>
