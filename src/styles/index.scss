@@ -332,10 +332,28 @@ input {
 .fade-out {
   animation: fadeOut ease 4s;
   animation-fill-mode: forwards;
-  user-select: none;
 }
 
 @keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+
+  75% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.fade-in {
+  animation: fadeIn ease 4s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fadeIn {
   0% {
     opacity: 1;
   }
