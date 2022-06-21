@@ -4,7 +4,7 @@ import { FaTimes } from "react-icons/fa";
 
 function FeedbackItem({ item, handleDelete }) {
   return (
-    <Card reverse={false}>
+    <Card>
       <div className="num-display">
         {item.rating}
         <p style={{ fontSize: "0.8rem", marginLeft: "1px" }}>/10</p>
