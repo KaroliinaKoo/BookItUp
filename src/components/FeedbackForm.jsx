@@ -26,8 +26,17 @@ function FeedbackForm() {
     setText(value);
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (text.trim().length > 10) {
+      const newFeedback = { text, rating }; // create a new feedback object with the text and rating values from the form fields
+      setAlert("Thank you for your feedback!");
+    }
+  };
+
   return (
     <Card>
+      <form onSubmit={handleSubmit}>
         <h2>Leave Feedback</h2>
         <RatingSelector />
         <div className="input-group">
