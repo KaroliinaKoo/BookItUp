@@ -5,7 +5,7 @@ import RatingSelector from "./RatingSelector";
 
 function FeedbackForm({ handleAddItem }) {
   const [text, setText] = useState("");
-  const [rating, setRating] = useState(5);
+  const [rating, setRating] = useState(undefined);
   const [username, setUsername] = useState("Guest");
   const [alert, setAlert] = useState("");
   const [submitDisabled, setSubmitDisabled] = useState(true);
@@ -33,6 +33,7 @@ function FeedbackForm({ handleAddItem }) {
       const newFeedback = { text, rating, username }; // create a new feedback object with the text and rating values from the form fields
       handleAddItem(newFeedback); // add the feedback to the list of feedbacks
       setIsSubmitting(true);
+      reset();
     }
   };
 
@@ -44,11 +45,18 @@ function FeedbackForm({ handleAddItem }) {
     return () => clearTimeout(timeout); // clear the timeout when the component unmounts
   }, [isSubmitting]);
 
+  const reset = () => {
+    setText("");
+    setUsername("Guest");
+    setSubmitDisabled(true);
+  };
+
   return (
     <Card>
       <form onSubmit={handleSubmit}>
         <h2>How did we do? Give us a rating:</h2>
         <RatingSelector select={(rating) => setRating(rating)} />
+        {/* pass the selected rating to the RatingSelector component */}
         <div className="input-group">
           <input
             type="text"

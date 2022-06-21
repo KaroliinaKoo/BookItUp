@@ -1,4 +1,5 @@
 import PropTypes from "prop-types"; // eslint-disable-line import/no-extraneous-dependencies
+import { NavLink, Outlet } from "react-router-dom";
 
 function Header({ user }) {
   return (
@@ -6,11 +7,18 @@ function Header({ user }) {
       <h2>FeedMe!</h2>
       <nav>
         <ul>
-          <li>Link 1</li>
-          <li>Link 2</li>
-          <li>Link 3</li>
+          <li>
+            <NavLink to="/">Home</NavLink>
+          </li>
+          <li>
+            <NavLink to="/about">About</NavLink>
+          </li>
+          <li>
+            <NavLink to="/contact">Contact</NavLink>
+          </li>
         </ul>
       </nav>
+      <Outlet />
       <span>Welcome, {user}</span>
     </header>
   );

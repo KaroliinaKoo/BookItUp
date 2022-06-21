@@ -1,35 +1,20 @@
-import { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+import Main from "./features/Main";
+import Contact from "./features/Contact";
+import About from "./features/About";
+import PageNotFound from "./features/PageNotFound";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
-import FeedbackList from "./components/FeedbackList";
-import FeedbackStats from "./components/FeedbackStats";
-import FeedbackData from "./data/FeedbackData.json";
-import FeedbackForm from "./components/FeedbackForm";
 
 function App() {
-  const [feedback, setFeedback] = useState(FeedbackData.feedback);
-
-  const deleteItem = (id) => {
-    if (
-      window.confirm(`Are you sure you want to delete this item? [Item ${id}]`)
-    ) {
-      setFeedback(feedback.filter((item) => item.id !== id));
-    }
-  };
-
-  const addItem = (item) => {
-    setFeedback.id = uuidv4();
-    setFeedback([item, ...feedback]);
-  };
-
   return (
     <div className="App">
       <Header />
-      <div className="container">
-        <FeedbackForm handleAddItem={addItem} />
-        <FeedbackStats feedback={feedback} />
-        <FeedbackList feedback={feedback} handleDelete={deleteItem} />
-      </div>
+      <Routes>
+        <Route path="/" element={<Main />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="*" element={<PageNotFound />} />
+      </Routes>
     </div>
   );
 }

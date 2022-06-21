@@ -2,9 +2,12 @@ import React from "react";
 import { useState } from "react";
 
 function RatingSelector({ select }) {
-  const [selected, setSelected] = useState(5);
+  const [rating, setRating] = useState({ select });
   const handleChange = (e) => {
-    setSelected(+e.target.value); // +e.target.value converts the value of the selected radio button to a number
+    if (select === undefined) {
+      setRating(undefined);
+    }
+    setRating(+e.target.value); // +e.target.value converts the value of the selected radio button to a number
     select(+e.target.value); // pass the selected rating to the parent component
   };
 
@@ -21,7 +24,7 @@ function RatingSelector({ select }) {
               id={`rating-${num}`}
               name="rating"
               value={`${num}`}
-              checked={selected === num}
+              checked={rating === num}
               onChange={handleChange}
             />
             <label htmlFor={`rating-${num}`}>{num}</label>
