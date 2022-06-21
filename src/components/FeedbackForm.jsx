@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Card from "./shared/Card";
 import Button from "./shared/Button";
 import RatingSelector from "./RatingSelector";
@@ -9,6 +8,7 @@ function FeedbackForm() {
   const [rating, setRating] = useState(5);
   const [alert, setAlert] = useState("");
   const [submitDisabled, setSubmitDisabled] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleTextChange = ({ target: { value } }) => {
     // target: { value } = the value of the input field (e.g. "I love React")
@@ -28,17 +28,25 @@ function FeedbackForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (text.trim().length > 10) {
+    if (text.trim().length >= 10) {
       const newFeedback = { text, rating }; // create a new feedback object with the text and rating values from the form fields
-      setAlert("Thank you for your feedback!");
+      setIsSubmitting(true);
     }
   };
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      // set a timeout to hide the message after 4 seconds
+      setIsSubmitting(false); // set isSubmitting to false after the feedback has been submitted
+    }, 4000);
+    return () => clearTimeout(timeout); // clear the timeout when the component unmounts
+  }, [isSubmitting]);
 
   return (
     <Card>
       <form onSubmit={handleSubmit}>
-        <h2>Leave Feedback</h2>
-        <RatingSelector />
+        <h2>How did we do? Give us a rating:</h2>
+        <RatingSelector select={(rating) => setRating(rating)} />
         <div className="input-group">
           <input
             type="text"
@@ -51,6 +59,9 @@ function FeedbackForm() {
           </Button>
         </div>
         {alert && <div className="alert">{alert}</div>}
+        {isSubmitting && (
+          <div className="alert fade-out">Thank you for your feedback!</div>
+        )}
       </form>
     </Card>
   );
