@@ -5,7 +5,10 @@ import { FaTimes } from "react-icons/fa";
 function FeedbackItem({ item, handleDelete }) {
   return (
     <Card reverse={false}>
-      <div className="num-display">{item.rating}/10</div>
+      <div className="num-display">
+        {item.rating}
+        <p style={{ fontSize: "0.8rem", marginLeft: "1px" }}>/10</p>
+      </div>
       <button onClick={() => handleDelete(item.id)} className="close">
         <FaTimes color="red" />
       </button>
