@@ -9,7 +9,7 @@ export const FeedbackProvider = ({ children }) => {
   const [feedback, setFeedback] = useState(FeedbackData.feedback);
 
   const addItem = (item) => {
-    setFeedback.id = uuidv4();
+    item.id = uuidv4();
     setFeedback([item, ...feedback]);
   };
 
