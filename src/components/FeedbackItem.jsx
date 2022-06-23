@@ -1,5 +1,5 @@
 import Card from "./shared/Card";
-import { FaTimes } from "react-icons/fa";
+import { FaTimes, FaEdit } from "react-icons/fa";
 import { useContext } from "react";
 import FeedbackContext from "../context/FeedbackContext";
 
@@ -16,7 +16,15 @@ function FeedbackItem({ item }) {
         className="btn-icon btn-delete"
         onClick={() => deleteItem(item.id)}
       >
-        <FaTimes color="red" />
+        <FaTimes />
+      </button>
+      <button
+        className="btn-icon btn-edit"
+        onClick={() => {
+          console.log("edit");
+        }}
+      >
+        <FaEdit />
       </button>
       <div className="text-display">{item.text}</div>
       <div className="name-display">- {item.username}</div>
