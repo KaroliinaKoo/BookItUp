@@ -4,7 +4,7 @@ import { useContext } from "react";
 import FeedbackContext from "../context/FeedbackContext";
 
 function FeedbackItem({ item }) {
-  const { deleteItem } = useContext(FeedbackContext);
+  const { deleteItem, editItem } = useContext(FeedbackContext);
 
   return (
     <Card>
@@ -18,12 +18,7 @@ function FeedbackItem({ item }) {
       >
         <FaTimes />
       </button>
-      <button
-        className="btn-icon btn-edit"
-        onClick={() => {
-          console.log("edit");
-        }}
-      >
+      <button className="btn-icon btn-edit" onClick={() => editItem(item)}>
         <FaEdit />
       </button>
       <div className="text-display">{item.text}</div>

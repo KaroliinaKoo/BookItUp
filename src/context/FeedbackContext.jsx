@@ -7,26 +7,38 @@ const FeedbackContext = createContext();
 
 export const FeedbackProvider = ({ children }) => {
   const [feedback, setFeedback] = useState(FeedbackData.feedback);
+  const [itemToBeEdited, setItemToBeEdited] = useState({
+    item: {},
+    isEditing: false,
+  });
 
   const addItem = (item) => {
+    // add a new feedback item to the list of feedback items
     item.id = uuidv4();
     setFeedback([item, ...feedback]);
   };
 
   const deleteItem = (id) => {
+    // delete an item from the list of feedbacks
     if (
       window.confirm(`Are you sure you want to delete this item? [Item ${id}]`)
     ) {
-      setFeedback(feedback.filter((item) => item.id !== id));
+      setFeedback(feedback.filter((item) => item.id !== id)); // filter the feedback array to remove the item with the matching id
     }
   };
 
+  const editItem = (item) => {
+    // edit an item in the list of feedbacks
+    setItemToBeEdited({ item, isEditing: true }); // set the item to be edited and set isEditing to true
+  };
+
   return (
-    <FeedbackContext.Provider
+    <FeedbackContext.Provider // pass the functions to the context provider so that they can be accessed by the components that use the context provider
       value={{
         feedback,
         deleteItem,
         addItem,
+        editItem,
       }}
     >
       {children}
