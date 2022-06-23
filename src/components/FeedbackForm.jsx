@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Card from "./shared/Card";
 import Button from "./shared/Button";
 import RatingSelector from "./RatingSelector";
+import FeedbackContext from "../context/FeedbackContext";
 
-function FeedbackForm({ handleAddItem }) {
+function FeedbackForm() {
   const [text, setText] = useState("");
   const [rating, setRating] = useState(undefined);
   const [username, setUsername] = useState("Guest");
   const [alert, setAlert] = useState("");
   const [submitDisabled, setSubmitDisabled] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const { addItem } = useContext(FeedbackContext);
 
   const handleTextChange = ({ target: { value } }) => {
     // target: { value } = the value of the input field (e.g. "I love React")
@@ -31,7 +34,7 @@ function FeedbackForm({ handleAddItem }) {
     e.preventDefault();
     if (text.trim().length >= 10) {
       const newFeedback = { text, rating, username }; // create a new feedback object with the text and rating values from the form fields
-      handleAddItem(newFeedback); // add the feedback to the list of feedbacks
+      addItem(newFeedback); // add the feedback to the list of feedbacks
       setIsSubmitting(true);
       reset();
     }
