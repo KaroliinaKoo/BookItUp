@@ -36,6 +36,7 @@ export const FeedbackProvider = ({ children }) => {
     <FeedbackContext.Provider // pass the functions to the context provider so that they can be accessed by the components that use the context provider
       value={{
         feedback,
+        itemToBeEdited,
         deleteItem,
         addItem,
         editItem,
