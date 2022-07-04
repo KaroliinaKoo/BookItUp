@@ -170,10 +170,13 @@ header {
 }
 
 .container {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  gap: 1em;
   width: clamp(300px, 100%, 800px);
   min-height: 50vh;
-  margin: 0 auto;
-  padding: $padding-base calc($padding-base * 2);
+  padding: 2vw;
 }
 
 .card {
@@ -182,13 +185,20 @@ header {
   border-radius: 0.8em;
   padding: calc($padding-base * 1.5) calc($padding-base * 3);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin: 20px 0;
   position: relative;
+  width: 100%;
 
   h2 {
     text-align: center;
   }
+}
 
+form.feedback-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
 }
 
 ul.rating {
@@ -200,9 +210,8 @@ ul.rating {
   justify-content: center;
   align-items: center;
 
-  @media screen and (max-width: 590px) {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(2.5em, 1fr));
+  @media screen and (max-width: 540px) {
+    flex-wrap: wrap;
   }
 
   li {
@@ -273,23 +282,25 @@ ul.rating {
 .input-group {
   display: flex;
   flex-direction: row;
+  width: 100%;
   border: 1px solid $color-grey-dark;
-  padding: 8px 10px;
-  border-radius: 8px;
-}
+  border-radius: 2px;
 
-input {
-  flex-grow: 2;
-  border: none;
-  font-size: 16px;
-  padding: 5px 10px;
-  margin-right: 10px;
+  input {
+    padding: 0.8em 1.2em;
+    flex-grow: 2;
+    border: transparent;
+    font-size: 1rem;
 
-  &:focus {
-    outline: 2px solid $color-primary-light;
-    border-radius: 5px;
+    &:focus {
+      outline: 2px solid $color-secondary-light;
+      border-radius: 2px;
+    }
   }
 }
+
+
+
 
 .feedback-stats {
   color: $color-white;
@@ -330,14 +341,15 @@ input {
   color: #fff;
   border: 0;
   border-radius: 5px;
-  width: clamp(60px, 30%, 100px);
-  min-height: 20px;
+  width: clamp(80px, 40%, 120px);
+  min-height: 40px;
   padding: calc($padding-base * 0.5);
   cursor: pointer;
 }
 
 .btn-primary {
   background-color: $color-primary;
+  margin: $margin-base;
 
   &:hover {
     background-color: $color-primary-light;
