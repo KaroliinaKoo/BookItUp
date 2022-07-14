@@ -1,12 +1,19 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
+import FeedbackContext from "../context/FeedbackContext";
 
 function RatingSelector({ select }) {
+  const { itemIsEditing } = useContext(FeedbackContext);
+
   const [rating, setRating] = useState({ select });
-  const handleChange = (e) => {
-    if (select === undefined) {
-      setRating(undefined);
+
+  useEffect(() => {
+    if (itemIsEditing.isEditing) {
+      setRating(itemIsEditing.item.rating);
     }
+  }, [itemIsEditing]);
+
+  const handleChange = (e) => {
     setRating(+e.target.value); // +e.target.value converts the value of the selected radio button to a number
     select(+e.target.value); // pass the selected rating to the parent component
   };

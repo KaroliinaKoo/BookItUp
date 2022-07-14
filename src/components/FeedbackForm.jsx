@@ -6,97 +6,69 @@ import FeedbackContext from "../context/FeedbackContext";
 
 function FeedbackForm() {
   const [text, setText] = useState("");
-  const [rating, setRating] = useState(undefined);
   const [username, setUsername] = useState("");
-
-  const [showTextError, setShowTextError] = useState(false);
-  const [showRatingError, setShowRatingError] = useState(false);
-  const [showUsernameError, setShowUsernameError] = useState(false);
-
-  const [alert, setAlert] = useState(null);
+  const [rating, setRating] = useState(5);
   const [submitDisabled, setSubmitDisabled] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
-  const VALIDATION = {
-    text: {
-      required: true,
-      minLength: 10,
-      errorMsg: "Please enter a feedback message of at least 10 characters",
-    },
-    username: {
-      required: true,
-      minLength: 3,
-      errorMsg: "Please enter a username of at least 3 characters",
-    },
-    rating: {
-      required: true,
-      errorMsg: "Please select a rating",
-    },
-  };
+  const textMinLength = 10;
+  const usernameMinLength = 3;
+  const ratingRegex = /^([1-9]|10)$/;
 
-  const { addItem, itemToBeEdited } = useContext(FeedbackContext);
+  const { addItem, updateItem, itemIsEditing } = useContext(FeedbackContext);
 
   useEffect(() => {
-    if (itemToBeEdited.isEditing) {
-      setText(itemToBeEdited.item.text);
-      setRating(itemToBeEdited.item.rating);
-      setUsername(itemToBeEdited.item.username);
+    if (itemIsEditing.isEditing) {
+      setText(itemIsEditing.item.text);
+      setRating(itemIsEditing.item.rating);
+      setUsername(itemIsEditing.item.username);
     }
-  }, [itemToBeEdited]);
+  }, [itemIsEditing]);
 
   useEffect(() => {
-    if (text !== "" && text.trim().length < VALIDATION.text.minLength) {
-      setShowTextError(true);
-    } else {
-      setShowTextError(false);
-    }
-    if (
-      username !== "" &&
-      username.trim().length < VALIDATION.username.minLength
-    ) {
-      setShowUsernameError(true);
-    } else {
-      setShowUsernameError(false);
-    }
+    setSubmitDisabled(false);
+    setErrorMsg("");
 
-    if (rating === undefined) {
-      setShowRatingError(true);
-    } else if (rating !== undefined) {
-      setShowRatingError(false);
-    }
-    if (
-      text.trim().length >= VALIDATION.text.minLength &&
-      username.trim().length >= VALIDATION.username.minLength &&
-      rating !== undefined
-    ) {
-      setSubmitDisabled(false);
-    } else {
+    if (username.replace(/\s+/g, "").length < usernameMinLength) {
+      setErrorMsg("Username must be at least 3 characters long");
       setSubmitDisabled(true);
     }
-  }, [text, username, rating]);
 
-  const handleInput = ({ target: { value, id } }) => {
-    if (id === "text") {
-      setText(value);
-    } else if (id === "username") {
-      setUsername(value);
+    if (text.replace(/\s+/g, "").length < textMinLength) {
+      setErrorMsg("Text must be at least 10 characters long");
+      setSubmitDisabled(true);
     }
-  };
+
+    if (username === "" && text === "") {
+      setErrorMsg("");
+    }
+  }, [text, username]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (
-      text.trim().length >= VALIDATION.text.minLength &&
-      username.trim().length >= VALIDATION.username.minLength &&
-      rating
+      text.replace(/\s+/g, "").length >= textMinLength &&
+      username.replace(/\s+/g, "").length >= usernameMinLength &&
+      ratingRegex.test(rating)
     ) {
-      const newFeedback = { text, rating, username }; // create a new feedback object with the text and rating values from the form fields
-      addItem(newFeedback); // add the feedback to the list of feedbacks
-      setIsSubmitting(true);
-      reset();
+      console.log("creating new feedback");
+      const newFeedback = {
+        text,
+        username,
+        rating,
+      }; // create a new feedback object with the text and rating values from the form fields
+      if (itemIsEditing.isEditing) {
+        updateItem(itemIsEditing.item.id, newFeedback); // update the item in the list of feedbacks
+        reset();
+      } else {
+        addItem(newFeedback); // add the feedback to the list of feedbacks
+        setIsSubmitting(true);
+        reset();
+      }
     } else {
-      setAlert("Please fill out all fields.");
+      console.log("Form is not valid");
     }
   };
 
@@ -111,7 +83,9 @@ function FeedbackForm() {
   const reset = () => {
     setText("");
     setUsername("");
-    setSubmitDisabled(true);
+    setRating(5);
+    setErrorMsg("");
+    console.log("form reset");
   };
 
   return (
@@ -122,40 +96,27 @@ function FeedbackForm() {
         {/* pass the selected rating to the RatingSelector component */}
         <div className="input-group">
           <input
-            id="text"
             type="text"
-            name="rating"
-            placeholder="Write a review"
-            value={text} // value of text input is set to the value of the text state
-            onChange={handleInput} // set the text state to the value of the text input
+            placeholder="Tell us your feedback"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
           />
         </div>
         <div className="input-group">
           <input
-            id="username"
             type="text"
-            name="username"
             placeholder="Your name"
             value={username}
-            onChange={handleInput}
+            onChange={(e) => setUsername(e.target.value)}
           />
         </div>
         <Button type="submit" isDisabled={submitDisabled}>
-          Submit
+          {itemIsEditing.isEditing ? "Update" : "Submit"}
         </Button>
-        {alert && <div className="alert">{alert}</div>}
         {isSubmitting && (
           <div className="alert fade-out">Thank you for your feedback!</div>
         )}
-        {showTextError && (
-          <div className="alert">{VALIDATION.text.errorMsg}</div>
-        )}
-        {showRatingError && (
-          <div className="alert">{VALIDATION.rating.errorMsg}</div>
-        )}
-        {showUsernameError && (
-          <div className="alert">{VALIDATION.username.errorMsg}</div>
-        )}
+        <div className="alert">{errorMsg}</div>
       </form>
     </Card>
   );

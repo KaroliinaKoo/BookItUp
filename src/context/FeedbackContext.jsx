@@ -7,7 +7,7 @@ const FeedbackContext = createContext();
 
 export const FeedbackProvider = ({ children }) => {
   const [feedback, setFeedback] = useState(FeedbackData.feedback);
-  const [itemToBeEdited, setItemToBeEdited] = useState({
+  const [itemIsEditing, setItemIsEditing] = useState({
     item: {},
     isEditing: false,
   });
@@ -29,17 +29,23 @@ export const FeedbackProvider = ({ children }) => {
 
   const editItem = (item) => {
     // edit an item in the list of feedbacks
-    setItemToBeEdited({ item, isEditing: true }); // set the item to be edited and set isEditing to true
+    setItemIsEditing({ item, isEditing: true }); // set the item to be edited and set isEditing to true
+  };
+
+  // update an item in the list of feedbacks
+  const updateItem = (id, item) => {
+    console.log(id, item);
   };
 
   return (
     <FeedbackContext.Provider // pass the functions to the context provider so that they can be accessed by the components that use the context provider
       value={{
         feedback,
-        itemToBeEdited,
+        itemIsEditing,
         deleteItem,
         addItem,
         editItem,
+        updateItem,
       }}
     >
       {children}
