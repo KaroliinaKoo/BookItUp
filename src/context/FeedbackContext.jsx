@@ -33,8 +33,14 @@ export const FeedbackProvider = ({ children }) => {
   };
 
   // update an item in the list of feedbacks
-  const updateItem = (id, item) => {
-    console.log(id, item);
+  const updateItem = (id, updateItem) => {
+    setFeedback(
+      feedback.map(
+        (
+          item // map the feedback array of items
+        ) => (item.id === id ? { ...item, ...updateItem } : item)
+      ) // update the item with the matching id, with the updateItem object passed in as an argument
+    );
   };
 
   return (

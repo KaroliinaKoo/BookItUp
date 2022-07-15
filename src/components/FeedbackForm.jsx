@@ -7,7 +7,7 @@ import FeedbackContext from "../context/FeedbackContext";
 function FeedbackForm() {
   const [text, setText] = useState("");
   const [username, setUsername] = useState("");
-  const [rating, setRating] = useState(5);
+  const [rating, setRating] = useState(undefined);
   const [submitDisabled, setSubmitDisabled] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -40,10 +40,15 @@ function FeedbackForm() {
       setSubmitDisabled(true);
     }
 
-    if (username === "" && text === "") {
+    if (rating === undefined) {
+      setErrorMsg("Please select a rating between 1-10");
+      setSubmitDisabled(true);
+    }
+
+    if (username === "" && text === "" && rating === undefined) {
       setErrorMsg("");
     }
-  }, [text, username]);
+  }, [text, username, rating]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -83,7 +88,7 @@ function FeedbackForm() {
   const reset = () => {
     setText("");
     setUsername("");
-    setRating(5);
+    setRating(undefined);
     setErrorMsg("");
     console.log("form reset");
   };
