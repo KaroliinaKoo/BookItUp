@@ -6,7 +6,7 @@ $color-primary: #ff1744;
 $color-primary-light: #ff616f;
 $color-primary-dark: #c4001d;
 $color-secondary: #00b7d3;
-$color-secondary-light: #00b7d3;
+$color-secondary-light: #22e2ff;
 $color-secondary-dark: #0087a2;
 $color-white: #fff;
 $color-grey: #e4e4e4;
@@ -193,6 +193,46 @@ header {
   }
 }
 
+.container.main {
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), #013a5b), url("https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80");
+  background-color: black;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  min-height: 90vh;
+
+  .card {
+    background-color: rgba(1, 13, 35, 0.297);
+    color: white;
+    width: 60%;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
+    border: 1px solid rgba(255, 255, 255, 0.223);
+
+  }
+
+  img {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    border-radius: 50%;
+    border: 2px solid white;
+  }
+
+  h2,
+  h3 {
+    text-align: left;
+  }
+}
+
+
 form.feedback-form {
   display: flex;
   flex-direction: column;
@@ -350,6 +390,18 @@ ul.rating {
   cursor: pointer;
 }
 
+.btn-cta {
+  background-color: $color-primary;
+  width: 90%;
+  margin: $margin-base;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    background-color: $color-primary-light;
+    box-shadow: none;
+  }
+}
+
 .btn-primary {
   background-color: $color-primary;
   margin: $margin-base;
@@ -363,7 +415,8 @@ ul.rating {
 
 .btn-secondary {
   background-color: $color-secondary;
-  border: 1px solid $color-primary;
+  border: 1px solid $color-secondary-dark;
+  margin: calc($margin-base * 0.2);
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
 
   &:hover {
