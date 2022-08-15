@@ -1,34 +1,44 @@
-import PropTypes from "prop-types"; // eslint-disable-line import/no-extraneous-dependencies
-import { NavLink, Outlet } from "react-router-dom";
+import { FaBars, FaTimes } from "react-icons/fa";
+import { useState } from "react";
+import LinkList from "./shared/LinkList";
 
-function Header({ user }) {
+function Header() {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
-    <header>
-      <h2>FeedMe!</h2>
-      <nav>
-        <ul>
-          <li>
-            <NavLink to="/">Home</NavLink>
-          </li>
-          <li>
-            <NavLink to="/about">About</NavLink>
-          </li>
-          <li>
-            <NavLink to="/contact">Contact</NavLink>
-          </li>
-        </ul>
-      </nav>
-      <span>Welcome, {user}</span>
-    </header>
+    window.addEventListener("resize", () => {
+      setWindowWidth(window.innerWidth);
+    }),
+    (
+      <header>
+        <p className="logo">FeedMe!</p>
+        <nav>
+          {windowWidth > 768 && <LinkList />}
+          {windowWidth < 768 && (
+            <div>
+              <button
+                className="btn-icon"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+              >
+                <FaBars />
+              </button>
+              <div className={isMenuOpen ? "mobile-menu open" : "mobile-menu"}>
+                <button
+                  className="btn-icon"
+                  onClick={() => setIsMenuOpen(!isMenuOpen)}
+                >
+                  <FaTimes />
+                </button>
+
+                <LinkList />
+              </div>
+            </div>
+          )}
+        </nav>
+      </header>
+    )
   );
 }
-
-Header.defaultProps = {
-  user: "Guest", // default value for user if user is not passed then it will take default value "Guest" and display in header. If user is passed then it will display user name in header.
-};
-
-Header.propTypes = {
-  user: PropTypes.string, // user name should be string
-};
 
 export default Header;
