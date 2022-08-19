@@ -18,7 +18,7 @@ function Header() {
           {windowWidth < 768 && (
             <div>
               <button
-                className="btn-icon"
+                className="btn-icon mobile-menu-btn"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
               >
                 <FaBars />
@@ -28,12 +28,14 @@ function Header() {
                   isMenuOpen ? "mobile-menu open" : "mobile-menu closed"
                 }
               >
-                <button
-                  className="btn-icon close-menu"
-                  onClick={() => setIsMenuOpen(!isMenuOpen)}
-                >
-                  <FaTimes />
-                </button>
+                <div className="btn-container">
+                  <button
+                    className="btn-icon close-menu"
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                  >
+                    <FaTimes />
+                  </button>
+                </div>
 
                 <LinkList />
               </div>

@@ -44,10 +44,11 @@ body {
 }
 
 main {
-  height: 90vh;
+  height: 94vh;
   overflow: auto;
   display: flex;
   flex-direction: column;
+  padding: 1em;
 }
 
 /* CUSTOM SCROLLBAR */
@@ -148,12 +149,12 @@ a:visited {
 header {
   display: flex;
   justify-content: space-between;
-  padding: 2vw;
+  padding: 1em;
   padding-right: 10vw;
   align-items: center;
   background-color: $color-primary;
   color: $color-white;
-  height: 10vh;
+  height: 6vh;
 
   .btn-icon {
     color: inherit;
@@ -209,14 +210,14 @@ header {
     line-height: 1;
     background-color: $color-white;
     color: $color-primary;
-    font-size: 1.4rem;
+    font-size: 90%;
     font-weight: 800;
     text-align: center;
   }
 }
 
 .mobile-menu {
-  background-color: $color-dark;
+  background-color: rgba(11, 11, 11, 0.964);
   padding: 2.5em 10vw;
   position: fixed;
   top: 0;
@@ -236,6 +237,22 @@ header {
   &.open {
     transform: translateX(0);
     width: 20em;
+  }
+
+  .btn-container {
+    width: 100%;
+    height: 6vh;
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    justify-content: flex-end;
+    padding: 1em;
+    padding-right: 10vw;
+
+    .btn-icon {
+      color: inherit;
+    }
   }
 
   @media screen and (max-width: $breakpoint-sm) {
@@ -258,8 +275,7 @@ header {
   flex-direction: column;
   align-self: center;
   gap: 1em;
-  width: clamp(300px, 100%, 800px);
-  min-height: 50vh;
+  width: clamp(300px, 98%, 800px);
   padding: 2vw;
 }
 
