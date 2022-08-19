@@ -33,8 +33,6 @@ $breakpoint-lg: 992px;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  scrollbar-width: thin;
-  scrollbar-color: #6969dd #e0e0e0;
 }
 
 body {
@@ -48,6 +46,8 @@ body {
 main {
   height: 90vh;
   overflow: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 /* CUSTOM SCROLLBAR */
@@ -55,17 +55,18 @@ main {
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
+  background: $color-grey;
 }
 
 ::-webkit-scrollbar-track {
-  background: $color-grey-light;
+  background: $color-grey;
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb {
   background: $color-primary-dark;
   border-radius: 5px;
-  border: 2px solid $color-grey-light;
+  border: 2px solid $color-grey;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -87,22 +88,28 @@ ul {
   font-weight: normal;
 }
 
-h1 {
-  font-size: $font-size-heading;
+h1,
+h2,
+h3 {
   font-weight: 600;
   margin-bottom: 0.5em;
+  max-width: 55ch;
+}
+
+p {
+  max-width: 55ch;
+}
+
+h1 {
+  font-size: $font-size-heading;
 }
 
 h2 {
   font-size: calc($font-size-heading * 0.9);
-  font-weight: 600;
-  margin-bottom: 0.5em;
 }
 
 h3 {
   font-size: calc($font-size-heading * 0.8);
-  font-weight: 600;
-  margin-bottom: 0.5em;
 }
 
 ol,
@@ -141,12 +148,12 @@ a:visited {
 header {
   display: flex;
   justify-content: space-between;
-  padding: 0 $padding-base;
+  padding: 2vw;
   padding-right: 10vw;
   align-items: center;
   background-color: $color-primary;
   color: $color-white;
-  min-height: 10vh;
+  height: 10vh;
 
   .btn-icon {
     color: inherit;
@@ -198,45 +205,51 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0.2em 0.4em;
+    padding: 0.2em 0.3em;
     line-height: 1;
     background-color: $color-white;
     color: $color-primary;
-    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-size: 1.4rem;
     font-weight: 800;
     text-align: center;
   }
 }
 
 .mobile-menu {
-  background-color: $color-secondary;
-  align-items: flex-end;
-  display: flex;
-  flex-direction: column;
+  background-color: $color-dark;
   padding: 2.5em 10vw;
   position: fixed;
   top: 0;
   right: 0;
-  width: 18em;
-  height: 100%;
   z-index: 1;
   transition: all 0.3s ease-in-out;
   box-shadow: 0 0.5em 1em 0 rgba(0, 0, 0, 0.2);
-  transform: translateY(-120%);
-
-  ul {
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    padding-top: 4em;
-  }
+  height: 100%;
+  width: 0em;
+  transform: translateX(110%);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  overflow: hidden;
+  overflow-y: auto;
 
   &.open {
-    transform: translateY(0);
+    transform: translateX(0);
+    width: 20em;
   }
 
   @media screen and (max-width: $breakpoint-sm) {
-    width: 100vw;
+    &.open {
+      transform: translateX(0);
+      width: 100vw;
+    }
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    padding-top: 10vh;
+    width: 100%;
   }
 }
 
@@ -264,7 +277,7 @@ header {
   }
 }
 
-.container.main {
+.hero-container {
   background-image: linear-gradient(to right, rgba(0, 0, 0, 0), #013a5b), url("https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80");
   background-color: black;
   background-position: center center;
@@ -277,21 +290,23 @@ header {
   align-items: center;
   justify-content: center;
 
-  .card {
-    background-color: rgba(1, 13, 35, 0.297);
+  .hero-card {
+    background-color: rgba(1, 13, 35, 0.818);
+    padding: calc($padding-base * 1.5) $padding-base;
     color: white;
-    width: clamp(15em, 60%, 30em);
     display: flex;
+    width: clamp(15em, 90%, 30em);
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 1em;
+    gap: 0.5em;
     border: 1px solid rgba(255, 255, 255, 0.223);
     text-align: center;
-    transition: all 0.5s ease-in-out;
+    transition: all 0.2s ease-in-out;
 
     @media screen and (max-width: $breakpoint-md) {
-      background-color: rgba(1, 13, 35, 0.818);
+      width: 95%;
+      background-color: rgba(1, 13, 35, 0.574);
     }
 
     .btn-cta {

@@ -2,14 +2,17 @@ import React from "react";
 
 function Main() {
   return (
-    <div className="container main">
-      <div className="card">
+    <div className="hero-container">
+      <div className="hero-card">
         <h1>Feedback App</h1>
+        <p>This is an example website.</p>
         <p>
-          This is an example of a website. There is even a cool feedback
-          feature.
+          It is responsive and works pretty neatly even for small screens. There
+          is even a cool feedback feature.
         </p>
-        <p>Also, there's cats.</p>
+        <p>
+          <strong>Also, there's cats.</strong>
+        </p>
         <button className="btn btn-cta">Check it out!</button>
       </div>
     </div>

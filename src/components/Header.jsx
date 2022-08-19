@@ -12,7 +12,7 @@ function Header() {
     }),
     (
       <header>
-        <p className="logo">FeedMe!</p>
+        <p className="logo">FeedMeow!</p>
         <nav>
           {windowWidth > 768 && <LinkList />}
           {windowWidth < 768 && (
@@ -23,9 +23,13 @@ function Header() {
               >
                 <FaBars />
               </button>
-              <div className={isMenuOpen ? "mobile-menu open" : "mobile-menu"}>
+              <div
+                className={
+                  isMenuOpen ? "mobile-menu open" : "mobile-menu closed"
+                }
+              >
                 <button
-                  className="btn-icon"
+                  className="btn-icon close-menu"
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
                 >
                   <FaTimes />
