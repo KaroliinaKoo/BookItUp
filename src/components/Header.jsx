@@ -12,7 +12,7 @@ function Header() {
     }),
     (
       <header>
-        <p className="logo">FeedMeow!</p>
+        <p className="logo">BookItUp</p>
         <nav>
           {windowWidth > 768 && <LinkList />}
           {windowWidth < 768 && (

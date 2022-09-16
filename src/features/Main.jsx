@@ -2,20 +2,20 @@ import React from "react";
 
 function Main() {
   return (
-    <div className="hero-container">
-      <div className="hero-card">
-        <h1>Feedback App</h1>
-        <p>This is an example website.</p>
-        <p>
-          It is responsive and works pretty neatly even for small screens. There
-          is even a cool feedback feature.
-        </p>
-        <p>
-          <strong>Also, there's cats.</strong>
-        </p>
-        <button className="btn btn-cta">Check it out!</button>
+    <>
+      <div className="hero-container">
+        <div className="hero-card">
+          <p>A very catchy slogan!</p>
+          <p>
+            Aut consectetur quidem iusto nam, provident laudantium omnis odio
+            dolor eaque magni non ipsam id velit quisquam, possimus asperiores
+            eligendi perferendis a.
+          </p>
+          <p></p>
+          <button className="btn btn-cta">Call To Action</button>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
