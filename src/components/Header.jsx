@@ -1,6 +1,7 @@
 import { FaBars, FaTimes } from "react-icons/fa";
 import { useState } from "react";
 import LinkList from "./shared/LinkList";
+import { NavLink } from "react-router-dom";
 
 function Header() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -12,7 +13,9 @@ function Header() {
     }),
     (
       <header>
-        <p className="logo">BookItUp</p>
+        <NavLink to="/">
+          <p className="logo">BookItUp</p>
+        </NavLink>
         <nav>
           {windowWidth > 768 && <LinkList />}
           {windowWidth < 768 && (
@@ -36,7 +39,6 @@ function Header() {
                     <FaTimes />
                   </button>
                 </div>
-
                 <LinkList />
               </div>
             </div>

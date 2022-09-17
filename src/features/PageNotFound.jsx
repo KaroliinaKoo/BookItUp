@@ -5,7 +5,7 @@ function PageNotFound() {
     <div className="container">
       <div className="card">
         <h1 style={{ textAlign: "center" }}>
-          Oops! This page doesn't exist...
+          Oops! This page doesn't exist... :(
         </h1>
       </div>
     </div>
