@@ -281,12 +281,15 @@ header {
         padding: 1em 2em;
         border-color: transparent;
 
+        &:hover {
+          border-color: transparent;
+        }
+
         @media (hover: hover) {
           &:hover {
             background-color: $color-primary-muted-light;
             color: $color-primary-dark;
             font-weight: 600;
-            border-color: transparent;
           }
         }
       }
