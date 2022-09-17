@@ -8,10 +8,7 @@ function FeedbackItem({ item }) {
 
   return (
     <Card>
-      <div className="num-display">
-        {item.rating}
-        <p style={{ fontSize: "0.8rem", marginLeft: "1px" }}>/10</p>
-      </div>
+      <div className="num-display">{item.rating}</div>
       <button
         className="btn-icon btn-delete"
         onClick={() => deleteItem(item.id)}
@@ -21,7 +18,9 @@ function FeedbackItem({ item }) {
       <button className="btn-icon btn-edit" onClick={() => editItem(item)}>
         <FaEdit />
       </button>
-      <div className="text-display">{item.text}</div>
+      <h2>{item.title}</h2>
+      <span>by {item.author}</span>
+      <div className="text-display">{item.body}</div>
       <div className="name-display">- {item.username}</div>
     </Card>
   );

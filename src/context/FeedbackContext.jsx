@@ -6,7 +6,7 @@ import FeedbackData from "../data/FeedbackData.json";
 const FeedbackContext = createContext();
 
 export const FeedbackProvider = ({ children }) => {
-  const [feedback, setFeedback] = useState(FeedbackData.feedback);
+  const [feedback, setFeedback] = useState(FeedbackData.review);
   const [itemIsEditing, setItemIsEditing] = useState({
     item: {},
     isEditing: false,
