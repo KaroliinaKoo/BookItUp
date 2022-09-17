@@ -4,17 +4,15 @@ import { NavLink } from "react-router-dom";
 function LinkList() {
   return (
     <ul>
-      <NavLink to="/">
-        <li>Home</li>
-      </NavLink>
-
-      <NavLink to="/about">
-        <li>About</li>
-      </NavLink>
-
-      <NavLink to="/contact">
-        <li>Contact</li>
-      </NavLink>
+      <li>
+        <NavLink to="/">Home</NavLink>
+      </li>
+      <li>
+        <NavLink to="/about">About</NavLink>
+      </li>
+      <li>
+        <NavLink to="/contact">Contact</NavLink>
+      </li>
     </ul>
   );
 }
