@@ -6,14 +6,14 @@ import FeedbackContext from "../context/FeedbackContext";
 
 function FeedbackForm() {
   const [text, setText] = useState("");
-  const [username, setUsername] = useState("");
+  const [bookTitle, setBookTitle] = useState("");
   const [rating, setRating] = useState(undefined);
   const [submitDisabled, setSubmitDisabled] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
   const textMinLength = 10;
-  const usernameMinLength = 3;
+  const titleMinLength = 3;
   const ratingRegex = /^([1-9]|10)$/;
 
   const { addItem, updateItem, itemIsEditing } = useContext(FeedbackContext);
@@ -22,7 +22,7 @@ function FeedbackForm() {
     if (itemIsEditing.isEditing) {
       setText(itemIsEditing.item.text);
       setRating(itemIsEditing.item.rating);
-      setUsername(itemIsEditing.item.username);
+      setBookTitle(itemIsEditing.item.bookTitle);
     }
   }, [itemIsEditing]);
 
@@ -30,38 +30,38 @@ function FeedbackForm() {
     setSubmitDisabled(false);
     setErrorMsg("");
 
-    if (username.replace(/\s+/g, "").length < usernameMinLength) {
-      setErrorMsg("Username must be at least 3 characters long");
-      setSubmitDisabled(true);
-    }
-
-    if (text.replace(/\s+/g, "").length < textMinLength) {
-      setErrorMsg("Text must be at least 10 characters long");
-      setSubmitDisabled(true);
-    }
-
     if (rating === undefined) {
       setErrorMsg("Please select a rating between 1-10");
       setSubmitDisabled(true);
     }
 
-    if (username === "" && text === "" && rating === undefined) {
+    if (text.replace(/\s+/g, "").length < textMinLength) {
+      setErrorMsg("Review must be at least 10 characters long");
+      setSubmitDisabled(true);
+    }
+
+    if (bookTitle.replace(/\s+/g, "").length < titleMinLength) {
+      setErrorMsg("Title must be at least 3 characters long");
+      setSubmitDisabled(true);
+    }
+
+    if (bookTitle === "" && text === "" && rating === undefined) {
       setErrorMsg("");
     }
-  }, [text, username, rating]);
+  }, [text, bookTitle, rating]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (
       text.replace(/\s+/g, "").length >= textMinLength &&
-      username.replace(/\s+/g, "").length >= usernameMinLength &&
+      bookTitle.replace(/\s+/g, "").length >= titleMinLength &&
       ratingRegex.test(rating)
     ) {
       console.log("creating new feedback");
       const newFeedback = {
         text,
-        username,
+        bookTitle,
         rating,
       }; // create a new feedback object with the text and rating values from the form fields
       if (itemIsEditing.isEditing) {
@@ -87,7 +87,7 @@ function FeedbackForm() {
 
   const reset = () => {
     setText("");
-    setUsername("");
+    setBookTitle("");
     setRating(undefined);
     setErrorMsg("");
     console.log("form reset");
@@ -96,32 +96,38 @@ function FeedbackForm() {
   return (
     <Card>
       <form className="feedback-form" onSubmit={handleSubmit}>
-        <h2>How did we do? Give us a rating:</h2>
-        <RatingSelector select={(rating) => setRating(rating)} />
-        {/* pass the selected rating to the RatingSelector component */}
+        <h1>Rate a Book</h1>
         <div className="input-group">
+          <label htmlFor="book-title">Title of the Book</label>
           <input
             type="text"
-            placeholder="Tell us your feedback"
+            name="book-title"
+            placeholder='e.g "Lord of the Rings"'
+            value={bookTitle}
+            onChange={(e) => setBookTitle(e.target.value)}
+          />
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="text-body">Review</label>
+          <textarea
+            name="text-body"
+            placeholder="What did you think about the book?"
             value={text}
             onChange={(e) => setText(e.target.value)}
           />
         </div>
-        <div className="input-group">
-          <input
-            type="text"
-            placeholder="Your name"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </div>
+
+        <RatingSelector select={(rating) => setRating(rating)} />
+        {/* pass the selected rating to the RatingSelector component */}
+
+        {isSubmitting && (
+          <div className="alert fade-out">Thank you for your review!</div>
+        )}
+        <div className="alert">{errorMsg}</div>
         <Button type="submit" isDisabled={submitDisabled}>
           {itemIsEditing.isEditing ? "Update" : "Submit"}
         </Button>
-        {isSubmitting && (
-          <div className="alert fade-out">Thank you for your feedback!</div>
-        )}
-        <div className="alert">{errorMsg}</div>
       </form>
     </Card>
   );
