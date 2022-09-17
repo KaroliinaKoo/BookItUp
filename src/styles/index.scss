@@ -42,45 +42,6 @@ $breakpoint-lg: 992px;
   padding: 0;
 }
 
-body {
-  font-family: 'Poppins', sans-serif;
-  background-color: $color-grey;
-  color: $color-dark;
-  line-height: 1.6;
-  overflow: hidden;
-}
-
-main {
-  height: calc(95vh - 2em);
-  overflow: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-/* CUSTOM SCROLLBAR */
-
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-  background: $color-grey;
-}
-
-::-webkit-scrollbar-track {
-  background: $color-grey;
-  border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: $color-primary-dark;
-  border-radius: 5px;
-  border: 2px solid $color-grey;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: $color-primary;
-}
-
 body,
 h1,
 h2,
@@ -151,13 +112,29 @@ a:visited {
   min-height: 100vh;
 }
 
-/* COMPONENTS */
+/* LAYOUT COMPONENTS */
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: $color-grey;
+  color: $color-dark;
+  line-height: 1.6;
+  overflow: hidden;
+}
+
+main {
+  height: calc(95vh - 2em);
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
 
 header {
   display: flex;
   justify-content: space-between;
   padding: 1em;
-  padding-right: 10vw;
+  padding-right: 2em;
   align-items: center;
   background-color: $color-primary;
   color: $color-white;
@@ -203,7 +180,7 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0.2em 0.3em;
+    padding: 0.2em 0.4em;
     line-height: 1;
     background-color: $color-white;
     color: $color-primary;
@@ -211,6 +188,7 @@ header {
     font-weight: 800;
     text-align: center;
     transition: all 0.2s ease-in-out;
+
 
     @media screen and (max-width: $breakpoint-sm) {
       font-size: 1rem;
@@ -262,7 +240,7 @@ header {
         align-items: center;
         width: 100%;
         margin: 0;
-        padding: 1em 12vw;
+        padding: 1em 2em;
         border-bottom: 0;
 
         @media (hover: hover) {
@@ -284,7 +262,7 @@ header {
     display: flex;
     justify-content: flex-end;
     padding: 1em;
-    padding-right: 10vw;
+    padding-right: 2em;
 
 
     .btn-icon {
@@ -316,7 +294,7 @@ header {
   background-color: #fff;
   color: $color-dark;
   border-radius: 0.8em;
-  padding: calc($padding-base * 1.5) calc($padding-base * 3);
+  padding: $padding-base;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   position: relative;
   width: 100%;
@@ -421,15 +399,67 @@ header {
   }
 }
 
-
 form.feedback-form {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   gap: 1em;
+  padding: 0;
+
+  .alert {
+    padding-top: 10px;
+    text-align: center;
+    color: $color-primary-dark;
+  }
+
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    border: 1px solid $color-grey;
+    border-radius: 2px;
+
+    label {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      width: 100%;
+      padding: 0.6em 1em;
+      font-size: $font-size-base;
+      font-weight: 600;
+      color: $color-primary;
+      text-transform: uppercase;
+      background-color: inherit;
+    }
+
+    input,
+    textarea {
+      padding: 0.8em 1.2em;
+      flex-grow: 2;
+      border: transparent;
+      font-size: 1rem;
+      font-family: inherit;
+      width: 100%;
+
+      &:focus {
+        outline: 2px solid $color-primary-light;
+        border-radius: 2px;
+      }
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    @media (max-width: 600px) {
+      width: 100%;
+    }
+  }
 }
 
+// MISC COMPONENTS
 ul.rating {
 
   gap: 0.5em;
@@ -489,55 +519,13 @@ ul.rating {
 
 }
 
-.num-display {
-  position: relative;
-  width: 60px;
-  height: 60px;
-  display: flex;
-  place-content: center;
-  place-items: center;
-  border-radius: 50%;
-  font-size: 1rem;
-  transition: 0.3s;
-  background: $color-primary;
-  color: #fff;
-}
-
-.name-display {
-  text-align: right;
-  font-size: calc($font-size-base * 0.8);
-}
-
-.input-group {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  border: 1px solid $color-grey-dark;
-  border-radius: 2px;
-
-  input {
-    padding: 0.8em 1.2em;
-    flex-grow: 2;
-    border: transparent;
-    font-size: 1rem;
-
-    &:focus {
-      outline: 2px solid $color-secondary-light;
-      border-radius: 2px;
-    }
-  }
-}
-
-
-
-
 .feedback-stats {
   color: $color-white;
   font-size: calc($font-size-base * 0.9);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: $color-secondary-dark;
+  background-color: $color-secondary-muted-dark;
   padding: calc($padding-base * 0.5) $padding-base;
   border-radius: 10px;
 }
@@ -547,91 +535,127 @@ ul.rating {
   display: flex;
   flex-direction: column;
   gap: 1.5em;
+
+  .card {
+    padding: $padding-base calc($padding-base * 3.5);
+
+    .close,
+    .edit {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+
+    .edit {
+      right: 40px;
+    }
+
+    .num-display {
+      width: 60px;
+      height: 60px;
+      display: flex;
+      place-content: center;
+      place-items: center;
+      border-radius: 50%;
+      font-size: 1rem;
+      transition: 0.3s;
+      background: $color-primary;
+      color: #fff;
+      position: absolute;
+      top: -10px;
+      left: -10px;
+    }
+
+    .name-display {
+      text-align: right;
+      font-size: calc($font-size-base * 0.8);
+    }
+  }
 }
 
-.num-display {
-  position: absolute;
-  top: -10px;
-  left: -10px;
-}
-
-.close,
-.edit {
-  position: absolute;
-  top: 10px;
-  right: 20px;
-  cursor: pointer;
-  background: none;
-  border: none;
-}
-
-.edit {
-  right: 40px;
-}
-
-button {
+// BUTTONS
+button,
+input[type="submit"] {
   background: none;
   border: none;
   cursor: pointer;
   box-shadow: none;
   user-select: none;
-}
 
-.btn {
-  color: #fff;
-  border: 0;
-  border-radius: 5px;
-  width: clamp(80px, 40%, 120px);
-  min-height: 40px;
-  padding: calc($padding-base * 0.5);
-  cursor: pointer;
-}
+  &.btn {
+    color: #fff;
+    border: 0;
+    border-radius: 5px;
+    width: clamp(80px, 40%, 120px);
+    min-height: 40px;
+    padding: calc($padding-base * 0.5);
+    cursor: pointer;
+  }
 
-.btn-primary {
-  background-color: $color-primary;
-  margin: $margin-base;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+  &.btn-primary {
+    background-color: $color-primary;
+    margin: calc($margin-base/2);
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
 
-  &:hover {
-    background-color: $color-primary-light;
+    &:hover {
+      background-color: $color-primary-light;
+      box-shadow: none;
+    }
+  }
+
+  &.btn-secondary {
+    background-color: $color-secondary;
+    border: 1px solid $color-secondary-dark;
+    margin: calc($margin-base * 0.2);
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+
+    &:hover {
+      background: $color-secondary-light;
+      box-shadow: none;
+    }
+  }
+
+  &.btn:disabled {
+    background-color: $color-grey-dark;
+    color: $color-grey-light;
+    cursor: not-allowed;
     box-shadow: none;
   }
-}
 
-.btn-secondary {
-  background-color: $color-secondary;
-  border: 1px solid $color-secondary-dark;
-  margin: calc($margin-base * 0.2);
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+  &.btn:disabled:hover {
+    transform: none;
+  }
 
-  &:hover {
-    background: $color-secondary-light;
-    box-shadow: none;
+  &.btn-icon {
+    border: 0;
+    background: transparent;
+    padding: 0em;
+    margin: 0;
+    outline: none;
+    cursor: pointer;
+    transform: scale(1.8);
+    line-height: 0;
+  }
+
+  &.btn-delete {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    color: $color-primary-dark;
+  }
+
+  &.btn-edit {
+    position: absolute;
+    top: 15px;
+    right: 55px;
+    color: $color-secondary-dark;
   }
 }
 
-.btn:disabled {
-  background-color: $color-grey-dark;
-  color: $color-grey-light;
-  cursor: not-allowed;
-  box-shadow: none;
-}
-
-.btn:disabled:hover {
-  transform: none;
-}
-
-.alert {
-  padding-top: 10px;
-  text-align: center;
-  color: $color-primary-dark;
-}
-
-@media (max-width: 600px) {
-  .input-group input {
-    width: 80%;
-  }
-}
+// ANIMATIONS
 
 .fade-out {
   animation: fadeOut ease 4s;
@@ -671,27 +695,25 @@ button {
   }
 }
 
-.btn-icon {
-  border: 0;
-  background: transparent;
-  padding: 0em;
-  margin: 0;
-  outline: none;
-  cursor: pointer;
-  transform: scale(1.8);
-  line-height: 0;
+/* CUSTOM SCROLLBAR */
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+  background: $color-grey;
 }
 
-.btn-delete {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  color: $color-primary-dark;
+::-webkit-scrollbar-track {
+  background: $color-grey;
+  border-radius: 5px;
 }
 
-.btn-edit {
-  position: absolute;
-  top: 15px;
-  right: 55px;
-  color: $color-secondary-dark;
+::-webkit-scrollbar-thumb {
+  background: $color-primary-dark;
+  border-radius: 5px;
+  border: 2px solid $color-grey;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: $color-primary;
 }
