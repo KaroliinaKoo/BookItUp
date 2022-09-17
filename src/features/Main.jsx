@@ -3,7 +3,7 @@ import React from "react";
 function Main() {
   return (
     <>
-      <div className="hero-container">
+      <div className="hero-container pattern-bg">
         <div className="hero-card">
           <p>A very catchy slogan!</p>
           <p>

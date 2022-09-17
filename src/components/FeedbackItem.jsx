@@ -20,7 +20,9 @@ function FeedbackItem({ item }) {
       </button>
       <h2>{item.title}</h2>
       <span>by {item.author}</span>
-      <div className="text-display">{item.body}</div>
+      <div className="text-display">
+        <p>{item.body}</p>
+      </div>
       <div className="name-display">- {item.username}</div>
     </Card>
   );

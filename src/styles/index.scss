@@ -331,11 +331,6 @@ header {
   width: clamp(300px, 98%, 800px);
   height: 100%;
   padding: 2vw;
-
-  &.pattern-bg {
-    background-color: #eff2f3;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='155' viewBox='0 0 80 135'%3E%3Cg fill-rule='evenodd'%3E%3Cg id='death-star' fill='%23ddcacc' fill-opacity='0.4'%3E%3Cpath d='M20 10a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V10zm15 35a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V45zM20 75a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V75zm30-65a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V10zm0 65a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V75zM35 10a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V10zM5 45a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V45zm0-35a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V10zm60 35a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V45zm0-35a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V10z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-  }
 }
 
 .card {
@@ -352,9 +347,12 @@ header {
   }
 }
 
+.pattern-bg {
+  background-color: $color-primary-muted-light;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='115' viewBox='0 0 80 105'%3E%3Cg fill-rule='evenodd'%3E%3Cg id='death-star' fill='%23d3e1e3' fill-opacity='0.4'%3E%3Cpath d='M20 10a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V10zm15 35a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V45zM20 75a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V75zm30-65a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V10zm0 65a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V75zM35 10a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V10zM5 45a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V45zm0-35a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V10zm60 35a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V45zm0-35a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V10z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
 .hero-container {
-  background-color: #eff2f3;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='155' viewBox='0 0 80 135'%3E%3Cg fill-rule='evenodd'%3E%3Cg id='death-star' fill='%23ddcacc' fill-opacity='0.4'%3E%3Cpath d='M20 10a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V10zm15 35a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V45zM20 75a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V75zm30-65a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V10zm0 65a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V75zM35 10a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V10zM5 45a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V45zm0-35a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V10zm60 35a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V45zm0-35a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V10z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   width: 90%;
   height: 100%;
   display: flex;
@@ -584,11 +582,33 @@ ul.rating {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  text-align: left;
   gap: 1.5em;
   padding-bottom: 1em;
 
   .card {
     padding: $padding-base calc($padding-base * 3.5);
+
+    h2 {
+      font-size: $font-size-base;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: $color-primary;
+      text-align: left;
+      margin: 0;
+    }
+
+    span {
+      font-size: calc($font-size-base * 0.9);
+      color: $color-secondary-muted-dark;
+      text-align: left;
+    }
+
+    p {
+      font-size: $font-size-base;
+      margin: $margin-base;
+      margin-left: 0;
+    }
 
     .close,
     .edit {
@@ -605,23 +625,24 @@ ul.rating {
     }
 
     .num-display {
-      width: 60px;
-      height: 60px;
+      width: 50px;
+      height: 50px;
       display: flex;
       place-content: center;
       place-items: center;
       border-radius: 50%;
-      font-size: 1rem;
+      font-size: calc($font-size-base * 1.4);
+      font-weight: 600;
       transition: 0.3s;
       background: $color-primary;
       color: #fff;
       position: absolute;
-      top: -10px;
-      left: -10px;
+      top: 23px;
+      left: 19px;
     }
 
     .name-display {
-      text-align: right;
+      text-align: left;
       font-size: calc($font-size-base * 0.8);
     }
   }
