@@ -1,67 +1,73 @@
 import React, { useEffect, useState, useContext } from "react";
 import Card from "./shared/Card";
 import Button from "./shared/Button";
+import Input from "./shared/Input";
 import RatingSelector from "./RatingSelector";
 import FeedbackContext from "../context/FeedbackContext";
 
 function FeedbackForm() {
-  const [text, setText] = useState("");
-  const [bookTitle, setBookTitle] = useState("");
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
+  const [author, setAuthor] = useState("");
+  const [username, setUsername] = useState("");
   const [rating, setRating] = useState(undefined);
-  const [submitDisabled, setSubmitDisabled] = useState(true);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
 
-  const textMinLength = 10;
-  const titleMinLength = 3;
+  const authorsList = [
+    "J.K. Rowling",
+    "George R.R. Martin",
+    "Stephen King",
+    "Terry Pratchett",
+    "Neil Gaiman",
+    "Brandon Sanderson",
+    "J.R.R. Tolkien",
+    "Robert Jordan",
+    "Patrick Rothfuss",
+    "Tad Williams",
+  ];
+
+  const titlesList = [
+    "Harry Potter and the Philosopher's Stone",
+    "Harry Potter and the Chamber of Secrets",
+    "Harry Potter and the Prisoner of Azkaban",
+    "Harry Potter and the Goblet of Fire",
+    "Harry Potter and the Order of the Phoenix",
+    "Harry Potter and the Half-Blood Prince",
+    "Harry Potter and the Deathly Hallows",
+  ];
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const titleMinLength = 1;
+  const authorMinLength = 1;
+  const usernameMinLength = 1;
   const ratingRegex = /^([1-9]|10)$/;
 
   const { addItem, updateItem, itemIsEditing } = useContext(FeedbackContext);
 
   useEffect(() => {
     if (itemIsEditing.isEditing) {
-      setText(itemIsEditing.item.text);
+      setTitle(itemIsEditing.item.title);
+      setBody(itemIsEditing.item.body);
+      setAuthor(itemIsEditing.item.author);
+      setUsername(itemIsEditing.item.username);
       setRating(itemIsEditing.item.rating);
-      setBookTitle(itemIsEditing.item.bookTitle);
     }
   }, [itemIsEditing]);
-
-  useEffect(() => {
-    setSubmitDisabled(false);
-    setErrorMsg("");
-
-    if (rating === undefined) {
-      setErrorMsg("Please select a rating between 1-10");
-      setSubmitDisabled(true);
-    }
-
-    if (text.replace(/\s+/g, "").length < textMinLength) {
-      setErrorMsg("Review must be at least 10 characters long");
-      setSubmitDisabled(true);
-    }
-
-    if (bookTitle.replace(/\s+/g, "").length < titleMinLength) {
-      setErrorMsg("Title must be at least 3 characters long");
-      setSubmitDisabled(true);
-    }
-
-    if (bookTitle === "" && text === "" && rating === undefined) {
-      setErrorMsg("");
-    }
-  }, [text, bookTitle, rating]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (
-      text.replace(/\s+/g, "").length >= textMinLength &&
-      bookTitle.replace(/\s+/g, "").length >= titleMinLength &&
+      author.replace(/\s+/g, "").length >= authorMinLength &&
+      title.replace(/\s+/g, "").length >= titleMinLength &&
+      username.replace(/\s+/g, "").length >= usernameMinLength &&
       ratingRegex.test(rating)
     ) {
-      console.log("creating new feedback");
       const newFeedback = {
-        text,
-        bookTitle,
+        body,
+        title,
+        author,
+        username,
         rating,
       }; // create a new feedback object with the text and rating values from the form fields
       if (itemIsEditing.isEditing) {
@@ -81,54 +87,91 @@ function FeedbackForm() {
     const timeout = setTimeout(() => {
       // set a timeout to hide the message after 4 seconds
       setIsSubmitting(false); // set isSubmitting to false after the feedback has been submitted
-    }, 4000);
+    }, 3000);
     return () => clearTimeout(timeout); // clear the timeout when the component unmounts
   }, [isSubmitting]);
 
   const reset = () => {
-    setText("");
-    setBookTitle("");
+    setBody("");
+    setTitle("");
+    setAuthor("");
+    setUsername("");
     setRating(undefined);
-    setErrorMsg("");
-    console.log("form reset");
   };
 
   return (
     <Card>
-      <form className="feedback-form" onSubmit={handleSubmit}>
-        <h1>Rate a Book</h1>
-        <div className="input-group">
-          <label htmlFor="book-title">Title of the Book</label>
-          <input
-            type="text"
-            name="book-title"
-            placeholder='e.g "Harry Potter and the Goblet of Fire"'
-            value={bookTitle}
-            onChange={(e) => setBookTitle(e.target.value)}
+      {!isSubmitting && (
+        <form
+          className="feedback-form"
+          onSubmit={handleSubmit}
+          autoComplete="off"
+        >
+          <h1>Review a Book</h1>
+
+          <Input
+            label="Book Title"
+            value={title}
+            name="title"
+            onChange={(e) => setTitle(e.target.value)}
+            minLength={titleMinLength}
+            placeholder="e.g Harry Potter and the Goblet of Fire"
+            list="titles_list"
           />
-        </div>
 
-        <div className="input-group">
-          <label htmlFor="text-body">Review</label>
-          <textarea
-            name="text-body"
-            placeholder="What did you think about the book?"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
+          <datalist id="titles_list">
+            {titlesList.map((title) => (
+              <option key={title} value={title} />
+            ))}
+          </datalist>
+
+          <Input
+            label="Author"
+            value={author}
+            name="author"
+            onChange={(e) => setAuthor(e.target.value)}
+            minLength={authorMinLength}
+            placeholder="e.g J.K. Rowling"
+            list="authors_list"
           />
-        </div>
 
-        <RatingSelector select={(rating) => setRating(rating)} />
-        {/* pass the selected rating to the RatingSelector component */}
+          <datalist id="authors_list">
+            {authorsList.map((author) => (
+              <option key={author} value={author} />
+            ))}
+          </datalist>
 
-        {isSubmitting && (
-          <div className="alert fade-out">Thank you for your review!</div>
-        )}
-        <div className="alert">{errorMsg}</div>
-        <Button type="submit" isDisabled={submitDisabled}>
-          {itemIsEditing.isEditing ? "Update" : "Submit"}
-        </Button>
-      </form>
+          <div className="input-group">
+            <label htmlFor="body">Your Review</label>
+            <textarea
+              name="body"
+              placeholder="What did you think about the book?"
+              value={body}
+              onChange={(e) => setBody(e.target.value)}
+              maxLength={1000}
+            />
+          </div>
+
+          <RatingSelector select={(rating) => setRating(rating)} />
+          {/* pass the selected rating to the RatingSelector component */}
+
+          <Input
+            label="Username"
+            value={username}
+            name="username"
+            placeholder="e.g. John Doe"
+            minLength={usernameMinLength}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+
+          <Button type="submit">
+            {itemIsEditing.isEditing ? "Update" : "Submit"}
+          </Button>
+        </form>
+      )}
+      {isSubmitting && (
+        <div className="message">Your review was submitted successfully!</div>
+      )}
     </Card>
   );
 }

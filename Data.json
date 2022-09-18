@@ -55,9 +55,16 @@
       "author": "Kennilworthy Whisp",
       "body": "I had a blast reading this book. I would recommend it to anyone who is interested in the topic. I wonder if there will be a sequel?",
       "rating": 8
+    },
+    {
+      "body": "Magical, absolutely.",
+      "title": "Harry Potter and the Philosopher's Stone",
+      "author": "J.K. Rowling",
+      "username": "Just Me",
+      "rating": 10,
+      "id": 8
     }
   ],
-
   "user": [
     {
       "id": "1",
@@ -88,6 +95,70 @@
       "id": "6",
       "username": "Ron",
       "password": "1234"
+    }
+  ],
+  "author": [
+    {
+      "id": 1,
+      "name": "J.K. Rowling"
+    },
+    {
+      "id": 2,
+      "name": "Kennilworthy Whisp"
+    },
+    {
+      "id": 3,
+      "name": "Bathilda Bagshot"
+    },
+    {
+      "id": 4,
+      "name": "Gilderoy Lockhart"
+    },
+    {
+      "id": 5,
+      "name": "Newt Scamander"
+    }
+  ],
+  "title": [
+    {
+      "id": 1,
+      "name": "Harry Potter and the Philosopher's Stone"
+    },
+    {
+      "id": 2,
+      "name": "Harry Potter and the Chamber of Secrets"
+    },
+    {
+      "id": 3,
+      "name": "Harry Potter and the Prisoner of Azkaban"
+    },
+    {
+      "id": 4,
+      "name": "Harry Potter and the Goblet of Fire"
+    },
+    {
+      "id": 5,
+      "name": "Harry Potter and the Order of the Phoenix"
+    },
+    {
+      "id": 6,
+      "name": "Harry Potter and the Half-Blood Prince"
+    },
+    {
+      "id": 7,
+      "name": "Harry Potter and the Deathly Hallows"
+    },
+    {
+      "id": 8,
+      "name": "Fantastic Beasts and Where to Find Them"
+    },
+    {
+      "id": 9,
+      "name": "Quidditch Through the Ages"
+    },
+    {
+      "id": 10,
+      "name": "A History of Magic"
     }
   ]
 }

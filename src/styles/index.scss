@@ -142,7 +142,7 @@ header {
   background-color: $color-primary;
   color: $color-white;
   height: calc(2em + 5vh);
-  z-index: 1;
+  z-index: 2;
   box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.2);
 
   nav {
@@ -347,6 +347,47 @@ header {
   }
 }
 
+.message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 1.2rem;
+  padding: 0.5em;
+  border: 2px solid $color-secondary-light;
+  color: $color-secondary-dark;
+
+  .btn {
+    width: 100%;
+  }
+}
+
+.prompt {
+  z-index: 1;
+  position: absolute;
+  top: calc(2.2em + 5vh);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  justify-content: center;
+  align-items: center;
+  background-color: $color-primary-light;
+  color: $color-white;
+  font-size: 0.9rem;
+  font-weight: 400;
+  pointer-events: none;
+  height: 0;
+  display: none;
+  overflow: hidden;
+  box-shadow: 0 0 10px #00000090;
+
+  &.show {
+    display: flex;
+    height: 50px;
+  }
+}
+
 .pattern-bg {
   background-color: $color-primary-muted-light;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='115' viewBox='0 0 80 105'%3E%3Cg fill-rule='evenodd'%3E%3Cg id='death-star' fill='%23d3e1e3' fill-opacity='0.4'%3E%3Cpath d='M20 10a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V10zm15 35a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V45zM20 75a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V75zm30-65a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V10zm0 65a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V75zM35 10a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V10zM5 45a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V45zm0-35a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V10zm60 35a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V45zm0-35a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V10z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
@@ -452,6 +493,7 @@ form {
   justify-content: space-between;
   gap: 1em;
   padding: 0;
+  transition: height 0.2s ease-in-out;
 
   .alert {
     padding-top: 10px;
@@ -472,13 +514,13 @@ form {
       justify-content: center;
       align-items: flex-start;
       width: 100%;
-      padding: 0.6em 1em;
+      padding: 0.2em 1em;
       font-size: $font-size-base;
       font-weight: 600;
       color: $color-white;
       text-transform: uppercase;
       background-color: inherit;
-      background-color: $color-primary;
+      background-color: $color-secondary-light;
     }
 
     input,
@@ -491,13 +533,19 @@ form {
       width: 100%;
 
       &:focus {
-        outline: 2px solid $color-primary-light;
+        outline: 2px solid $color-secondary-light;
         border-radius: 2px;
+      }
+
+      &::placeholder {
+        font-style: italic;
+        opacity: 0.8;
       }
     }
 
     textarea {
       resize: vertical;
+      min-height: 15em;
     }
 
     @media (max-width: 600px) {
@@ -690,7 +738,10 @@ ul.rating {
 
         &#password {
           padding-right: 2.8em;
+        }
 
+        &::placeholder {
+          font-style: italic;
         }
       }
 
@@ -759,7 +810,8 @@ input[type="submit"] {
   cursor: pointer;
   box-shadow: none;
   user-select: none;
-
+  color: inherit;
+  font: inherit;
 
   &.btn {
     font-weight: 600;
@@ -772,6 +824,16 @@ input[type="submit"] {
     min-height: 40px;
     padding: calc($padding-base * 0.8) $padding-base;
     margin: calc($margin-base/2);
+  }
+
+  &.btn-link {
+    display: block;
+    color: $color-primary;
+    font-weight: 800;
+
+    &:hover {
+      color: $color-primary-light;
+    }
   }
 
   &.btn-primary {
@@ -819,7 +881,7 @@ input[type="submit"] {
 // ANIMATIONS
 
 .fade-out {
-  animation: fadeOut ease 4s;
+  animation: fadeOut ease 1s;
   animation-fill-mode: forwards;
 }
 
@@ -955,4 +1017,9 @@ input[type="checkbox"].custom {
       transform: rotate(360deg);
     }
   }
+}
+
+.minimize {
+  height: 0;
+  overflow: hidden;
 }

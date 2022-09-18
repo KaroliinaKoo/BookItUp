@@ -1,5 +1,4 @@
 import React from "react";
-import { v4 as uuidv4 } from "uuid";
 import { createContext, useState, useEffect } from "react";
 
 const FeedbackContext = createContext();
@@ -25,35 +24,52 @@ export const FeedbackProvider = ({ children }) => {
     fetchFeedback();
   }, []);
 
-  const addItem = (item) => {
-    // add a new feedback item to the list of feedback items
-    item.id = uuidv4();
-    setFeedback([item, ...feedback]);
+  // ADD
+  const addItem = async (item) => {
+    const response = await fetch("http://localhost:3001/review", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(item),
+    });
+    const data = await response.json();
+    setFeedback([data, ...feedback]);
   };
 
-  const deleteItem = (id) => {
-    // delete an item from the list of feedbacks
-    if (
-      window.confirm(`Are you sure you want to delete this item? [Item ${id}]`)
-    ) {
-      setFeedback(feedback.filter((item) => item.id !== id)); // filter the feedback array to remove the item with the matching id
+  // DELETE
+  const deleteItem = async (id) => {
+    if (window.confirm("Are you sure you want to delete this item?")) {
+      await fetch(`http://localhost:3001/review/${id}`, {
+        method: "DELETE",
+      });
+      setFeedback(feedback.filter((item) => item.id !== id));
     }
   };
 
-  const editItem = (item) => {
-    // edit an item in the list of feedbacks
-    setItemIsEditing({ item, isEditing: true }); // set the item to be edited and set isEditing to true
+  // UPDATE
+  const updateItem = async (id, updatedItem) => {
+    const response = await fetch(`http://localhost:3001/review/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedItem),
+    });
+
+    const data = await response.json();
+
+    setFeedback(feedback.map((item) => (item.id === id ? data : item)));
+
+    setItemIsEditing({
+      item: {},
+      isEditing: false,
+    });
   };
 
-  // update an item in the list of feedbacks
-  const updateItem = (id, updateItem) => {
-    setFeedback(
-      feedback.map(
-        (
-          item // map the feedback array of items
-        ) => (item.id === id ? { ...item, ...updateItem } : item)
-      ) // update the item with the matching id, with the updateItem object passed in as an argument
-    );
+  // EDIT
+  const editItem = (item) => {
+    setItemIsEditing({ item, isEditing: true });
   };
 
   return (
