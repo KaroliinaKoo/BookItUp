@@ -1,0 +1,88 @@
+{
+  "review": [
+    {
+      "id": 1,
+      "username": "Jane",
+      "title": "Do Machines Dream of Electric Sheep?",
+      "author": "Philip K. Dick",
+      "body": "This is a great book and I would recommend it to anyone",
+      "rating": 9
+    },
+    {
+      "id": 2,
+      "username": "Lily",
+      "title": "Lorem Ipsum",
+      "author": "Irem Lopsum",
+      "body": "This book is not for me. I did not like it at all. It was a waste of my time and money!",
+      "rating": 1
+    },
+    {
+      "id": 3,
+      "username": "Peter",
+      "title": "Lorem Ipsum",
+      "author": "Irem Lopsum",
+      "body": "This book is not for me either. I was not impressed with the writing style and the story was not interesting",
+      "rating": 3
+    },
+    {
+      "id": 4,
+      "username": "John",
+      "title": "Are Robots Taking Over the World?",
+      "author": "John Smith",
+      "body": "I love this book. It is the best book I have ever read. The author is a genius!",
+      "rating": 10
+    },
+    {
+      "id": 5,
+      "username": "Bob",
+      "title": "Lorem Ipsum, the Return of the King",
+      "author": "Irem Lopsum",
+      "body": "Rubbish book. I would not recommend it to anyone. I am very disappointed with the author, who is a fraud!",
+      "rating": 2
+    },
+    {
+      "id": 6,
+      "username": "Mary",
+      "title": "Lorem Ipsum",
+      "author": "Irem Lopsum",
+      "body": "I enjoyed this book. It was a good read. Why is everyone so negative?",
+      "rating": 7
+    },
+    {
+      "id": 7,
+      "username": "John",
+      "title": "The Rise of the Machines",
+      "author": "Some Guy",
+      "body": "I had a blast reading this book. I would recommend it to anyone who is interested in the topic. I wonder if there will be a sequel?",
+      "rating": 8
+    }
+  ],
+
+  "user": [
+    {
+      "id": "1",
+      "username": "John",
+      "password": "1234"
+    },
+    {
+      "id": "2",
+      "username": "Mary",
+      "password": "1234"
+    },
+    {
+      "id": "3",
+      "username": "Bob",
+      "password": "1234"
+    },
+    {
+      "id": "4",
+      "username": "Lily",
+      "password": "1234"
+    },
+    {
+      "id": "5",
+      "username": "Jane",
+      "password": "1234"
+    }
+  ]
+}
