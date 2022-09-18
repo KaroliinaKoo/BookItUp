@@ -102,7 +102,7 @@ function FeedbackForm() {
           <input
             type="text"
             name="book-title"
-            placeholder='e.g "Lord of the Rings"'
+            placeholder='e.g "Harry Potter and the Goblet of Fire"'
             value={bookTitle}
             onChange={(e) => setBookTitle(e.target.value)}
           />

@@ -4,12 +4,14 @@ import FeedbackItem from "./FeedbackItem";
 import FeedbackContext from "../context/FeedbackContext";
 
 function FeedbackList() {
-  const { feedback } = useContext(FeedbackContext);
+  const { feedback, itemIsLoading } = useContext(FeedbackContext);
 
-  if (!feedback || feedback.length === 0) {
+  if (!itemIsLoading && (!feedback || feedback.length === 0)) {
     return <p>No reviews found.</p>;
   }
-  return (
+  return itemIsLoading ? (
+    <div className="spinner" role="status" />
+  ) : (
     <div className="feedback-list">
       {feedback.map((item) => (
         <FeedbackItem key={item.id} item={item} />
