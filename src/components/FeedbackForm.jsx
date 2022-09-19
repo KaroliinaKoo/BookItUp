@@ -4,6 +4,7 @@ import Button from "./shared/Button";
 import Input from "./shared/Input";
 import RatingSelector from "./RatingSelector";
 import FeedbackContext from "../context/FeedbackContext";
+import AlertContext from "../context/AlertContext";
 import { useNavigate } from "react-router-dom";
 
 function FeedbackForm() {
@@ -15,6 +16,7 @@ function FeedbackForm() {
   const navigate = useNavigate();
 
   const { addItem, updateItem, itemIsEditing } = useContext(FeedbackContext);
+  const { showAlert } = useContext(AlertContext);
 
   const authorsList = [
     "J.K. Rowling",
@@ -73,13 +75,16 @@ function FeedbackForm() {
       if (itemIsEditing.isEditing) {
         updateItem(itemIsEditing.item.id, newFeedback); // update the item in the list of feedbacks
         reset();
+        showAlert("success", "Review updated successfully!");
         navigate("/read-reviews");
       } else {
         addItem(newFeedback); // add the feedback to the list of feedbacks
         reset();
+        showAlert("success", "Review submitted successfully!");
         navigate("/read-reviews");
       }
     } else {
+      showAlert("error", "Error");
     }
   };
 
