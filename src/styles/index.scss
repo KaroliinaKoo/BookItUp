@@ -130,7 +130,6 @@ main {
   height: calc(95vh - 2em);
   width: 100vw;
   overflow: hidden;
-  overflow-y: auto;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -327,13 +326,12 @@ header {
   display: flex;
   flex-direction: column;
   align-self: center;
-  overflow: hidden;
-  overflow-y: auto;
   justify-content: flex-start;
   gap: 0.5em;
-  width: clamp(300px, 100%, 800px);
-  padding-top: 0.5em;
+  padding: 0.5em;
   height: 100%;
+  overflow: hidden;
+  overflow-y: auto;
 }
 
 .card {
@@ -654,13 +652,10 @@ ul.rating {
 }
 
 .feedback-list {
-  margin-top: $margin-base;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  text-align: left;
-  gap: 1.5em;
-  padding-bottom: 1em;
+  gap: 1em;
 
   .card {
     padding-left: 6em;
