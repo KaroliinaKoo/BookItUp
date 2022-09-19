@@ -7,6 +7,7 @@
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
     "concurrently": "^7.4.0",
+    "json-server-auth": "^2.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.4.0",
@@ -21,7 +22,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "server": "json-server --watch Data.json --port 3001",
-    "dev": "concurrently \"npm run server\" \"npm run start\""
+    "dev": "concurrently \"npm run server\" \"npm run start\" \"json-server --watch db.json --port 3002 -m ./node_modules/json-server-auth\""
   },
   "eslintConfig": {
     "extends": [
