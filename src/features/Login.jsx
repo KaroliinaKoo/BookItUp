@@ -1,7 +1,6 @@
 import React from "react";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { UserProvider } from "../context/UserContext";
 
 function Login() {
   const [formData, setFormData] = useState({

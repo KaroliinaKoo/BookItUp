@@ -11,16 +11,17 @@ function LinkList({ openClose }) {
           Home
         </NavLink>
       </li>
-      <li>
-        <NavLink to="/new-review" onClick={openClose}>
-          <FaPlus />
-          Add a Review
-        </NavLink>
-      </li>
+
       <li>
         <NavLink to="/read-reviews" onClick={openClose}>
           <FaSearch />
           Find Reviews
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/new-review" onClick={openClose}>
+          <FaPlus />
+          Add a Review
         </NavLink>
       </li>
       <li>
