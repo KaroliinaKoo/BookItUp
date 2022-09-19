@@ -25,7 +25,7 @@ $padding-base: 1.5em;
 $margin-base: 1.5em;
 
 $font-size-base: 1rem;
-$font-size-heading: calc($font-size-base * 1.5);
+$font-size-heading: calc($font-size-base * 1.8);
 
 $breakpoint-xs: 320px;
 $breakpoint-sm: 480px;
@@ -530,36 +530,32 @@ form {
   .input-group {
     display: flex;
     flex-direction: column;
-    width: 80%;
-    border: 1px solid $color-grey;
-    border-radius: 2px;
+    width: 100%;
 
     label {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: flex-start;
-      width: 100%;
-      padding: 0.2em 1em;
       font-size: $font-size-base;
-      font-weight: 600;
-      color: $color-white;
-      text-transform: uppercase;
+      color: $color-primary-muted-dark;
       background-color: inherit;
-      background-color: $color-secondary-light;
+      border-radius: 5px;
     }
 
     input,
     textarea {
       padding: 0.8em 1.2em;
       flex-grow: 2;
-      border: transparent;
       font-size: 1rem;
       font-family: inherit;
       width: 100%;
+      border: 1px solid $color-grey;
 
       &:focus {
-        outline: 2px solid $color-secondary-light;
+        outline: none;
+        border: 1px solid $color-secondary;
+        box-shadow: 0 0 0 2px $color-secondary-light;
         border-radius: 2px;
       }
 
@@ -722,11 +718,33 @@ ul.rating {
   margin-bottom: auto;
   margin-left: auto;
   margin-right: auto;
-  max-width: 35em;
+  max-width: 40em;
   background-color: $color-secondary-muted;
   color: $color-secondary-muted-dark;
   border-radius: 0;
+  border-radius: 1em;
   box-shadow: none;
+
+  h1 {
+    margin-bottom: 1em;
+  }
+
+  .toggle-register-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5em;
+    margin: 1em;
+    border: 1px solid rgba(0, 0, 0, 0.089);
+    font-size: 0.9rem;
+
+    .toggle-register {
+      font-weight: 600;
+      color: $color-secondary-dark;
+      border-radius: 25em;
+      padding: 0.5em 1em;
+    }
+  }
 
   .form-control {
     display: flex;
@@ -735,29 +753,26 @@ ul.rating {
     align-items: center;
     width: 100%;
     gap: 1em;
+    padding: 1em;
+    padding-bottom: 0;
+    margin: 1em 0;
 
     .input-group {
       width: 100%;
       flex-direction: row;
-      background-color: $color-secondary-muted-dark;
       border-color: $color-secondary-muted;
       position: relative;
 
       label {
         width: 10em;
-        max-width: 50%;
-        color: $color-white;
-        background-color: $color-secondary-muted-dark;
+        width: 40%;
+        color: $color-secondary-muted-dark;
       }
 
       input {
         background-color: $color-secondary-muted-light;
         color: inherit;
-
-        &:focus {
-          outline: 2px solid $color-secondary;
-          border-radius: 2px;
-        }
+        width: 100%;
 
         &#password {
           padding-right: 2.8em;
@@ -787,9 +802,27 @@ ul.rating {
       }
 
     }
+
+    .btn-primary {
+      margin-top: 1.5em;
+    }
   }
 
   @media screen and (max-width: 540px) {
+
+    h1 {
+      text-align: center;
+    }
+
+    padding: 0.5em;
+    margin: 0;
+    border-radius: 0;
+    width: 100vw;
+    position: absolute;
+    bottom: 0;
+    top: calc(5vh + 2.5em);
+    left: 0;
+
     .form-control {
       .input-group {
         flex-direction: column;

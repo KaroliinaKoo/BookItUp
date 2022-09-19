@@ -16,9 +16,9 @@ function FeedbackItem({ item }) {
   return (
     <Card>
       <div className="num-display">{item.rating}</div>
-      <button className="btn-icon btn-delete" onClick={handleDelete}>
+      {/* <button className="btn-icon btn-delete" onClick={handleDelete}>
         <FaTimes />
-      </button>
+      </button> */}
       {/* <button className="btn-icon btn-edit" onClick={() => editItem(item)}>
         <FaEdit />
       </button> */}
