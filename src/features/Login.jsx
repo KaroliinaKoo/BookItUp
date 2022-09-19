@@ -1,40 +1,109 @@
 import React from "react";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { UserProvider } from "../context/UserContext";
 
 function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({
+    password: "",
+    username: "",
+    email: "",
+  });
+
   const [showPassword, setShowPassword] = useState(false);
+  const [register, setRegister] = useState(false);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (register) {
+      // register
+      fetch("http://localhost:3002/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      })
+        .then((r) => r.json())
+        .then((user) => {
+          console.log(user);
+        });
+    } else {
+      // login
+      fetch("http://localhost:3002/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      })
+        .then((r) => r.json())
+        .then((user) => {
+          console.log(user);
+          user.access_token && localStorage.setItem("token", user.access_token);
+        });
+    }
+  };
 
   return (
-    <div className="container pattern-bg">
+    <div className="container">
       <div className="card login">
-        <h1>Sign In</h1>
-        <form>
+        <h1>{register ? "Register" : "Login"}</h1>
+        {!register && (
+          <div className="toggle-register-container">
+            No account?
+            <button
+              className="toggle-register"
+              type="button"
+              onClick={() => setRegister(true)}
+            >
+              Register
+            </button>
+          </div>
+        )}
+        {register && (
+          <div className="toggle-register-container">
+            Already have an account?
+            <button
+              className="toggle-register"
+              type="button"
+              onClick={() => setRegister(false)}
+            >
+              Sign In
+            </button>
+          </div>
+        )}
+        <form onSubmit={handleSubmit}>
           <div className="form-control">
             <div className="input-group">
               <label htmlFor="email">E-mail</label>
               <input
+                value={formData.email}
+                onChange={handleChange}
                 type="email"
                 id="email"
                 name="email"
-                placeholder="Your e-mail"
-                autoComplete="off"
-                autoFocus
-                maxLength={200}
+                placeholder="john.doe@yourmail.com"
+                autoComplete="on"
+                maxLength={100}
                 required
+                autoFocus
               />
             </div>
+
             <div className="input-group">
               <label htmlFor="password">Password</label>
               <input
+                value={formData.password}
+                onChange={handleChange}
                 type={showPassword ? "text" : "password"}
                 id="password"
                 name="password"
                 placeholder="Your password"
                 autoComplete="off"
-                maxLength={50}
+                maxLength={32}
+                minLength={8}
                 required
               />
               <button
@@ -46,8 +115,26 @@ function Login() {
               </button>
             </div>
 
+            {register && (
+              <div className="input-group">
+                <label htmlFor="username">Username</label>
+                <input
+                  value={formData.username}
+                  onChange={handleChange}
+                  type="username"
+                  id="username"
+                  name="username"
+                  placeholder="Your username"
+                  autoComplete="on"
+                  maxLength={18}
+                  minLength={3}
+                  required
+                />
+              </div>
+            )}
+
             <button type="submit" className="btn btn-primary">
-              Sign In
+              {register ? "Register" : "Sign In"}
             </button>
           </div>
         </form>
@@ -55,5 +142,4 @@ function Login() {
     </div>
   );
 }
-
 export default Login;
