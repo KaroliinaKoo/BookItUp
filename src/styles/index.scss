@@ -394,35 +394,40 @@ header {
 }
 
 .hero-container {
-  width: 90%;
+  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   align-self: center;
-
   justify-content: flex-start;
   border: 0.5em solid #eff2f3;
 
   .hero-card {
     background-color: $color-secondary-muted;
+    background-image: url("https://images.unsplash.com/photo-1560332944-d047e59ac9b2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     padding: calc($padding-base * 1.5) $padding-base;
     color: black;
     display: flex;
-    width: clamp(15em, 70%, 40em);
+    width: clamp(200px, 100%, 1600px);
+    height: 100%;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
     gap: 0.5em;
     text-align: center;
     transition: all 0.2s ease-in-out;
     position: relative;
     margin: 10vh;
+
     //box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.138);
 
     @media screen and (max-width: $breakpoint-md) {
-      width: 98%;
+      width: 100%;
     }
 
     h1 {
@@ -433,12 +438,16 @@ header {
       text-transform: uppercase;
     }
 
+    p {
+      color: white;
+    }
+
     p:first-of-type {
-      font-size: clamp(1.2rem, 4.5vw, 2.8rem);
+      font-size: clamp(1.2rem, 5.5vw, 4rem);
       font-weight: 600;
       margin-bottom: 1em;
       color: $color-primary-light;
-      background-color: white;
+      background-color: #fffffff1;
       padding: 0.4em;
       transform: rotate(-2deg);
       white-space: nowrap;
@@ -452,8 +461,17 @@ header {
         margin-left: 0.3em;
         width: 0.2em;
         height: 100%;
-        background-color: white;
+        background-color: #fffffff1;
       }
+
+
+    }
+
+    p:nth-of-type(2) {
+      position: relative;
+      font-size: clamp(1.25rem, 3.5vw, 1.8rem);
+      top: -24%;
+      left: 3%;
     }
 
     .btn-cta {
@@ -476,6 +494,18 @@ header {
 
       &:hover {
         background-color: $color-primary-light;
+      }
+    }
+
+    .credit {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      padding-right: 0.4em;
+
+      a {
+        font-size: 0.7rem;
+        color: rgba(0, 0, 0, 0.283);
       }
     }
   }
@@ -1022,4 +1052,45 @@ input[type="checkbox"].custom {
 .minimize {
   height: 0;
   overflow: hidden;
+}
+
+
+.alert {
+  display: none;
+
+  &.show {
+    position: fixed;
+    z-index: 1;
+    width: 100%;
+    background-color: $color-grey-dark;
+    color: $color-white;
+    font-size: 0.9rem;
+    box-shadow: 0 0 10px #00000090;
+    justify-content: space-between;
+    padding: 0 5vw;
+    align-items: center;
+    min-height: 3em;
+    display: flex;
+    cursor: pointer;
+  }
+
+  span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 4px;
+    line-height: 1;
+    font-size: 0.8rem;
+    color: currentColor;
+  }
+
+  &.success {
+    background-color: #c4ffdf;
+    color: rgb(6, 60, 6);
+  }
+
+  &.error {
+    color: rgb(79, 4, 4);
+    background-color: rgb(254, 195, 195);
+  }
 }

@@ -1,25 +1,32 @@
 import Main from "./features/Main";
-import Review from "./features/Review";
 import Login from "./features/Login";
+import FindReviews from "./features/FindReviews";
 import PageNotFound from "./features/PageNotFound";
-import { Routes, Route } from "react-router-dom";
+import NewReview from "./features/NewReview";
 import Header from "./components/Header";
+import Alert from "./components/Alert";
+import { Routes, Route } from "react-router-dom";
 import { FeedbackProvider } from "./context/FeedbackContext";
+import { AlertProvider } from "./context/AlertContext";
 
 function App() {
   return (
     <FeedbackProvider>
-      <div className="App">
-        <Header />
-        <main>
-          <Routes>
-            <Route path="/" element={<Main />} />
-            <Route path="/review" element={<Review />} />
-            <Route path="/log-in" element={<Login />} />
-            <Route path="*" element={<PageNotFound />} />
-          </Routes>
-        </main>
-      </div>
+      <AlertProvider>
+        <div className="App">
+          <Header />
+          <main>
+            <Alert />
+            <Routes>
+              <Route path="/" element={<Main />} />
+              <Route path="/read-reviews" element={<FindReviews />} />
+              <Route path="/new-review" element={<NewReview />} />
+              <Route path="/log-in" element={<Login />} />
+              <Route path="*" element={<PageNotFound />} />
+            </Routes>
+          </main>
+        </div>
+      </AlertProvider>
     </FeedbackProvider>
   );
 }

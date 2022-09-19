@@ -1,18 +1,20 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 function Main() {
   return (
     <>
       <div className="hero-container pattern-bg">
         <div className="hero-card">
-          <p>A very catchy slogan!</p>
-          <p>
-            Aut consectetur quidem iusto nam, provident laudantium omnis odio
-            dolor eaque magni non ipsam id velit quisquam, possimus asperiores
-            eligendi perferendis a.
-          </p>
-          <p></p>
-          <button className="btn btn-cta">Call To Action</button>
+          <p>The Best Reads</p> <p>Wherever you are.</p>
+          <NavLink to="/log-in">
+            <button className="btn btn-cta">Sign Up Today</button>
+          </NavLink>
+          <div className="credit">
+            <a href="https://unsplash.com/@patriotbarrow?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">
+              Photo by Dan Dumitriu
+            </a>
+          </div>
         </div>
       </div>
     </>

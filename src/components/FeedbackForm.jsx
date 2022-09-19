@@ -4,6 +4,7 @@ import Button from "./shared/Button";
 import Input from "./shared/Input";
 import RatingSelector from "./RatingSelector";
 import FeedbackContext from "../context/FeedbackContext";
+import { useNavigate } from "react-router-dom";
 
 function FeedbackForm() {
   const [title, setTitle] = useState("");
@@ -11,6 +12,9 @@ function FeedbackForm() {
   const [author, setAuthor] = useState("");
   const [username, setUsername] = useState("");
   const [rating, setRating] = useState(undefined);
+  const navigate = useNavigate();
+
+  const { addItem, updateItem, itemIsEditing } = useContext(FeedbackContext);
 
   const authorsList = [
     "J.K. Rowling",
@@ -35,14 +39,10 @@ function FeedbackForm() {
     "Harry Potter and the Deathly Hallows",
   ];
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
   const titleMinLength = 1;
   const authorMinLength = 1;
   const usernameMinLength = 1;
   const ratingRegex = /^([1-9]|10)$/;
-
-  const { addItem, updateItem, itemIsEditing } = useContext(FeedbackContext);
 
   useEffect(() => {
     if (itemIsEditing.isEditing) {
@@ -73,23 +73,15 @@ function FeedbackForm() {
       if (itemIsEditing.isEditing) {
         updateItem(itemIsEditing.item.id, newFeedback); // update the item in the list of feedbacks
         reset();
+        navigate("/read-reviews");
       } else {
         addItem(newFeedback); // add the feedback to the list of feedbacks
-        setIsSubmitting(true);
         reset();
+        navigate("/read-reviews");
       }
     } else {
-      console.log("Form is not valid");
     }
   };
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      // set a timeout to hide the message after 4 seconds
-      setIsSubmitting(false); // set isSubmitting to false after the feedback has been submitted
-    }, 3000);
-    return () => clearTimeout(timeout); // clear the timeout when the component unmounts
-  }, [isSubmitting]);
 
   const reset = () => {
     setBody("");
@@ -101,77 +93,72 @@ function FeedbackForm() {
 
   return (
     <Card>
-      {!isSubmitting && (
-        <form
-          className="feedback-form"
-          onSubmit={handleSubmit}
-          autoComplete="off"
-        >
-          <h1>Review a Book</h1>
+      <form
+        className="feedback-form"
+        onSubmit={handleSubmit}
+        autoComplete="off"
+      >
+        <h1>Review a Book</h1>
 
-          <Input
-            label="Book Title"
-            value={title}
-            name="title"
-            onChange={(e) => setTitle(e.target.value)}
-            minLength={titleMinLength}
-            placeholder="e.g Harry Potter and the Goblet of Fire"
-            list="titles_list"
+        <Input
+          label="Book Title"
+          value={title}
+          name="title"
+          onChange={(e) => setTitle(e.target.value)}
+          minLength={titleMinLength}
+          placeholder="e.g Harry Potter and the Goblet of Fire"
+          list="titles_list"
+        />
+
+        <datalist id="titles_list">
+          {titlesList.map((title) => (
+            <option key={title} value={title} />
+          ))}
+        </datalist>
+
+        <Input
+          label="Author"
+          value={author}
+          name="author"
+          onChange={(e) => setAuthor(e.target.value)}
+          minLength={authorMinLength}
+          placeholder="e.g J.K. Rowling"
+          list="authors_list"
+        />
+
+        <datalist id="authors_list">
+          {authorsList.map((author) => (
+            <option key={author} value={author} />
+          ))}
+        </datalist>
+
+        <div className="input-group">
+          <label htmlFor="body">Your Review</label>
+          <textarea
+            name="body"
+            placeholder="What did you think about the book?"
+            value={body}
+            onChange={(e) => setBody(e.target.value)}
+            maxLength={1000}
           />
+        </div>
 
-          <datalist id="titles_list">
-            {titlesList.map((title) => (
-              <option key={title} value={title} />
-            ))}
-          </datalist>
+        <RatingSelector select={(rating) => setRating(rating)} />
+        {/* pass the selected rating to the RatingSelector component */}
 
-          <Input
-            label="Author"
-            value={author}
-            name="author"
-            onChange={(e) => setAuthor(e.target.value)}
-            minLength={authorMinLength}
-            placeholder="e.g J.K. Rowling"
-            list="authors_list"
-          />
+        <Input
+          label="Username"
+          value={username}
+          name="username"
+          placeholder="e.g. John Doe"
+          minLength={usernameMinLength}
+          onChange={(e) => setUsername(e.target.value)}
+        />
 
-          <datalist id="authors_list">
-            {authorsList.map((author) => (
-              <option key={author} value={author} />
-            ))}
-          </datalist>
-
-          <div className="input-group">
-            <label htmlFor="body">Your Review</label>
-            <textarea
-              name="body"
-              placeholder="What did you think about the book?"
-              value={body}
-              onChange={(e) => setBody(e.target.value)}
-              maxLength={1000}
-            />
-          </div>
-
-          <RatingSelector select={(rating) => setRating(rating)} />
-          {/* pass the selected rating to the RatingSelector component */}
-
-          <Input
-            label="Username"
-            value={username}
-            name="username"
-            placeholder="e.g. John Doe"
-            minLength={usernameMinLength}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-
-          <Button type="submit">
-            {itemIsEditing.isEditing ? "Update" : "Submit"}
-          </Button>
-        </form>
-      )}
-      {isSubmitting && (
-        <div className="message">Your review was submitted successfully!</div>
-      )}
+        <Button type="submit">
+          {itemIsEditing.isEditing ? "Update" : "Submit"}
+        </Button>
+      </form>
     </Card>
   );
 }

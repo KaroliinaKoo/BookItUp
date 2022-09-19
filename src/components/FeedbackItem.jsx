@@ -9,15 +9,12 @@ function FeedbackItem({ item }) {
   return (
     <Card>
       <div className="num-display">{item.rating}</div>
-      <button
-        className="btn-icon btn-delete"
-        onClick={() => deleteItem(item.id)}
-      >
+      <button className="btn-icon btn-delete" onClick={handleDelete}>
         <FaTimes />
       </button>
-      <button className="btn-icon btn-edit" onClick={() => editItem(item)}>
+      {/* <button className="btn-icon btn-edit" onClick={() => editItem(item)}>
         <FaEdit />
-      </button>
+      </button> */}
       <h2>{item.title}</h2>
       <span>by {item.author}</span>
       <div className="text-display">
