@@ -128,7 +128,9 @@ body {
 
 main {
   height: calc(95vh - 2em);
-  overflow: auto;
+  width: 100vw;
+  overflow: hidden;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -319,24 +321,24 @@ header {
       width: 100vw;
     }
   }
-
-
 }
 
 .container {
   display: flex;
   flex-direction: column;
   align-self: center;
-  gap: 1em;
-  width: clamp(300px, 98%, 800px);
+  overflow: hidden;
+  overflow-y: auto;
+  justify-content: flex-start;
+  gap: 0.5em;
+  width: clamp(300px, 100%, 800px);
+  padding-top: 0.5em;
   height: 100%;
-  padding: 2vw;
 }
 
 .card {
   background-color: #fff;
   color: $color-dark;
-  border-radius: 0.8em;
   padding: $padding-base;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   position: relative;
@@ -395,39 +397,39 @@ header {
 
 .hero-container {
   width: 100%;
-  height: 100%;
+  height: 80%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  align-self: center;
   justify-content: flex-start;
+  align-self: center;
   border: 0.5em solid #eff2f3;
+  position: absolute;
+  top: 0;
+  left: 0;
 
   .hero-card {
     background-color: $color-secondary-muted;
-    background-image: url("https://images.unsplash.com/photo-1560332944-d047e59ac9b2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80");
+    background-image: linear-gradient(#a8dadf88, rgba(31, 6, 8, 0.122)), url("https://images.unsplash.com/photo-1560332944-d047e59ac9b2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    padding: calc($padding-base * 1.5) $padding-base;
+    padding: calc(2vw + 2em);
     color: black;
     display: flex;
-    width: clamp(200px, 100%, 1600px);
-    height: 100%;
+    width: clamp(200px, 100%, 1500px);
+    height: 100vh;
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
-    gap: 0.5em;
     text-align: center;
     transition: all 0.2s ease-in-out;
     position: relative;
-    margin: 10vh;
 
     //box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.138);
 
     @media screen and (max-width: $breakpoint-md) {
-      width: 100%;
+      width: 100vw;
     }
 
     h1 {
@@ -443,7 +445,7 @@ header {
     }
 
     p:first-of-type {
-      font-size: clamp(1.2rem, 5.5vw, 4rem);
+      font-size: clamp(1.5rem, 5.5vw, 3.6rem);
       font-weight: 600;
       margin-bottom: 1em;
       color: $color-primary-light;
@@ -470,8 +472,8 @@ header {
     p:nth-of-type(2) {
       position: relative;
       font-size: clamp(1.25rem, 3.5vw, 1.8rem);
-      top: -24%;
-      left: 3%;
+      top: -22%;
+      left: 0;
     }
 
     .btn-cta {
@@ -480,12 +482,8 @@ header {
       font-weight: 600;
       padding: 1em 2em;
       border-radius: 25em;
-      width: 60%;
-      min-width: fit-content;
-      max-width: 40em;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 80%;
+      max-width: 60em;
       white-space: nowrap;
       margin: $margin-base;
       box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
@@ -575,7 +573,7 @@ form {
 
     textarea {
       resize: vertical;
-      min-height: 15em;
+      min-height: 10em;
     }
 
     @media (max-width: 600px) {
@@ -1057,8 +1055,11 @@ input[type="checkbox"].custom {
 
 .alert {
   display: none;
+  visibility: hidden;
 
   &.show {
+    display: flex;
+    visibility: visible;
     position: fixed;
     z-index: 1;
     width: 100%;
@@ -1070,12 +1071,11 @@ input[type="checkbox"].custom {
     padding: 0 5vw;
     align-items: center;
     min-height: 3em;
-    display: flex;
     cursor: pointer;
   }
 
   span {
-    display: flex;
+    display: inherit;
     align-items: center;
     justify-content: center;
     padding: 2px 4px;

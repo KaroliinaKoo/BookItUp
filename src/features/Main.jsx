@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 function Main() {
   return (
     <>
-      <div className="hero-container pattern-bg">
+      <div className="hero-container">
         <div className="hero-card">
           <p>The Best Reads</p> <p>Wherever you are.</p>
           <NavLink to="/log-in">

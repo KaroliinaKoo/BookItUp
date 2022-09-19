@@ -15,7 +15,7 @@ function App() {
       <AlertProvider>
         <div className="App">
           <Header />
-          <main>
+          <main className="pattern-bg">
             <Alert />
             <Routes>
               <Route path="/" element={<Main />} />
