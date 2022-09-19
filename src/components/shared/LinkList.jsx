@@ -1,24 +1,30 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { FaSignInAlt, FaHome, FaPlus } from "react-icons/fa";
+import { FaSignInAlt, FaHome, FaPlus, FaSearch } from "react-icons/fa";
 
-function LinkList() {
+function LinkList({ openClose }) {
   return (
     <ul>
       <li>
-        <NavLink to="/">
+        <NavLink to="/" onClick={openClose}>
           <FaHome />
           Home
         </NavLink>
       </li>
       <li>
-        <NavLink to="/review">
+        <NavLink to="/new-review" onClick={openClose}>
           <FaPlus />
-          Review a Book
+          Add a Review
         </NavLink>
       </li>
       <li>
-        <NavLink to="/log-in">
+        <NavLink to="/read-reviews" onClick={openClose}>
+          <FaSearch />
+          Find Reviews
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/log-in" onClick={openClose}>
           <FaSignInAlt />
           Sign In
         </NavLink>

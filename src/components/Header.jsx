@@ -5,7 +5,11 @@ import { NavLink } from "react-router-dom";
 
 function Header() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const handleMobileMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
 
   return (
     window.addEventListener("resize", () => {
@@ -22,24 +26,22 @@ function Header() {
             <div>
               <button
                 className="btn-icon mobile-menu-btn"
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                onClick={handleMobileMenu}
               >
                 <FaBars />
               </button>
               <div
-                className={
-                  isMenuOpen ? "mobile-menu open" : "mobile-menu closed"
-                }
+                className={menuOpen ? "mobile-menu open" : "mobile-menu closed"}
               >
                 <div className="btn-container">
                   <button
                     className="btn-icon close-menu"
-                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    onClick={handleMobileMenu}
                   >
                     <FaTimes />
                   </button>
                 </div>
-                <LinkList />
+                <LinkList openClose={handleMobileMenu} />
               </div>
             </div>
           )}
