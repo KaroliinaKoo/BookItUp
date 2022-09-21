@@ -8,6 +8,11 @@ import {
   FaSignInAlt,
 } from "react-icons/fa";
 
+const handleLogout = () => {
+  localStorage.removeItem("token");
+  window.location.reload();
+};
+
 function LinkList({ openClose, userLoggedIn }) {
   return (
     <ul>
@@ -32,7 +37,13 @@ function LinkList({ openClose, userLoggedIn }) {
       </li>
       <div className="user-login">
         {userLoggedIn ? (
-          <NavLink to="/logout">
+          <NavLink
+            to="/logout"
+            onClick={(e) => {
+              e.preventDefault();
+              handleLogout();
+            }}
+          >
             Log Out <FaSignOutAlt />
           </NavLink>
         ) : (
