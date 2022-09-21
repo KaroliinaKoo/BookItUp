@@ -10,19 +10,28 @@ import { FeedbackProvider } from "./context/FeedbackContext";
 import { AlertProvider } from "./context/AlertContext";
 import User from "./modules/user";
 
+function UserLoggedIn() {
+  const check = User.getToken();
+
+  if (check) {
+    return true;
+  }
+  return false;
+}
+
 function App() {
   return (
     <FeedbackProvider>
       <AlertProvider>
         <div className="App">
-          <Header />
+          <Header userLoggedIn={UserLoggedIn()} />
           <main>
             <Alert />
             <Routes>
               <Route path="/" element={<Main />} />
               <Route path="/read-reviews" element={<FindReviews />} />
               <Route path="/new-review" element={<NewReview />} />
-              <Route path="/log-in" element={<Login />} />
+              <Route path="/login" element={<Login />} />
               <Route path="*" element={<PageNotFound />} />
             </Routes>
           </main>

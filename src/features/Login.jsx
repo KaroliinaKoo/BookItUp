@@ -40,7 +40,7 @@ function Login() {
         .then((r) => r.json())
         .then((user) => {
           console.log(user);
-          user.access_token && localStorage.setItem("token", user.access_token);
+          user.accessToken && localStorage.setItem("token", user.accessToken);
         });
     }
   };

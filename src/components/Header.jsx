@@ -1,16 +1,16 @@
-import { FaBars, FaTimes } from "react-icons/fa";
+import { FaBars, FaTimes, FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
 import { useState } from "react";
 import LinkList from "./shared/LinkList";
 import { NavLink } from "react-router-dom";
 
-function Header() {
+function Header({ userLoggedIn, userName, logout }) {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleMobileMenu = () => {
     setMenuOpen(!menuOpen);
   };
-
+  console.log("User logged in: " + userLoggedIn);
   return (
     window.addEventListener("resize", () => {
       setWindowWidth(window.innerWidth);
@@ -21,7 +21,7 @@ function Header() {
           <p className="logo">BookItUp</p>
         </NavLink>
         <nav>
-          {windowWidth > 768 && <LinkList />}
+          {windowWidth > 768 && <LinkList userLoggedIn={userLoggedIn} />}
           {windowWidth < 768 && (
             <div>
               <button

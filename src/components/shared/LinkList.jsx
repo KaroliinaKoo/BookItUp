@@ -1,8 +1,14 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { FaSignInAlt, FaHome, FaPlus, FaSearch } from "react-icons/fa";
+import {
+  FaHome,
+  FaPlus,
+  FaSearch,
+  FaSignOutAlt,
+  FaSignInAlt,
+} from "react-icons/fa";
 
-function LinkList({ openClose }) {
+function LinkList({ openClose, userLoggedIn }) {
   return (
     <ul>
       <li>
@@ -24,12 +30,17 @@ function LinkList({ openClose }) {
           Add a Review
         </NavLink>
       </li>
-      <li>
-        <NavLink to="/log-in" onClick={openClose}>
-          <FaSignInAlt />
-          Sign In
-        </NavLink>
-      </li>
+      <div className="user-login">
+        {userLoggedIn ? (
+          <NavLink to="/logout">
+            Log Out <FaSignOutAlt />
+          </NavLink>
+        ) : (
+          <NavLink to="/login">
+            Log In <FaSignInAlt />
+          </NavLink>
+        )}
+      </div>
     </ul>
   );
 }

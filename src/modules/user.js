@@ -16,7 +16,7 @@ const User = (function () {
   };
 
   const getToken = () => {
-    return JSON.parse(localStorage.getItem("token"));
+    return localStorage.getItem("token");
   };
 
   const setData = (data) => {
