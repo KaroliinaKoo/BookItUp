@@ -8,6 +8,7 @@ import Alert from "./components/Alert";
 import { Routes, Route } from "react-router-dom";
 import { FeedbackProvider } from "./context/FeedbackContext";
 import { AlertProvider } from "./context/AlertContext";
+import User from "./modules/user";
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
       <AlertProvider>
         <div className="App">
           <Header />
-          <main className="pattern-bg">
+          <main>
             <Alert />
             <Routes>
               <Route path="/" element={<Main />} />
