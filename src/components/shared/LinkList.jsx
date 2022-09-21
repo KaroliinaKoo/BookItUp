@@ -33,11 +33,13 @@ function LinkList({ openClose, userLoggedIn }) {
       <div className="user-login">
         {userLoggedIn ? (
           <NavLink to="/logout">
-            Log Out <FaSignOutAlt />
+            <FaSignOutAlt />
+            Log Out
           </NavLink>
         ) : (
           <NavLink to="/login">
-            Log In <FaSignInAlt />
+            <FaSignInAlt />
+            Log In
           </NavLink>
         )}
       </div>
