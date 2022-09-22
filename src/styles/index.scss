@@ -159,22 +159,33 @@ header {
     .user-login {
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: space-around;
       height: 100%;
       width: 100%;
       padding-left: calc(0.5em + 2vw);
       border-left: 2px solid $color-primary-light;
       color: $color-white;
+      gap: calc(0.5em + 1vw);
+
       .user-info {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         border-radius: 25em;
-        border: 1px solid;
-        border-color: $color-primary;
         background-color: $color-primary-light;
         padding: 0.2em 1vw;
+        line-height: 1.5rem;
+        font-size: 0.8rem;
+
+        svg {
+          font-size: 1.1rem;
+        }
       }
 
-      svg {
-        margin-left: 0.5em;
+      svg,
+      .user-info>svg {
+        margin-right: 0.5em;
         margin-bottom: 1px;
       }
     }
@@ -264,17 +275,25 @@ header {
 
   .user-login {
     border-left: none;
-    border-top: 2px solid $color-primary;
+    flex-direction: column-reverse;
     margin: 0;
     padding: 0;
     height: auto;
+    gap: 0;
 
     svg {
       margin-left: 0;
       margin-bottom: 0;
     }
-  }
 
+    .user-info {
+      border: 1px solid $color-white;
+      width: 90%;
+      height: 3.5em;
+      margin: 5vh 0;
+    }
+
+  }
 
   a {
     justify-content: flex-start;
@@ -282,6 +301,7 @@ header {
     margin: 0;
     padding: 1em 2em;
     border-color: transparent;
+    font-size: 1.2rem;
 
     @media (hover: hover) {
       &:hover {
