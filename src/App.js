@@ -20,6 +20,7 @@ function UserLoggedIn() {
 }
 
 function App() {
+  console.log(User.getData());
   return (
     <FeedbackProvider>
       <AlertProvider>
@@ -28,7 +29,10 @@ function App() {
           <main>
             <Alert />
             <Routes>
-              <Route path="/" element={<Main />} />
+              <Route
+                path="/"
+                element={<Main userLoggedIn={UserLoggedIn()} />}
+              />
               <Route path="/read-reviews" element={<FindReviews />} />
               <Route path="/new-review" element={<NewReview />} />
               <Route path="/login" element={<Login />} />

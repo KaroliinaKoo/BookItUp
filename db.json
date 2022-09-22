@@ -3,7 +3,7 @@
     {
       "email": "someguy@fakemail.com",
       "password": "$2a$10$CRETjVZo0YEr9yyz8vEqpeKVlnGAsRdp3Ml5s1UliMZ4JGoc3Kaji",
-      "username": "SomeGuy",
+      "name": "SomeGuy",
       "id": 1
     }
   ]

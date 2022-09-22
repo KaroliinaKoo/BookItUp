@@ -1,12 +1,15 @@
 import React from "react";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import User from "../modules/user";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    password: "",
-    username: "",
     email: "",
+    password: "",
+    name: "",
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -28,7 +31,8 @@ function Login() {
       })
         .then((r) => r.json())
         .then((user) => {
-          console.log(user);
+          console.log("Registered: " + user);
+          navigate("/");
         });
     } else {
       // login
@@ -39,8 +43,11 @@ function Login() {
       })
         .then((r) => r.json())
         .then((user) => {
-          console.log(user);
+          console.log("Logged in :" + user);
           user.accessToken && localStorage.setItem("token", user.accessToken);
+          User.setData(user);
+          navigate("/");
+          window.location.reload();
         });
     }
   };

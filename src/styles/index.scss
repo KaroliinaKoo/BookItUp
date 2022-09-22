@@ -426,6 +426,23 @@ header {
   align-items: center;
   justify-content: flex-start;
 
+  .user-welcome {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 1.4rem;
+    height: 5em;
+    width: 50vh;
+    padding: 0.5em;
+    font-weight: 600;
+    background-color: $color-secondary-muted;
+    color: $color-secondary-dark;
+    margin-bottom: 1em;
+    border-radius: 25em;
+  }
+
   .hero-card {
     background-color: $color-secondary-muted;
     background-image: linear-gradient(#a8dadf88, rgba(56, 35, 37, 0.171)), url("https://images.unsplash.com/photo-1560332944-d047e59ac9b2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80");
