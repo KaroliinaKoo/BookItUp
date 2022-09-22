@@ -23,11 +23,17 @@ const User = (function () {
     name = data.name || "";
   };
 
+  const clearData = () => {
+    id = "";
+    name = "";
+  };
+
   return {
     getData,
     getToken,
     getName,
     setData,
+    clearData,
     isAuthorized,
   };
 })();

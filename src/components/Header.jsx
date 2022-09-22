@@ -1,9 +1,9 @@
-import { FaBars, FaTimes, FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
+import { FaBars, FaTimes } from "react-icons/fa";
 import { useState } from "react";
 import LinkList from "./shared/LinkList";
 import { NavLink } from "react-router-dom";
 
-function Header({ user }) {
+function Header({ user, handleLogout }) {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -20,7 +20,9 @@ function Header({ user }) {
           <p className="logo">BookItUp</p>
         </NavLink>
         <nav>
-          {windowWidth > 768 && <LinkList user={user} />}
+          {windowWidth > 768 && (
+            <LinkList user={user} handleLogout={handleLogout} />
+          )}
           {windowWidth < 768 && (
             <div>
               <button
@@ -40,7 +42,11 @@ function Header({ user }) {
                     <FaTimes />
                   </button>
                 </div>
-                <LinkList openClose={handleMobileMenu} user={user} />
+                <LinkList
+                  openClose={handleMobileMenu}
+                  user={user}
+                  handleLogout={handleLogout}
+                />
               </div>
             </div>
           )}

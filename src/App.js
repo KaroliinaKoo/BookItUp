@@ -15,19 +15,33 @@ function App() {
   const [user, setUser] = useState(User.getData());
 
   useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem("user"));
-    if (userData) {
-      User.setData(userData);
-      setUser(User.getData());
+    const token = localStorage.getItem("token");
+    if (token) {
+      const userData = JSON.parse(localStorage.getItem("user"));
+      if (userData) {
+        User.setData(userData);
+        setUser(User.getData());
+        console.log("Logged in" + JSON.stringify(User.getData()));
+      }
     }
-    console.log(User.getData());
+    if (!token) {
+      User.clearData();
+      setUser(User.getData());
+      console.log("Logged out" + JSON.stringify(User.getData()));
+    }
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    window.location.href = "/";
+  };
 
   return (
     <FeedbackProvider>
       <AlertProvider>
         <div className="App">
-          <Header user={user} />
+          <Header user={user} handleLogout={handleLogout} />
           <main>
             <Alert />
             <Routes>

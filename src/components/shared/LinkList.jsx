@@ -9,18 +9,11 @@ import {
   FaUser,
 } from "react-icons/fa";
 
-const handleLogout = () => {
-  localStorage.removeItem("token");
-  window.location.reload();
-};
+function LinkList({ openClose, user, handleLogout }) {
+  const checkUserLoggedIn = () => {
+    return localStorage.getItem("token") ? true : false;
+  };
 
-const checkUserLoggedIn = () => {
-  return localStorage.getItem("token") ? true : false;
-};
-
-console.log("Logged in: " + checkUserLoggedIn());
-
-function LinkList({ openClose, user }) {
   return (
     <ul>
       <li>
@@ -37,7 +30,7 @@ function LinkList({ openClose, user }) {
         </NavLink>
       </li>
       <li>
-        <NavLink to="/new-review" onClick={openClose}>
+        <NavLink to="/add-review" onClick={openClose}>
           <FaPlus />
           Add a Review
         </NavLink>
