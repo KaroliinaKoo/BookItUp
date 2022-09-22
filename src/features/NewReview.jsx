@@ -76,12 +76,12 @@ function NewReview() {
         updateItem(itemIsEditing.item.id, newFeedback); // update the item in the list of feedbacks
         reset();
         showAlert("success", "Review updated successfully!");
-        navigate("/read-reviews");
+        navigate("/find-reviews");
       } else {
         addItem(newFeedback); // add the feedback to the list of feedbacks
         reset();
         showAlert("success", "Review submitted successfully!");
-        navigate("/read-reviews");
+        navigate("/find-reviews");
       }
     } else {
       showAlert("error", "Error");

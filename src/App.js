@@ -47,7 +47,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Main user={user} />} />
               <Route path="/find-reviews" element={<FindReviews />} />
-              <Route path="/new-review" element={<NewReview />} />
+              <Route path="/add-review" element={<NewReview />} />
               <Route path="/login" element={<Login />} />
               <Route path="*" element={<PageNotFound />} />
             </Routes>
