@@ -38,10 +38,10 @@ function LinkList({ openClose, user, handleLogout }) {
       <div className="user-login">
         {checkUserLoggedIn() ? (
           <>
-            <div className="user-info">
+            <NavLink to="/dashboard" onClick={openClose} className="user-info">
               <FaUser />
               {user.name}
-            </div>
+            </NavLink>
             <NavLink
               to="/logout"
               onClick={(e) => {

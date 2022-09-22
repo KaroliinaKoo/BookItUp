@@ -4,6 +4,7 @@ import FindReviews from "./features/FindReviews";
 import PageNotFound from "./features/PageNotFound";
 import NewReview from "./features/NewReview";
 import Header from "./components/Header";
+import UserDashboard from "./features/UserDashboard";
 import Alert from "./components/Alert";
 import { Routes, Route } from "react-router-dom";
 import { FeedbackProvider } from "./context/FeedbackContext";
@@ -50,6 +51,7 @@ function App() {
               <Route path="/add-review" element={<NewReview />} />
               <Route path="/login" element={<Login />} />
               <Route path="*" element={<PageNotFound />} />
+              <Route path="/dashboard" element={<UserDashboard />} />
             </Routes>
           </main>
         </div>

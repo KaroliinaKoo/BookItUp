@@ -430,6 +430,10 @@ header {
     h3 {
       text-align: center;
     }
+
+    &.full-height {
+      min-height: 100%;
+    }
   }
 }
 
@@ -472,6 +476,12 @@ header {
     display: flex;
     height: 50px;
   }
+}
+
+.dashboard-nav {
+  display: flex;
+  width: 100%;
+  background-color: $color-grey-light;
 }
 
 .hero-container {
@@ -956,18 +966,17 @@ input[type="submit"] {
   cursor: pointer;
   box-shadow: none;
   user-select: none;
-  color: inherit;
   font: inherit;
 
   &.btn {
     font-weight: 600;
     transition: all 0.2s ease-in-out;
     text-transform: uppercase;
-    color: #fff;
     border: 0;
     border-radius: 25em;
     width: clamp(80px, 90%, 350px);
     min-height: 40px;
+    color: $color-dark;
     padding: calc($padding-base * 0.8) $padding-base;
     margin: calc($margin-base/2);
   }
