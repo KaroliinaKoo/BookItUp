@@ -12,22 +12,26 @@ import User from "./modules/user";
 import { useEffect, useState } from "react";
 
 function App() {
+  const [user, setUser] = useState(User.getData());
+
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
     if (userData) {
       User.setData(userData);
+      setUser(User.getData());
     }
+    console.log(User.getData());
   }, []);
 
   return (
     <FeedbackProvider>
       <AlertProvider>
         <div className="App">
-          <Header />
+          <Header user={user} />
           <main>
             <Alert />
             <Routes>
-              <Route path="/" element={<Main />} />
+              <Route path="/" element={<Main user={user} />} />
               <Route path="/find-reviews" element={<FindReviews />} />
               <Route path="/new-review" element={<NewReview />} />
               <Route path="/login" element={<Login />} />

@@ -1,14 +1,13 @@
 const User = (function () {
   let id = "";
   let name = "";
-  let authorized = false;
 
   const isAuthorized = () => {
     return getToken() ? true : false;
   };
 
   const getData = () => {
-    return { id, name, authorized };
+    return { id, name };
   };
 
   const getName = () => {
@@ -22,7 +21,6 @@ const User = (function () {
   const setData = (data) => {
     id = data.id || "";
     name = data.name || "";
-    authorized = data.authorized || false;
   };
 
   return {

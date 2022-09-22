@@ -1,19 +1,8 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { useState } from "react";
 import User from "../modules/user";
 
-function Main() {
-  const [user, setUser] = useState(User.getData());
-
-  React.useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem("user"));
-    if (userData) {
-      User.setData(userData);
-      setUser(User.getData());
-    }
-  }, []);
-
+function Main({ user }) {
   return (
     <>
       <div className="hero-container">

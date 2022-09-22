@@ -3,7 +3,7 @@ import { useState } from "react";
 import LinkList from "./shared/LinkList";
 import { NavLink } from "react-router-dom";
 
-function Header() {
+function Header({ user }) {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -20,7 +20,7 @@ function Header() {
           <p className="logo">BookItUp</p>
         </NavLink>
         <nav>
-          {windowWidth > 768 && <LinkList />}
+          {windowWidth > 768 && <LinkList user={user} />}
           {windowWidth < 768 && (
             <div>
               <button
@@ -40,7 +40,7 @@ function Header() {
                     <FaTimes />
                   </button>
                 </div>
-                <LinkList openClose={handleMobileMenu} />
+                <LinkList openClose={handleMobileMenu} user={user} />
               </div>
             </div>
           )}

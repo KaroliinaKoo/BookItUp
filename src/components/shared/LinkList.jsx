@@ -6,6 +6,7 @@ import {
   FaSearch,
   FaSignOutAlt,
   FaSignInAlt,
+  FaUser,
 } from "react-icons/fa";
 
 const handleLogout = () => {
@@ -19,7 +20,7 @@ const checkUserLoggedIn = () => {
 
 console.log("Logged in: " + checkUserLoggedIn());
 
-function LinkList({ openClose }) {
+function LinkList({ openClose, user }) {
   return (
     <ul>
       <li>
@@ -43,19 +44,24 @@ function LinkList({ openClose }) {
       </li>
       <div className="user-login">
         {checkUserLoggedIn() ? (
-          <NavLink
-            to="/logout"
-            onClick={(e) => {
-              e.preventDefault();
-              handleLogout();
-            }}
-          >
-            Log Out <FaSignOutAlt />
-          </NavLink>
+          <>
+            <div className="user-info">
+              <FaUser />
+              {user.name}
+            </div>
+            <NavLink
+              to="/logout"
+              onClick={(e) => {
+                e.preventDefault();
+                handleLogout();
+              }}
+            >
+              <FaSignOutAlt /> Log Out
+            </NavLink>
+          </>
         ) : (
           <NavLink to="/login">
-            <FaSignInAlt />
-            Log In
+            <FaSignInAlt /> Log In
           </NavLink>
         )}
       </div>
