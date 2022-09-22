@@ -158,7 +158,6 @@ header {
 
     .user-login {
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       height: 100%;
@@ -166,6 +165,13 @@ header {
       padding-left: calc(0.5em + 2vw);
       border-left: 2px solid $color-primary-light;
       color: $color-white;
+      .user-info {
+        border-radius: 25em;
+        border: 1px solid;
+        border-color: $color-primary;
+        background-color: $color-primary-light;
+        padding: 0.2em 1vw;
+      }
 
       svg {
         margin-left: 0.5em;
@@ -435,6 +441,7 @@ header {
     font-size: 1.4rem;
     height: 5em;
     width: 50vh;
+    max-width: 90%;
     padding: 0.5em;
     font-weight: 600;
     background-color: $color-secondary-muted;
