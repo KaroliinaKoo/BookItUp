@@ -30,7 +30,6 @@ const User = (function () {
 
   return {
     getData,
-    getToken,
     getName,
     setData,
     clearData,

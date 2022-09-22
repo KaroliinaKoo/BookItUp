@@ -53,7 +53,7 @@ function LinkList({ openClose, user, handleLogout }) {
             </NavLink>
           </>
         ) : (
-          <NavLink to="/login">
+          <NavLink to="/login" onClick={openClose}>
             <FaSignInAlt /> Log In
           </NavLink>
         )}

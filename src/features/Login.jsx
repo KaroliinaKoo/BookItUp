@@ -56,7 +56,7 @@ function Login() {
 
   return (
     <div className="container">
-      <div className="card login">
+      <div className="container-card login">
         <h1>{register ? "Register" : "Login"}</h1>
         {!register && (
           <div className="toggle-register-container">

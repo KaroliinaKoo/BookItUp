@@ -1,6 +1,5 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import User from "../modules/user";
 
 function Main({ user }) {
   return (
@@ -8,7 +7,7 @@ function Main({ user }) {
       <div className="hero-container">
         <div className="hero-card">
           <p>The Best Reads</p> <p>Wherever you are.</p>
-          {User.isAuthorized() ? (
+          {user.id ? (
             <div className="user-welcome">Hi, {user.name}</div>
           ) : (
             <NavLink to="/login">
