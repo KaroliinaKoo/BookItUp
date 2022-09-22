@@ -163,8 +163,7 @@ header {
       justify-content: center;
       height: 100%;
       width: 100%;
-      padding-left: 1em;
-      margin-left: 1em;
+      padding-left: calc(0.5em + 2vw);
       border-left: 2px solid $color-primary-light;
       color: $color-white;
 
@@ -200,7 +199,8 @@ header {
       svg {
         margin-right: 0.5em;
         margin-bottom: 3px;
-        font-size: 1.4rem;
+        height: 1.4rem;
+        width: 1.4rem;
       }
     }
 

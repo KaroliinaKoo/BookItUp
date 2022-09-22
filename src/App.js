@@ -9,31 +9,26 @@ import { Routes, Route } from "react-router-dom";
 import { FeedbackProvider } from "./context/FeedbackContext";
 import { AlertProvider } from "./context/AlertContext";
 import User from "./modules/user";
-
-function UserLoggedIn() {
-  const check = User.getToken();
-
-  if (check) {
-    return true;
-  }
-  return false;
-}
+import { useEffect, useState } from "react";
 
 function App() {
-  console.log(User.getData());
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (userData) {
+      User.setData(userData);
+    }
+  }, []);
+
   return (
     <FeedbackProvider>
       <AlertProvider>
         <div className="App">
-          <Header userLoggedIn={UserLoggedIn()} />
+          <Header />
           <main>
             <Alert />
             <Routes>
-              <Route
-                path="/"
-                element={<Main userLoggedIn={UserLoggedIn()} />}
-              />
-              <Route path="/read-reviews" element={<FindReviews />} />
+              <Route path="/" element={<Main />} />
+              <Route path="/find-reviews" element={<FindReviews />} />
               <Route path="/new-review" element={<NewReview />} />
               <Route path="/login" element={<Login />} />
               <Route path="*" element={<PageNotFound />} />

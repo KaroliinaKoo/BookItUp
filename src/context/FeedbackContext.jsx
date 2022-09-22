@@ -16,7 +16,6 @@ export const FeedbackProvider = ({ children }) => {
         "http://localhost:3001/review?_sort=id&_order=desc"
       );
       const data = await response.json();
-      console.log(data);
       setFeedback(data);
       setItemIsLoading(false);
     };

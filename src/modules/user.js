@@ -4,7 +4,7 @@ const User = (function () {
   let authorized = false;
 
   const isAuthorized = () => {
-    return authorized;
+    return getToken() ? true : false;
   };
 
   const getData = () => {

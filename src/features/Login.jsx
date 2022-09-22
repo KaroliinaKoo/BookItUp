@@ -31,7 +31,7 @@ function Login() {
       })
         .then((r) => r.json())
         .then((user) => {
-          console.log("Registered: " + user);
+          console.log("Registered: " + JSON.stringify(user));
           navigate("/");
         });
     } else {
@@ -43,9 +43,11 @@ function Login() {
       })
         .then((r) => r.json())
         .then((user) => {
-          console.log("Logged in :" + user);
+          console.log("Logged in :" + JSON.stringify(user));
           user.accessToken && localStorage.setItem("token", user.accessToken);
-          User.setData(user);
+          user.accessToken &&
+            localStorage.setItem("user", JSON.stringify(user.user));
+          User.setData(user.user);
           navigate("/");
           window.location.reload();
         });

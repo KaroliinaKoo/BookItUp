@@ -13,7 +13,13 @@ const handleLogout = () => {
   window.location.reload();
 };
 
-function LinkList({ openClose, userLoggedIn }) {
+const checkUserLoggedIn = () => {
+  return localStorage.getItem("token") ? true : false;
+};
+
+console.log("Logged in: " + checkUserLoggedIn());
+
+function LinkList({ openClose }) {
   return (
     <ul>
       <li>
@@ -24,7 +30,7 @@ function LinkList({ openClose, userLoggedIn }) {
       </li>
 
       <li>
-        <NavLink to="/read-reviews" onClick={openClose}>
+        <NavLink to="/find-reviews" onClick={openClose}>
           <FaSearch />
           Find Reviews
         </NavLink>
@@ -36,7 +42,7 @@ function LinkList({ openClose, userLoggedIn }) {
         </NavLink>
       </li>
       <div className="user-login">
-        {userLoggedIn ? (
+        {checkUserLoggedIn() ? (
           <NavLink
             to="/logout"
             onClick={(e) => {

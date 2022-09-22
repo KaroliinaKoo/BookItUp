@@ -1,14 +1,26 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { useState } from "react";
+import User from "../modules/user";
 
-function Main({ userLoggedIn, username }) {
+function Main() {
+  const [user, setUser] = useState(User.getData());
+
+  React.useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (userData) {
+      User.setData(userData);
+      setUser(User.getData());
+    }
+  }, []);
+
   return (
     <>
       <div className="hero-container">
         <div className="hero-card">
           <p>The Best Reads</p> <p>Wherever you are.</p>
-          {userLoggedIn ? (
-            <div className="user-welcome">Hi, {username}</div>
+          {User.isAuthorized() ? (
+            <div className="user-welcome">Hi, {user.name}</div>
           ) : (
             <NavLink to="/login">
               <button className="btn btn-cta">Sign Up Today</button>
