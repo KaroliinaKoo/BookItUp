@@ -27,6 +27,12 @@ $margin-base: 1.5em;
 $font-size-base: 1rem;
 $font-size-heading: calc($font-size-base * 1.8);
 
+$element-width-xs: 200px;
+$element-width-s: clamp(200px, 100%, 320px);
+$element-width-m: clamp(200px, 100%, 480px);
+$element-width-l: clamp(200px, 100%, 1024px);
+$element-width-xl: clamp(200px, 100%, 1960px);
+
 $breakpoint-xs: 320px;
 $breakpoint-sm: 480px;
 $breakpoint-md: 768px;
@@ -137,6 +143,15 @@ main {
   padding: 0;
   background-color: $color-primary-muted-light;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='115' viewBox='0 0 80 105'%3E%3Cg fill-rule='evenodd'%3E%3Cg id='death-star' fill='%23d3e1e3' fill-opacity='0.4'%3E%3Cpath d='M20 10a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V10zm15 35a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V45zM20 75a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V75zm30-65a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V10zm0 65a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V75zM35 10a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V10zM5 45a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V45zm0-35a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V10zm60 35a5 5 0 0 1 10 0v50a5 5 0 0 1-10 0V45zm0-35a5 5 0 0 1 10 0v20a5 5 0 0 1-10 0V10z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+
+  @media screen and (max-width: $breakpoint-md) {
+
+    &,
+    &>* {
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+  }
 }
 
 header {
@@ -157,6 +172,7 @@ header {
     color: inherit;
 
     .user-login {
+      justify-self: center;
       display: flex;
       align-items: center;
       justify-content: space-around;
@@ -266,7 +282,6 @@ header {
   transition: all 0.3s ease-in-out;
   box-shadow: 0 0.5em 1em 0 rgba(0, 0, 0, 0.2);
   height: 100%;
-  width: 0em;
   transform: translateX(110%);
   display: flex;
   flex-direction: column;
@@ -315,7 +330,7 @@ header {
 
   &.open {
     transform: translateX(0);
-    width: 20em;
+    width: $element-width-s;
   }
 
   ul {
@@ -361,45 +376,60 @@ header {
 .container {
   display: flex;
   flex-direction: column;
-  align-self: center;
+  align-items: center;
   justify-content: flex-start;
   gap: 0.5em;
   padding: 0.5em;
-  height: 100%;
-  width: 100%;
   overflow: hidden;
   overflow-y: auto;
-
+  height: 100%;
+  width: 100%;
+  max-width: $element-width-xl;
 
   &:has(.card) {
     padding: 1em;
   }
 
+  &:has(.login) {
+    justify-content: center;
+  }
+
   @media screen and (max-width: $breakpoint-sm) {
     padding: 0;
 
-    .card {
+    .card,
+    .container-card {
       border-radius: 0;
     }
   }
 }
 
 .card {
-
-  margin-top: auto;
-  margin-bottom: auto;
-  margin-left: auto;
-  margin-right: auto;
-  background-color: #fff;
+  background-color: $color-white;
   color: $color-dark;
   padding: $padding-base;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   position: relative;
   width: 100%;
-  max-width: 50em;
+  max-width: $element-width-l;
 
-  h2 {
-    text-align: center;
+  &.container-card {
+    padding: 2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: auto;
+    margin-right: auto;
+    gap: 2em;
+
+    h1,
+    h2,
+    h3 {
+      text-align: center;
+    }
   }
 }
 
@@ -479,7 +509,8 @@ header {
     padding: calc(2vw + 2em);
     color: black;
     display: flex;
-    width: clamp(200px, 100%, 1960px);
+    width: 100%;
+    max-width: $element-width-xl;
     height: 100%;
     flex-direction: column;
     align-items: center;
@@ -489,9 +520,7 @@ header {
 
     //box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.138);
 
-    @media screen and (max-width: $breakpoint-md) {
-      width: 100vw;
-    }
+    @media screen and (max-width: $breakpoint-md) {}
 
     h1 {
       font-size: 2.6rem;
@@ -543,8 +572,8 @@ header {
       font-weight: 600;
       padding: 1em 2em;
       border-radius: 25em;
-      width: 80%;
-      max-width: 60em;
+      width: 100%;
+      max-width: $element-width-m;
       white-space: nowrap;
       margin: $margin-base;
       box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
@@ -633,7 +662,7 @@ form {
       min-height: 10em;
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: $breakpoint-md) {
       width: 100%;
     }
   }
@@ -649,7 +678,7 @@ ul.rating {
   justify-content: center;
   align-items: center;
 
-  @media screen and (max-width: 540px) {
+  @media screen and (max-width: $breakpoint-md) {
     flex-wrap: wrap;
   }
 
@@ -703,6 +732,7 @@ ul.rating {
   color: $color-white;
   font-size: calc($font-size-base * 0.9);
   display: flex;
+  width: 100%;
   justify-content: space-between;
   align-items: center;
   background-color: $color-secondary-muted-dark;
@@ -777,7 +807,7 @@ ul.rating {
 }
 
 .login {
-  max-width: 35em;
+  width: $element-width-m;
   background-color: $color-secondary-muted;
   color: $color-secondary-muted-dark;
   border-radius: 1em;
@@ -828,7 +858,7 @@ ul.rating {
       position: relative;
 
       label {
-        width: 10em;
+        width: $element-width-s;
         width: 40%;
         color: $color-secondary-muted-dark;
       }
@@ -936,7 +966,7 @@ input[type="submit"] {
     color: #fff;
     border: 0;
     border-radius: 25em;
-    width: clamp(80px, 90%, 25em);
+    width: clamp(80px, 90%, 350px);
     min-height: 40px;
     padding: calc($padding-base * 0.8) $padding-base;
     margin: calc($margin-base/2);
@@ -963,7 +993,6 @@ input[type="submit"] {
 
   &.btn-secondary {
     background-color: $color-secondary;
-    border: 1px solid $color-secondary-dark;
     margin: calc($margin-base * 0.2);
 
     &:hover {
