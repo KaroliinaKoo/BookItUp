@@ -40,7 +40,7 @@ function LinkList({ openClose, user, handleLogout }) {
           <>
             <NavLink to="/dashboard" onClick={openClose} className="user-info">
               <FaUser />
-              {user.name}
+              {user.username}
             </NavLink>
             <NavLink
               to="/logout"

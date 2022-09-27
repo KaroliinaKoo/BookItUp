@@ -1,17 +1,22 @@
 const User = (function () {
   let id = "";
-  let name = "";
+  let username = "";
+  let email = "";
 
   const isAuthorized = () => {
     return getToken() ? true : false;
   };
 
   const getData = () => {
-    return { id, name };
+    return { id, username, email };
   };
 
   const getName = () => {
-    return name;
+    return username;
+  };
+
+  const getEmail = () => {
+    return email;
   };
 
   const getToken = () => {
@@ -20,17 +25,19 @@ const User = (function () {
 
   const setData = (data) => {
     id = data.id || "";
-    name = data.name || "";
+    username = data.username || "";
+    email = data.email || "";
   };
 
   const clearData = () => {
     id = "";
-    name = "";
+    username = "";
   };
 
   return {
     getData,
     getName,
+    getEmail,
     setData,
     clearData,
     isAuthorized,

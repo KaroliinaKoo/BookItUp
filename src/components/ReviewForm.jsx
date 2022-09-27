@@ -12,7 +12,7 @@ function ReviewForm() {
   const [body, setBody] = useState("");
   const [author, setAuthor] = useState("");
   const [rating, setRating] = useState(undefined);
-  const username = useState(User.getName);
+  const username = User.getName();
 
   const navigate = useNavigate();
 
@@ -74,7 +74,7 @@ function ReviewForm() {
         updateItem(itemIsEditing.item.id, newFeedback); // update the item in the list of feedbacks
         reset();
         showAlert("success", "Review updated successfully!");
-        navigate("/find-reviews");
+        navigate("/dashboard");
       } else {
         addItem(newFeedback); // add the feedback to the list of feedbacks
         reset();

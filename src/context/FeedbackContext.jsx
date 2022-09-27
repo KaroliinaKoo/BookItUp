@@ -10,6 +10,7 @@ export const FeedbackProvider = ({ children }) => {
     isEditing: false,
   });
 
+  //INITIAL FETCH
   useEffect(() => {
     const fetchFeedback = async () => {
       const response = await fetch(

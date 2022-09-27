@@ -9,7 +9,7 @@ function Login() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    name: "",
+    username: "",
   });
 
   const [showPassword, setShowPassword] = useState(false);

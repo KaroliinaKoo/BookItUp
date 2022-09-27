@@ -2,8 +2,8 @@
   "users": [
     {
       "email": "someguy@fakemail.com",
-      "password": "$2a$10$CRETjVZo0YEr9yyz8vEqpeKVlnGAsRdp3Ml5s1UliMZ4JGoc3Kaji",
-      "name": "SomeGuy",
+      "password": "$2a$10$G5pNsI8pMheXmSjSec4kP.nTLG2uq8R/DnxdO2BYV6DqeS0kfK4SG",
+      "username": "SomeGuy",
       "id": 1
     }
   ]

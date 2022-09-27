@@ -7,8 +7,8 @@ function Main({ user }) {
       <div className="hero-container">
         <div className="hero-card">
           <p>The Best Reads</p> <p>Wherever you are.</p>
-          {user.id ? (
-            <div className="user-welcome">Hi, {user.name}</div>
+          {user?.id ? (
+            <div className="user-welcome">Hi, {user?.username}</div>
           ) : (
             <NavLink to="/login">
               <button className="btn btn-cta">Sign Up Today</button>
