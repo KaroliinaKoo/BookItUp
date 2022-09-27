@@ -11,13 +11,23 @@ import { FeedbackProvider } from "./context/FeedbackContext";
 import { AlertProvider } from "./context/AlertContext";
 import User from "./modules/user";
 import { useEffect, useState } from "react";
+import { useJwt } from "react-jwt";
+
+const token = localStorage.getItem("token");
 
 function App() {
   const [user, setUser] = useState(User.getData());
+  const { decodedToken, isExpired } = useJwt(token);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
+    if (isExpired || !token) {
+      localStorage?.removeItem("token");
+      localStorage?.removeItem("user");
+      User.clearData();
+      console.log("Logged out" + JSON.stringify(User.getData()));
+    }
+
+    if (!isExpired && token) {
       const userData = JSON.parse(localStorage.getItem("user"));
       if (userData) {
         User.setData(userData);
@@ -25,12 +35,7 @@ function App() {
         console.log("Logged in" + JSON.stringify(User.getData()));
       }
     }
-    if (!token) {
-      User.clearData();
-      setUser(User.getData());
-      console.log("Logged out" + JSON.stringify(User.getData()));
-    }
-  }, []);
+  }, [isExpired]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
