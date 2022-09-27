@@ -16,7 +16,9 @@ function ReviewForm() {
 
   const navigate = useNavigate();
 
-  const { addItem, updateItem, itemIsEditing } = useContext(FeedbackContext);
+  const { addItem, updateItem, itemIsEditing, cancelEdit } =
+    useContext(FeedbackContext);
+
   const { showAlert } = useContext(AlertContext);
 
   const authorsList = [
@@ -74,7 +76,6 @@ function ReviewForm() {
         updateItem(itemIsEditing.item.id, newFeedback); // update the item in the list of feedbacks
         reset();
         showAlert("success", "Review updated successfully!");
-        navigate("/dashboard");
       } else {
         addItem(newFeedback); // add the feedback to the list of feedbacks
         reset();
@@ -91,6 +92,11 @@ function ReviewForm() {
     setTitle("");
     setAuthor("");
     setRating(undefined);
+  };
+
+  const handleCancel = () => {
+    reset();
+    cancelEdit();
   };
 
   return (
@@ -144,6 +150,16 @@ function ReviewForm() {
       <Button type="submit">
         {itemIsEditing.isEditing ? "Update" : "Submit"}
       </Button>
+      {itemIsEditing.isEditing && (
+        <Button
+          type="button"
+          onClick={() => {
+            handleCancel();
+          }}
+        >
+          Cancel
+        </Button>
+      )}
     </form>
   );
 }

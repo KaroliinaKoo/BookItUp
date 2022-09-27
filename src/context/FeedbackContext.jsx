@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 const FeedbackContext = createContext();
 
@@ -9,6 +10,8 @@ export const FeedbackProvider = ({ children }) => {
     item: {},
     isEditing: false,
   });
+
+  const location = useLocation();
 
   //INITIAL FETCH
   useEffect(() => {
@@ -22,6 +25,11 @@ export const FeedbackProvider = ({ children }) => {
     };
     fetchFeedback();
   }, []);
+
+  //DETECT ROUTE CHANGE
+  useEffect(() => {
+    setItemIsEditing({ item: {}, isEditing: false });
+  }, [location]);
 
   // ADD
   const addItem = async (item) => {
@@ -46,6 +54,11 @@ export const FeedbackProvider = ({ children }) => {
     }
   };
 
+  // EDIT
+  const editItem = (item) => {
+    setItemIsEditing({ item, isEditing: true });
+  };
+
   // UPDATE
   const updateItem = async (id, updatedItem) => {
     const response = await fetch(`http://localhost:3001/review/${id}`, {
@@ -55,20 +68,21 @@ export const FeedbackProvider = ({ children }) => {
       },
       body: JSON.stringify(updatedItem),
     });
-
     const data = await response.json();
-
     setFeedback(feedback.map((item) => (item.id === id ? data : item)));
-
     setItemIsEditing({
       item: {},
       isEditing: false,
     });
   };
 
-  // EDIT
-  const editItem = (item) => {
-    setItemIsEditing({ item, isEditing: true });
+  // CANCEL EDIT
+
+  const cancelEdit = () => {
+    setItemIsEditing({
+      item: {},
+      isEditing: false,
+    });
   };
 
   return (
@@ -81,6 +95,7 @@ export const FeedbackProvider = ({ children }) => {
         addItem,
         editItem,
         updateItem,
+        cancelEdit,
       }}
     >
       {children}

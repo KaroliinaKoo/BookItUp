@@ -4,7 +4,7 @@ import { useContext } from "react";
 import FeedbackContext from "../context/FeedbackContext";
 import AlertContext from "../context/AlertContext";
 
-function MyReviewItem({ item, showForm, setShowForm }) {
+function MyReviewItem({ item }) {
   const { deleteItem, editItem } = useContext(FeedbackContext);
   const { showAlert } = useContext(AlertContext);
 
@@ -22,7 +22,6 @@ function MyReviewItem({ item, showForm, setShowForm }) {
         </button>
         <button
           onClick={() => {
-            setShowForm(!showForm);
             editItem(item);
           }}
         >

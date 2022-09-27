@@ -1,13 +1,27 @@
 import User from "../modules/user";
 import FeedbackContext from "../context/FeedbackContext";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import MyReviewItem from "./MyReviewItem";
 import ReviewForm from "./ReviewForm";
 
 function MyReviews() {
-  const { feedback, itemIsLoading } = useContext(FeedbackContext);
+  const { feedback, itemIsLoading, itemIsEditing } =
+    useContext(FeedbackContext);
   const username = User.getName();
   const [showForm, setShowForm] = useState(false);
+  const [MyReviews, setMyReviews] = useState([]);
+
+  useEffect(() => {
+    setMyReviews(feedback.filter((item) => item.username === username));
+  }, [feedback, username]);
+
+  useEffect(() => {
+    if (itemIsEditing.isEditing) {
+      setShowForm(true);
+    } else {
+      setShowForm(false);
+    }
+  }, [itemIsEditing]);
 
   return (
     <div className="container">
@@ -15,19 +29,11 @@ function MyReviews() {
       {itemIsLoading && <div className="spinner" role="status" />}
 
       <div className="feedback-list">
-        {feedback
-          .filter((item) => {
-            return item.username === username;
-          })
-          .map((item) => (
-            <MyReviewItem
-              key={item.id}
-              item={item}
-              showForm={showForm}
-              setShowForm={setShowForm}
-            />
-          ))}
+        {MyReviews.length === 0 && <p>No reviews yet</p>}
 
+        {MyReviews.map((item) => (
+          <MyReviewItem key={item.id} item={item} />
+        ))}
         {showForm && <ReviewForm />}
       </div>
     </div>
