@@ -43,7 +43,7 @@ function Header({ user, handleLogout }) {
     }),
     (
       <header>
-        <NavLink to="/">
+        <NavLink to="/" aria-label="Home">
           <p className="logo">BookItUp</p>
         </NavLink>
         <nav>
@@ -53,6 +53,7 @@ function Header({ user, handleLogout }) {
           {windowWidth < 768 && (
             <>
               <button
+                aria-label="Open Menu"
                 className="btn-icon mobile-menu-btn"
                 onClick={handleMobileMenu}
               >
@@ -61,6 +62,7 @@ function Header({ user, handleLogout }) {
               <div className={menuOpen ? "mobile-menu open" : "mobile-menu"}>
                 <div className="btn-container">
                   <button
+                    aria-label="Close Menu"
                     className="mobile-btn btn-icon close-menu"
                     onClick={handleMobileMenu}
                   >

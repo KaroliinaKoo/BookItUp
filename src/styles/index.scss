@@ -133,9 +133,11 @@ body {
   line-height: 1.6;
   overflow: hidden;
 
-  *:focus {
-    outline: 2px solid $color-dark  !important;
-
+  *:focus-visible {
+    outline: none;
+    border-radius: inherit;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.45);
+    transition: all 0.2s ease-in-out;
   }
 }
 
