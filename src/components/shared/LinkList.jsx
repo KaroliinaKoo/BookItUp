@@ -1,4 +1,3 @@
-import React from "react";
 import { NavLink } from "react-router-dom";
 import {
   FaHome,
@@ -17,20 +16,20 @@ function LinkList({ openClose, user, handleLogout }) {
   return (
     <ul>
       <li>
-        <NavLink to="/" onClick={openClose}>
+        <NavLink to="/" onClick={openClose} className="mobile-btn">
           <FaHome />
           Home
         </NavLink>
       </li>
 
       <li>
-        <NavLink to="/find-reviews" onClick={openClose}>
+        <NavLink to="/find-reviews" onClick={openClose} className="mobile-btn">
           <FaSearch />
           Find Reviews
         </NavLink>
       </li>
       <li>
-        <NavLink to="/add-review" onClick={openClose}>
+        <NavLink to="/add-review" onClick={openClose} className="mobile-btn">
           <FaPlus />
           Add a Review
         </NavLink>
@@ -38,13 +37,18 @@ function LinkList({ openClose, user, handleLogout }) {
       {checkUserLoggedIn() ? (
         <>
           <li>
-            <NavLink to="/profile" onClick={openClose} className="user-info">
+            <NavLink
+              to="/dashboard"
+              onClick={openClose}
+              className="mobile-btn user-info"
+            >
               <FaUser />
               {user.username}
             </NavLink>
           </li>
           <li>
             <NavLink
+              className="mobile-btn"
               to="/logout"
               onClick={(e) => {
                 e.preventDefault();
@@ -58,7 +62,7 @@ function LinkList({ openClose, user, handleLogout }) {
         </>
       ) : (
         <li>
-          <NavLink to="/login" onClick={openClose}>
+          <NavLink to="/login" onClick={openClose} className="mobile-btn">
             <FaSignInAlt />
             Login
           </NavLink>

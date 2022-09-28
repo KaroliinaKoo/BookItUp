@@ -1,5 +1,5 @@
 import { FaBars, FaTimes } from "react-icons/fa";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import LinkList from "./shared/LinkList";
 import { NavLink } from "react-router-dom";
 
@@ -10,6 +10,33 @@ function Header({ user, handleLogout }) {
   const handleMobileMenu = () => {
     setMenuOpen(!menuOpen);
   };
+
+  useEffect(() => {
+    const content = document.querySelectorAll(
+      "main a,area,button,input,object,select,textarea"
+    );
+    const mobileBtns = document.querySelectorAll(".mobile-btn");
+
+    if (windowWidth < 768) {
+      content.forEach((item) => {
+        item.setAttribute("tabindex", "0");
+      });
+      mobileBtns.forEach((btn) => {
+        btn.setAttribute("tabindex", "-1");
+      });
+
+      if (menuOpen) {
+        content.forEach((item) => {
+          item.setAttribute("tabindex", "-1");
+        });
+
+        mobileBtns.forEach((btn) => {
+          btn.setAttribute("tabindex", "0");
+        });
+      }
+    }
+  }, [windowWidth, menuOpen]);
+
   return (
     window.addEventListener("resize", () => {
       setWindowWidth(window.innerWidth);
@@ -24,19 +51,17 @@ function Header({ user, handleLogout }) {
             <LinkList user={user} handleLogout={handleLogout} />
           )}
           {windowWidth < 768 && (
-            <div>
+            <>
               <button
                 className="btn-icon mobile-menu-btn"
                 onClick={handleMobileMenu}
               >
                 <FaBars />
               </button>
-              <div
-                className={menuOpen ? "mobile-menu open" : "mobile-menu closed"}
-              >
+              <div className={menuOpen ? "mobile-menu open" : "mobile-menu"}>
                 <div className="btn-container">
                   <button
-                    className="btn-icon close-menu"
+                    className="mobile-btn btn-icon close-menu"
                     onClick={handleMobileMenu}
                   >
                     <FaTimes />
@@ -46,9 +71,10 @@ function Header({ user, handleLogout }) {
                   openClose={handleMobileMenu}
                   user={user}
                   handleLogout={handleLogout}
+                  menuOpen={menuOpen}
                 />
               </div>
-            </div>
+            </>
           )}
         </nav>
       </header>
