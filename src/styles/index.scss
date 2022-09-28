@@ -171,38 +171,24 @@ header {
     height: 100%;
     color: inherit;
 
-    .user-login {
-      justify-self: center;
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      height: 100%;
-      width: 100%;
+    :nth-child(4) {
       padding-left: calc(0.5em + 2vw);
       border-left: 2px solid $color-primary-light;
-      color: $color-white;
-      gap: calc(0.5em + 1vw);
+    }
 
-      .user-info {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 25em;
-        background-color: $color-primary-light;
-        padding: 0.2em 1vw;
-        line-height: 1.5rem;
-        font-size: 0.8rem;
+    .user-info {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 25em;
+      background-color: $color-primary-light;
+      padding: 0.2em;
+      line-height: 0;
+      font-size: 0.8rem;
 
-        svg {
-          font-size: 1.1rem;
-        }
-      }
-
-      svg,
-      .user-info>svg {
-        margin-right: 0.5em;
-        margin-bottom: 1px;
+      svg {
+        height: 1em;
+        font-size: 1.1rem;
       }
     }
 
@@ -234,6 +220,7 @@ header {
         margin-bottom: 3px;
         height: 1.4rem;
         width: 1.4rem;
+        color: $color-white;
       }
     }
 
@@ -288,25 +275,11 @@ header {
   align-items: flex-start;
   overflow: hidden;
 
-  .user-login {
-    border-left: none;
-    flex-direction: column-reverse;
-    margin: 0;
-    padding: 0;
-    height: auto;
-    gap: 0;
-
-    svg {
-      margin-left: 0;
-      margin-bottom: 0;
-    }
-
-    .user-info {
-      border: 1px solid $color-white;
-      width: 90%;
-      height: 3.5em;
-      margin: 5vh 0;
-    }
+  .user-info {
+    border: 1px solid $color-white;
+    width: 90%;
+    height: 3.5em;
+    margin: 5vh 0;
 
   }
 
@@ -316,16 +289,12 @@ header {
     margin: 0;
     padding: 1em 2em;
     border-color: transparent;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
 
-    @media (hover: hover) {
-      &:hover {
-        border-color: transparent;
-        background-color: $color-primary-muted-light;
-        color: $color-primary-dark;
-        font-weight: 600;
-      }
+    &:hover {
+      border-color: transparent;
     }
+
   }
 
   &.open {
@@ -350,6 +319,15 @@ header {
       margin: 0;
       padding: 0;
       position: relative;
+
+      @media (hover: hover) {
+
+        &:hover {
+          background-color: $color-primary-muted-light;
+          color: $color-primary-dark  !important;
+          font-weight: 600;
+        }
+      }
     }
   }
 
@@ -357,6 +335,7 @@ header {
     width: 100%;
     height: calc(2em + 5vh);
     position: absolute;
+    color: $color-white;
     top: 0;
     right: 0;
     display: flex;
@@ -578,6 +557,7 @@ header {
 
     .btn-cta {
       background-color: $color-primary;
+      color: $color-white;
       font-size: $font-size-base;
       font-weight: 600;
       padding: 1em 2em;
@@ -993,6 +973,7 @@ input[type="submit"] {
 
   &.btn-primary {
     background-color: $color-primary;
+    color: $color-white;
 
     &:hover {
       background-color: $color-primary-light;
@@ -1002,7 +983,7 @@ input[type="submit"] {
 
   &.btn-secondary {
     background-color: $color-secondary;
-    margin: calc($margin-base * 0.2);
+    color: $color-white;
 
     &:hover {
       background: $color-secondary-light;
@@ -1029,6 +1010,7 @@ input[type="submit"] {
     cursor: pointer;
     transform: scale(1.8);
     line-height: 0;
+    color: inherit;
   }
 }
 

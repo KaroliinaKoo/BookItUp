@@ -35,13 +35,15 @@ function LinkList({ openClose, user, handleLogout }) {
           Add a Review
         </NavLink>
       </li>
-      <div className="user-login">
-        {checkUserLoggedIn() ? (
-          <>
-            <NavLink to="/dashboard" onClick={openClose} className="user-info">
+      {checkUserLoggedIn() ? (
+        <>
+          <li>
+            <NavLink to="/profile" onClick={openClose} className="user-info">
               <FaUser />
               {user.username}
             </NavLink>
+          </li>
+          <li>
             <NavLink
               to="/logout"
               onClick={(e) => {
@@ -49,15 +51,19 @@ function LinkList({ openClose, user, handleLogout }) {
                 handleLogout();
               }}
             >
-              <FaSignOutAlt /> Log Out
+              <FaSignOutAlt />
+              Logout
             </NavLink>
-          </>
-        ) : (
+          </li>
+        </>
+      ) : (
+        <li>
           <NavLink to="/login" onClick={openClose}>
-            <FaSignInAlt /> Log In
+            <FaSignInAlt />
+            Login
           </NavLink>
-        )}
-      </div>
+        </li>
+      )}
     </ul>
   );
 }
