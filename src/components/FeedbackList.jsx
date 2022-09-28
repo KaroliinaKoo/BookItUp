@@ -3,7 +3,7 @@ import { useContext } from "react";
 import FeedbackItem from "./FeedbackItem";
 import FeedbackContext from "../context/FeedbackContext";
 
-function FeedbackList({ search }) {
+function FeedbackList({ search, sortBy }) {
   const { feedback, itemIsLoading } = useContext(FeedbackContext);
 
   if (!itemIsLoading && (!feedback || feedback.length === 0)) {
@@ -31,9 +31,20 @@ function FeedbackList({ search }) {
             return item;
           }
         })
-        .map((item) => (
-          <FeedbackItem key={item.id} item={item} />
-        ))}
+
+        .map((item) => <FeedbackItem key={item.id} item={item} />)
+        .sort((a, b) => {
+          if (sortBy === "newest") {
+            return b.props.item.id - a.props.item.id;
+          } else if (sortBy === "oldest") {
+            return a.props.item.id - b.props.item.id;
+          } else if (sortBy === "highest") {
+            return b.props.item.rating - a.props.item.rating;
+          } else if (sortBy === "lowest") {
+            return a.props.item.rating - b.props.item.rating;
+          }
+          return b.props.item.id - a.props.item.id;
+        })}
     </div>
   );
 }

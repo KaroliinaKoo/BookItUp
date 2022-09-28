@@ -10,7 +10,6 @@ function UserDashboard() {
 
   return (
     <div className="user-dashboard container">
-      {console.log(userIsAuthenticated())}
       {userIsAuthenticated() && (
         <Card className="container-card full-height">
           <h1>{User.getName()}'s Dashboard</h1>

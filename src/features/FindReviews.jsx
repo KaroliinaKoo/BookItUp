@@ -30,7 +30,7 @@ function FindReview() {
           <option value="lowest">Lowest Rating</option>
         </select>
       </div>
-      <FeedbackList search={search} />
+      <FeedbackList search={search} sortBy={sortBy} />
     </div>
   );
 }
