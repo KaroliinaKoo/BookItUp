@@ -4,9 +4,11 @@
 
 $color-primary: #e34050;
 $color-primary-light: #f96874;
+$color-primary-medium-dark: #c52537;
 $color-primary-dark: #7c1225;
 $color-secondary: #6bb9b6;
 $color-secondary-light: #89cbc9;
+$color-secondary-medium-dark: #4e9a98;
 $color-secondary-dark: #255f5d;
 $color-white: #fff;
 $color-grey: #e4e4e4;
@@ -130,6 +132,11 @@ body {
   color: $color-dark;
   line-height: 1.6;
   overflow: hidden;
+
+  *:focus {
+    outline: 2px solid $color-dark  !important;
+
+  }
 }
 
 main {
@@ -181,15 +188,17 @@ header {
       justify-content: center;
       align-items: center;
       border-radius: 25em;
-      background-color: $color-primary-light;
-      padding: 0.2em;
-      height: 2em;
+      background-color: $color-primary-medium-dark;
+      padding: 0.2em 0.55em;
       line-height: 0;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
+
+      >* {
+        margin-top: 2px;
+      }
 
       svg {
-        height: 1em;
-        font-size: 1.1rem;
+        height: 1rem;
       }
     }
 
@@ -202,25 +211,31 @@ header {
       white-space: nowrap;
       color: $color-white;
       border-bottom: 2px solid transparent;
-      transition: all 0.15s ease-in-out;
+      font-size: 0.9rem;
       height: auto;
       line-height: 0;
 
       @media (hover: hover) {
-        &:hover {
+        &:not(.user-info):hover {
           border-bottom: 2px solid $color-white;
+          transition: all 0.15s ease-in-out;
+        }
+
+        &.user-info:hover {
+          background-color: $color-primary-dark;
+          transition: all 0.15s ease-in-out;
         }
       }
 
-      &.active:not(.user-login>*) {
+      &.active {
         font-weight: 800;
       }
 
       svg {
         margin-right: 0.5em;
-        margin-bottom: 3px;
-        height: 1.4rem;
-        width: 1.4rem;
+        margin-bottom: 0.1rem;
+        height: 1.2rem;
+        width: 1.2rem;
         color: $color-white;
       }
     }
@@ -229,7 +244,7 @@ header {
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: calc(0.5em + 2vw);
+      gap: calc(0.4em + 2vw);
       height: 100%;
 
       li {
@@ -237,6 +252,7 @@ header {
         align-items: center;
         justify-content: space-between;
         height: 100%;
+        transition: background 0.15s ease-in-out;
       }
     }
   }
@@ -254,10 +270,6 @@ header {
     text-align: center;
     transition: all 0.2s ease-in-out;
     margin-left: 0.4em;
-
-    @media screen and (max-width: $breakpoint-sm) {
-      font-size: 1.5rem;
-    }
   }
 }
 
@@ -275,32 +287,12 @@ header {
   flex-direction: column;
   align-items: flex-start;
   overflow: hidden;
-
-  .user-info {
-    border: 1px solid $color-white;
-    width: 90%;
-    height: 3.5em;
-    margin: 5vh 0;
-
-  }
-
-  a {
-    justify-content: flex-start;
-    width: 100%;
-    margin: 0;
-    padding: 1em 2em;
-    border-color: transparent;
-    font-size: 1.1rem;
-
-    &:hover {
-      border-color: transparent;
-    }
-
-  }
+  pointer-events: none;
 
   &.open {
     transform: translateX(0);
     width: $element-width-s;
+    pointer-events: all;
   }
 
   ul {
@@ -323,6 +315,23 @@ header {
 
       &:nth-child(4) {
         border: none;
+      }
+
+      a,
+      .user-info {
+        justify-content: flex-start;
+        width: 100%;
+        margin: 0;
+        padding: 1em 2em;
+        border-color: transparent;
+        font-size: 1.1rem;
+        background-color: inherit;
+        border-radius: 0;
+
+        &:hover {
+          background-color: transparent;
+          border-color: transparent;
+        }
       }
 
       @media (hover: hover) {
@@ -490,8 +499,8 @@ header {
     text-align: center;
     font-size: 1.4rem;
     height: 5em;
-    width: 50vh;
-    max-width: 90%;
+    width: 100%;
+    max-width: $element-width-m;
     padding: 0.5em;
     font-weight: 600;
     background-color: $color-secondary-muted;
@@ -535,12 +544,12 @@ header {
     }
 
     p:first-of-type {
-      font-size: clamp(1.5rem, 5.5vw, 3.6rem);
+      font-size: clamp(1.5rem, 6vw, 3.6rem);
       font-weight: 600;
       margin-bottom: 1em;
       color: $color-primary-light;
       background-color: #fffffff1;
-      padding: 0.4em;
+      padding: 0.4em 10vw;
       transform: rotate(-2deg);
       white-space: nowrap;
       position: relative;
@@ -550,7 +559,7 @@ header {
         position: absolute;
         content: '';
         font-size: 2em;
-        margin-left: 0.3em;
+        margin-left: calc(10vw + 0.1em);
         width: 0.2em;
         height: 100%;
         background-color: #fffffff1;
@@ -610,7 +619,6 @@ form {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  gap: 1em;
   padding: 0;
   transition: height 0.2s ease-in-out;
 
@@ -816,9 +824,10 @@ ul.rating {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
 
   h1 {
-    margin-bottom: 1em;
+    margin: 0.5em;
     text-align: center;
     font-size: 2.2rem;
   }
@@ -831,6 +840,7 @@ ul.rating {
     margin: 1em;
     border: 1px solid rgba(0, 0, 0, 0.089);
     font-size: 0.9rem;
+    width: 80%;
 
     .toggle-register {
       font-weight: 600;
@@ -848,9 +858,7 @@ ul.rating {
     width: 100%;
     height: 100%;
     gap: 1em;
-    padding: 1em;
     padding-bottom: 0;
-    margin: 1em 0;
 
     .input-group {
       width: 100%;
