@@ -183,6 +183,7 @@ header {
       border-radius: 25em;
       background-color: $color-primary-light;
       padding: 0.2em;
+      height: 2em;
       line-height: 0;
       font-size: 0.8rem;
 
@@ -320,12 +321,22 @@ header {
       padding: 0;
       position: relative;
 
+      &:nth-child(4) {
+        border: none;
+      }
+
       @media (hover: hover) {
 
         &:hover {
           background-color: $color-primary-muted-light;
-          color: $color-primary-dark  !important;
-          font-weight: 600;
+
+          a,
+          svg {
+
+            color: $color-primary-dark  !important;
+            font-weight: 600;
+          }
+
         }
       }
     }
