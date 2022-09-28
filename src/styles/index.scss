@@ -7,7 +7,7 @@ $color-primary-light: #f96874;
 $color-primary-medium-dark: #c52537;
 $color-primary-dark: #7c1225;
 $color-secondary: #6bb9b6;
-$color-secondary-light: #89cbc9;
+$color-secondary-light: #95d6d4;
 $color-secondary-medium-dark: #4e9a98;
 $color-secondary-dark: #255f5d;
 $color-white: #fff;
@@ -103,18 +103,19 @@ label {
   user-select: none;
 }
 
+select {
+  font-size: $font-size-base;
+  color: $color-dark;
+  background-color: $color-white;
+  border: none;
+  padding: 0.25em 0.5em;
+  border-radius: 5px;
+}
+
 a {
   text-decoration: none;
-  color: $color-primary;
 }
 
-a:hover {
-  color: $color-primary-light;
-}
-
-a:visited {
-  color: $color-primary;
-}
 
 /* APP */
 
@@ -148,6 +149,7 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  align-items: center;
   margin: 0;
   padding: 0;
   background-color: $color-primary-muted-light;
@@ -157,7 +159,8 @@ main {
 
     &,
     &>* {
-      padding: 0 !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
       margin: 0 !important;
     }
   }
@@ -380,19 +383,17 @@ header {
   align-items: center;
   justify-content: flex-start;
   gap: 0.5em;
-  padding: 0.5em;
+  padding: 1em 0.5em;
   overflow: hidden;
   overflow-y: auto;
   height: 100%;
   width: 100%;
-  max-width: $element-width-xl;
+  max-width: $element-width-l;
+  background-color: $color-secondary-muted-light;
 
-  &:has(.card) {
-    padding: 1em;
-  }
-
-  &:has(.login) {
+  &:has(.container-card) {
     justify-content: center;
+    background-color: transparent;
   }
 
   @media screen and (max-width: $breakpoint-sm) {
@@ -624,12 +625,6 @@ form {
   padding: 0;
   transition: height 0.2s ease-in-out;
 
-  .alert {
-    padding-top: 10px;
-    text-align: center;
-    color: $color-primary-dark;
-  }
-
   .input-group {
     display: flex;
     flex-direction: column;
@@ -739,6 +734,104 @@ ul.rating {
 
 }
 
+.review-search {
+  width: 90%;
+  max-width: $element-width-l;
+  border: 2px solid $color-secondary;
+  border-radius: 5px;
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 0.5em;
+    padding: 0.5em 1em;
+    font-size: 1.1rem;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5em;
+    gap: 1em;
+
+    .reset {
+      width: fit-content;
+      align-self: flex-start;
+      font-size: 0.8rem;
+      border: 1px solid rgba(0, 0, 0, 0.187);
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+
+      label {
+        color: $color-dark;
+      }
+
+      input,
+      textarea,
+      select {
+        padding: 0.25em 0.5em;
+        font-size: inherit;
+        font-family: inherit;
+        width: 100%;
+        border: none;
+        border-radius: 5px;
+        background-color: transparent;
+        border: 1px solid $color-secondary-muted;
+
+        &:focus {
+          outline: none;
+          border: 1px solid $color-secondary-light;
+          box-shadow: 0 0 1px 1px $color-secondary-light;
+          border-radius: 2px;
+        }
+
+        &::placeholder {
+          font-style: italic;
+          opacity: 0.8;
+        }
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 10em;
+      }
+
+      @media (max-width: $breakpoint-md) {
+        width: 100%;
+      }
+    }
+
+    &.hide {
+      display: none;
+    }
+  }
+}
+
+.sort-by {
+  display: flex;
+  width: 90%;
+  max-width: $element-width-l;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5em 1em;
+  color: $color-white;
+  background-color: $color-secondary-muted-dark;
+  border-radius: 5px;
+  margin: 0.5em 0;
+  gap: 1em;
+  font-size: 0.9rem;
+
+  select {
+    background-color: $color-secondary-muted-light;
+  }
+}
+
+
 .feedback-stats {
   color: $color-white;
   font-size: calc($font-size-base * 0.9);
@@ -756,6 +849,8 @@ ul.rating {
   flex-direction: column;
   justify-content: flex-start;
   gap: 1em;
+  width: 90%;
+  max-width: $element-width-l;
 
   .card {
     padding-left: 6em;

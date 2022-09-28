@@ -14,9 +14,10 @@ function FindReview() {
 
   return (
     <div className="container">
+      <h1>Find Reviews</h1>
       <ReviewSearch setSearch={setSearch} />
       <div className="sort-by">
-        <label htmlFor="sort">Sort by:</label>
+        <label htmlFor="sort">Order by:</label>
         <select
           name="sort"
           id="sort"
