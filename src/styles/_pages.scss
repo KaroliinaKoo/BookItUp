@@ -127,55 +127,67 @@
     }
 }
 
-ul.rating {
-    gap: 0.5em;
-    margin: $margin-base;
+.rating-container {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    width: 100%;
     justify-content: center;
     align-items: center;
+    margin-top: 1em;
+    border: 1px solid $color-secondary-muted;
+    padding: 0.5em 0;
+    border-radius: 5px;
+    gap: 0.5em;
 
-    @media screen and (max-width: $breakpoint-md) {
-        flex-wrap: wrap;
-    }
-
-    li {
-        position: relative;
-        width: 2.5em;
-        height: 2.5em;
-        flex: 0 0 2.5em;
+    ul.rating {
+        gap: 0.5em;
         display: flex;
-        border-radius: 50%;
-        font-size: $font-size-base;
-        transition: 0.3s;
+        justify-content: center;
+        align-items: center;
+        padding: 1em;
 
-        button {
-            background: $color-white;
-            position: absolute;
-            display: flex;
-            place-content: center;
-            place-items: center;
-            font-size: calc($font-size-base * 1.1);
-            top: 50%;
-            left: 50%;
+        @media screen and (max-width: $breakpoint-md) {
+            flex-wrap: wrap;
+        }
+
+        li {
+            position: relative;
             width: 2.5em;
             height: 2.5em;
-            min-height: unset;
+            flex: 0 0 2.5em;
+            display: flex;
             border-radius: 50%;
-            transform: translate(-50%, -50%);
-            cursor: pointer;
+            font-size: $font-size-base;
+            transition: 0.3s;
 
-            &.selected {
-                background: $color-primary;
-                color: $color-white;
-                border: 3px solid $color-primary-light;
-                font-weight: 600;
-            }
+            button {
+                background: $color-white;
+                position: absolute;
+                display: flex;
+                place-content: center;
+                place-items: center;
+                font-size: calc($font-size-base * 1.1);
+                top: 50%;
+                left: 50%;
+                width: 2.5em;
+                height: 2.5em;
+                min-height: unset;
+                border-radius: 50%;
+                transform: translate(-50%, -50%);
+                cursor: pointer;
 
-            @media (hover: hover) {
-                &:hover {
-                    background: $color-primary-light;
+                &.selected {
+                    background: $color-primary;
                     color: $color-white;
+                    border: 3px solid $color-primary-light;
+                    font-weight: 600;
+                }
+
+                @media (hover: hover) {
+                    &:hover {
+                        background: $color-primary-light;
+                        color: $color-white;
+                    }
                 }
             }
         }

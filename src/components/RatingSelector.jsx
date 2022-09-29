@@ -19,26 +19,32 @@ function RatingSelector({ select }) {
   };
 
   return (
-    <ul className="rating">
-      {Array.from({ length: 10 }, (_, i) => i + 1).map(
-        (
-          num,
-          index // create an array of numbers from 1 to 10 and map each item in the array to form a list of rating buttons
-        ) => (
-          <li key={index}>
-            <button
-              className={rating === num ? "selected" : ""}
-              id={`rating-${num}`}
-              value={`${num}`}
-              onClick={handleClick}
-              type="button"
-            >
-              {num}
-            </button>
-          </li>
-        )
-      )}
-    </ul>
+    <section className="rating-container">
+      Select a Rating:
+      <span className="detail-text">
+        How would you rate the book on a scale of 1 to 10?
+      </span>
+      <ul className="rating">
+        {Array.from({ length: 10 }, (_, i) => i + 1).map(
+          (
+            num,
+            index // create an array of numbers from 1 to 10 and map each item in the array to form a list of rating buttons
+          ) => (
+            <li key={index}>
+              <button
+                className={rating === num ? "selected" : ""}
+                id={`rating-${num}`}
+                value={`${num}`}
+                onClick={handleClick}
+                type="button"
+              >
+                {num}
+              </button>
+            </li>
+          )
+        )}
+      </ul>
+    </section>
   );
 }
 

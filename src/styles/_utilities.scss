@@ -47,6 +47,12 @@ $border-soft-dark: 1px solid hsla(0, 0%, 0%, 0.150);
     display: none;
 }
 
+.detail-text {
+    font-size: 0.9rem;
+    opacity: 0.7;
+    font-style: italic;
+}
+
 @media screen and (max-width: $breakpoint-sm) {
     :root {
         font-size: 62.5%;
