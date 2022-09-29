@@ -1,0 +1,54 @@
+/* UTILITIES */
+
+$color-primary: #e34050;
+$color-primary-light: #f96874;
+$color-primary-medium-dark: #c52537;
+$color-primary-dark: #7c1225;
+$color-secondary: #6bb9b6;
+$color-secondary-light: #95d6d4;
+$color-secondary-medium-dark: #4e9a98;
+$color-secondary-dark: #255f5d;
+$color-white: #fff;
+$color-grey: #e4e4e4;
+$color-grey-light: #f5f5f5;
+$color-grey-dark: #b3b3b3;
+$color-dark: #333;
+
+$color-primary-muted: #ddcacc;
+$color-primary-muted-light: #f3f1f1;
+$color-primary-muted-dark: #b38b8f;
+$color-secondary-muted: #d3e1e3;
+$color-secondary-muted-light: #eff2f3;
+$color-secondary-muted-dark: #5f8086;
+
+$padding-base: 1.5em;
+$margin-base: 1.5em;
+
+$font-size-base: 1rem;
+$font-size-heading: calc($font-size-base * 1.8);
+
+$element-width-xs: 200px;
+$element-width-s: clamp(200px, 100%, 320px);
+$element-width-m: clamp(200px, 100%, 480px);
+$element-width-l: clamp(200px, 100%, 768px);
+$element-width-xl: clamp(200px, 100%, 992px);
+$element-width-xxl: clamp(200px, 100%, 1960px);
+
+$breakpoint-xs: 320px;
+$breakpoint-sm: 480px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+
+$border-soft-dark: 1px solid hsla(0, 0%, 0%, 0.150);
+
+// MISC
+
+.hide {
+    display: none;
+}
+
+@media screen and (max-width: $breakpoint-sm) {
+    :root {
+        font-size: 62.5%;
+    }
+}

@@ -55,98 +55,96 @@ function Login() {
   };
 
   return (
-    <div className="container">
-      <div className="container-card login">
-        <h1>{register ? "Register" : "Login"}</h1>
-        {!register && (
-          <div className="toggle-register-container">
-            No account?
+    <div className="container-card login">
+      <h1>{register ? "Register" : "Login"}</h1>
+      {!register && (
+        <div className="toggle-register-container">
+          No account?
+          <button
+            className="toggle-register btn-link"
+            type="button"
+            onClick={() => setRegister(true)}
+          >
+            Register
+          </button>
+        </div>
+      )}
+      {register && (
+        <div className="toggle-register-container">
+          Already have an account?
+          <button
+            className="toggle-register btn-link"
+            type="button"
+            onClick={() => setRegister(false)}
+          >
+            Sign In
+          </button>
+        </div>
+      )}
+      <form onSubmit={handleSubmit}>
+        <div className="form-control">
+          <div className="input-group">
+            <label htmlFor="email">E-mail</label>
+            <input
+              value={formData.email}
+              onChange={handleChange}
+              type="email"
+              id="email"
+              name="email"
+              placeholder="john.doe@yourmail.com"
+              autoComplete="on"
+              maxLength={100}
+              required
+              autoFocus
+            />
+          </div>
+
+          <div className="input-group">
+            <label htmlFor="password">Password</label>
+            <input
+              value={formData.password}
+              onChange={handleChange}
+              type={showPassword ? "text" : "password"}
+              id="password"
+              name="password"
+              placeholder="Your password"
+              autoComplete="off"
+              maxLength={32}
+              minLength={8}
+              required
+            />
             <button
-              className="toggle-register"
               type="button"
-              onClick={() => setRegister(true)}
+              className="show-password"
+              onClick={() => setShowPassword(!showPassword)}
             >
-              Register
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
             </button>
           </div>
-        )}
-        {register && (
-          <div className="toggle-register-container">
-            Already have an account?
-            <button
-              className="toggle-register"
-              type="button"
-              onClick={() => setRegister(false)}
-            >
-              Sign In
-            </button>
-          </div>
-        )}
-        <form onSubmit={handleSubmit}>
-          <div className="form-control">
+
+          {register && (
             <div className="input-group">
-              <label htmlFor="email">E-mail</label>
+              <label htmlFor="username">Username</label>
               <input
-                value={formData.email}
+                value={formData.username}
                 onChange={handleChange}
-                type="email"
-                id="email"
-                name="email"
-                placeholder="john.doe@yourmail.com"
+                type="username"
+                id="username"
+                name="username"
+                placeholder="Your username"
                 autoComplete="on"
-                maxLength={100}
-                required
-                autoFocus
-              />
-            </div>
-
-            <div className="input-group">
-              <label htmlFor="password">Password</label>
-              <input
-                value={formData.password}
-                onChange={handleChange}
-                type={showPassword ? "text" : "password"}
-                id="password"
-                name="password"
-                placeholder="Your password"
-                autoComplete="off"
-                maxLength={32}
-                minLength={8}
+                maxLength={18}
+                minLength={3}
                 required
               />
-              <button
-                type="button"
-                className="show-password"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
-              </button>
             </div>
+          )}
 
-            {register && (
-              <div className="input-group">
-                <label htmlFor="username">Username</label>
-                <input
-                  value={formData.username}
-                  onChange={handleChange}
-                  type="username"
-                  id="username"
-                  name="username"
-                  placeholder="Your username"
-                  autoComplete="on"
-                  maxLength={18}
-                  minLength={3}
-                  required
-                />
-              </div>
-            )}
-
-            <button type="submit" className="btn btn-primary">
-              {register ? "Register" : "Sign In"}
-            </button>
-          </div>
-        </form>
-      </div>
+          <button type="submit" className="btn btn-primary">
+            {register ? "Register" : "Sign In"}
+          </button>
+        </div>
+      </form>
     </div>
   );
 }
