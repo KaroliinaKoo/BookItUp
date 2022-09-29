@@ -384,6 +384,11 @@
         width: 100%;
         gap: 1em;
 
+        p.error {
+            bottom: -1.6em;
+            right: 0;
+        }
+
         .btn-primary {
             background-color: $color-secondary;
             color: $color-white;
@@ -400,9 +405,12 @@
             align-items: center;
             border-color: $color-secondary-muted;
             position: relative;
-            gap: 1em;
+            margin-top: 1em;
 
             label {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
                 text-align: right;
                 width: 20%;
                 color: $color-secondary-muted-dark;

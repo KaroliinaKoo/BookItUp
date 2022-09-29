@@ -239,3 +239,11 @@ input[type="submit"] {
         background-color: rgb(254, 195, 195);
     }
 }
+
+p.error {
+    position: absolute;
+    font-size: 0.8rem;
+    margin: 0;
+    padding: 0 2px;
+    color: rgb(79, 4, 4);
+}
