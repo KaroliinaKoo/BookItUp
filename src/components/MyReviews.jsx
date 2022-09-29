@@ -25,7 +25,7 @@ function MyReviews() {
 
   return (
     <div className="container">
-      <h1>My Reviews</h1>
+      <h2>My Reviews</h2>
       {itemIsLoading && <div className="spinner" role="status" />}
 
       <div className="feedback-list">

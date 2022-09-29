@@ -1,9 +1,39 @@
 @use "utilities" as *;
 
-.dashboard-nav {
-    display: flex;
-    width: 100%;
-    background-color: $color-grey-light;
+.user-dashboard {
+    .content {
+        .user-profile {
+            background-color: $color-white;
+            padding: 1em;
+            display: flex;
+            flex-direction: column;
+            gap: 1em;
+
+            p {
+                margin-left: 1.5em;
+            }
+
+            .btn-container {
+                display: flex;
+                justify-content: space-around;
+                margin: 1em 0;
+
+                button {
+                    color: $color-secondary-dark;
+                    font-size: 0.9rem;
+                    border: 1px solid $color-grey;
+                    border-radius: 5px;
+                    padding: 0.2rem 0.4rem;
+                    width: 40%;
+
+                    &:hover {
+                        border-color: $color-secondary;
+                    }
+                }
+
+            }
+        }
+    }
 }
 
 .hero-container {

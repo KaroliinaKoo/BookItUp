@@ -12,7 +12,7 @@ function UserDashboard() {
       {userIsAuthenticated() && (
         <>
           <h1>{User.getName()}'s Dashboard</h1>
-          <div className="dashboard-content">
+          <div className="content">
             <MyProfile />
             <MyReviews />
           </div>
