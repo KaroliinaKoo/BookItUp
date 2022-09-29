@@ -109,6 +109,7 @@ function ReviewForm() {
         minLength={titleMinLength}
         placeholder="e.g Harry Potter and the Goblet of Fire"
         list="titles_list"
+        autoFocus
       />
 
       <datalist id="titles_list">
@@ -148,7 +149,7 @@ function ReviewForm() {
       {/* pass the selected rating to the RatingSelector component */}
 
       <Button type="submit">
-        {itemIsEditing.isEditing ? "Update" : "Submit"}
+        {itemIsEditing.isEditing ? "Update Review" : "Submit Review"}
       </Button>
       {itemIsEditing.isEditing && (
         <Button

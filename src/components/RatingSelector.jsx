@@ -13,8 +13,8 @@ function RatingSelector({ select }) {
     }
   }, [itemIsEditing]);
 
-  const handleChange = (e) => {
-    setRating(+e.target.value); // +e.target.value converts the value of the selected radio button to a number
+  const handleClick = (e) => {
+    setRating(+e.target.value); // +e.target.value converts the value of the selected rating button to a number
     select(+e.target.value); // pass the selected rating to the parent component
   };
 
@@ -23,18 +23,18 @@ function RatingSelector({ select }) {
       {Array.from({ length: 10 }, (_, i) => i + 1).map(
         (
           num,
-          index // create an array of numbers from 1 to 10 and map each item in the array to form a list of radio buttons
+          index // create an array of numbers from 1 to 10 and map each item in the array to form a list of rating buttons
         ) => (
           <li key={index}>
-            <input
-              type="radio"
+            <button
+              className={rating === num ? "selected" : ""}
               id={`rating-${num}`}
-              name="rating"
               value={`${num}`}
-              checked={rating === num}
-              onChange={handleChange}
-            />
-            <label htmlFor={`rating-${num}`}>{num}</label>
+              onClick={handleClick}
+              type="button"
+            >
+              {num}
+            </button>
           </li>
         )
       )}
