@@ -13,22 +13,29 @@
                 margin-left: 1.5em;
             }
 
+            .user-info {
+                width: 95%;
+
+                div {
+                    margin: 0.5em 0;
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+
+                    &>*:first-child {
+                        color: $color-grey-dark;
+                    }
+                }
+            }
+
+
             .btn-container {
                 display: flex;
                 justify-content: space-around;
                 margin: 1em 0;
+                width: 100%;
 
                 button {
-                    color: $color-secondary-dark;
-                    font-size: 0.9rem;
-                    border: 1px solid $color-grey;
-                    border-radius: 5px;
-                    padding: 0.2rem 0.4rem;
                     width: 40%;
-
-                    &:hover {
-                        border-color: $color-secondary;
-                    }
                 }
 
             }

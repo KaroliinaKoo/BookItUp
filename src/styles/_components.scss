@@ -125,6 +125,16 @@ input[type="submit"] {
     width: clamp(40px, 100%, 300px);
     min-height: 46px;
     margin: $margin-base 0;
+
+    &.small {
+        padding: 0 calc($padding-base * 0.4);
+        min-height: 34px;
+        border-radius: 5px;
+        font-weight: 400;
+        font-size: 0.9rem;
+        text-transform: capitalize;
+        margin: calc($margin-base * 0.5) 0;
+    }
 }
 
 .btn-primary {
