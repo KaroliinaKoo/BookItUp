@@ -81,6 +81,14 @@ textarea {
 }
 
 // BUTTONS
+
+.btn-container {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    gap: 1em;
+}
+
 button,
 input[type="submit"] {
     background: none;
@@ -122,18 +130,20 @@ input[type="submit"] {
     border-radius: 25em;
     padding: 0 calc($padding-base * 0.8);
     color: $color-white;
-    width: clamp(40px, 100%, 300px);
+    width: clamp(40px, 100%, 260px);
     min-height: 46px;
     margin: $margin-base 0;
 
     &.small {
         padding: 0 calc($padding-base * 0.4);
         min-height: 34px;
+        max-width: 180px;
         border-radius: 5px;
         font-weight: 400;
         font-size: 0.9rem;
         text-transform: capitalize;
         margin: calc($margin-base * 0.5) 0;
+
     }
 }
 
@@ -261,12 +271,11 @@ p.error {
     min-height: 2.6em;
     line-height: 0;
     border-radius: 50%;
-    background-color: $color-primary-light;
+    background-color: $color-secondary-dark;
     color: $color-white;
     transition: all 0.2s ease-in-out;
 
     &:hover {
-        background-color: $color-primary;
-        transform: scale(1.05);
+        background-color: $color-secondary;
     }
 }

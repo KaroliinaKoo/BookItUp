@@ -1,20 +1,20 @@
 import ReviewForm from "../components/ReviewForm";
 import { useNavigate } from "react-router-dom";
+import User from "../modules/user";
 
 function NewReview() {
-  const userIsAuthenticated = () => {
-    return localStorage.getItem("token");
-  };
-
   const navigate = useNavigate();
+  const auth = User.isAuthorized();
 
   return (
-    <div className="container">
-      <h1>Review a Book</h1>
-      {userIsAuthenticated() ? (
-        <ReviewForm />
-      ) : (
-        <>
+    <>
+      {auth && (
+        <div className="container white">
+          <ReviewForm />
+        </div>
+      )}
+      {!auth && (
+        <div className="container-card">
           <p>You must be logged in to review a book.</p>
           <button
             className="btn btn-secondary"
@@ -24,9 +24,9 @@ function NewReview() {
           >
             Login
           </button>
-        </>
+        </div>
       )}
-    </div>
+    </>
   );
 }
 

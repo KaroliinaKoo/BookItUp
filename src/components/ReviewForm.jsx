@@ -101,6 +101,7 @@ function ReviewForm() {
 
   return (
     <form className="feedback-form" onSubmit={handleSubmit} autoComplete="off">
+      <h1>{itemIsEditing.isEditing ? "Edit Review" : "Add a Review"}</h1>
       <Input
         label="Book Title"
         value={title}
@@ -147,20 +148,22 @@ function ReviewForm() {
 
       <RatingSelector select={(rating) => setRating(rating)} />
       {/* pass the selected rating to the RatingSelector component */}
-
-      <Button type="submit">
-        {itemIsEditing.isEditing ? "Update Review" : "Submit Review"}
-      </Button>
-      {itemIsEditing.isEditing && (
-        <Button
-          type="button"
-          onClick={() => {
-            handleCancel();
-          }}
-        >
-          Cancel
+      <div className="btn-container">
+        {itemIsEditing.isEditing && (
+          <button
+            className="btn btn-secondary"
+            type="button"
+            onClick={() => {
+              handleCancel();
+            }}
+          >
+            Cancel
+          </button>
+        )}
+        <Button type="submit">
+          {itemIsEditing.isEditing ? "Update Review" : "Submit Review"}
         </Button>
-      )}
+      </div>
     </form>
   );
 }

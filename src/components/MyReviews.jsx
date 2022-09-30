@@ -1,8 +1,9 @@
 import User from "../modules/user";
 import FeedbackContext from "../context/FeedbackContext";
 import { useContext, useState, useEffect } from "react";
-import MyReviewItem from "./MyReviewItem";
+import FeedbackItem from "./FeedbackItem";
 import ReviewForm from "./ReviewForm";
+import { NavLink } from "react-router-dom";
 
 function MyReviews() {
   const { feedback, itemIsLoading, itemIsEditing } =
@@ -24,18 +25,27 @@ function MyReviews() {
   }, [itemIsEditing]);
 
   return (
-    <div className="container">
+    <div className="user-reviews">
       <h2>My Reviews</h2>
-      {itemIsLoading && <div className="spinner" role="status" />}
-
-      <div className="feedback-list">
-        {MyReviews.length === 0 && <p>No reviews yet</p>}
-
-        {MyReviews.map((item) => (
-          <MyReviewItem key={item.id} item={item} />
-        ))}
-        {showForm && <ReviewForm />}
+      <div className="container">
+        {itemIsLoading && <div className="spinner" role="status" />}
+        <div className="feedback-list">
+          {MyReviews.length === 0 && (
+            <p>You have not written any reviews yet.</p>
+          )}
+          {MyReviews.map((item) => (
+            <FeedbackItem key={item.id} item={item} profileView="true" />
+          ))}
+        </div>
       </div>
+      <NavLink to="/add-review" className="btn-primary small">
+        Add a Review
+      </NavLink>
+      {showForm && (
+        <div className="modal">
+          <ReviewForm />
+        </div>
+      )}
     </div>
   );
 }
