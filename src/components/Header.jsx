@@ -13,27 +13,25 @@ function Header({ user, handleLogout }) {
 
   useEffect(() => {
     const content = document.querySelectorAll(
-      "main a,area,button,input,object,select,textarea"
+      "body a,area,button,input,object,select,textarea"
     );
     const mobileBtns = document.querySelectorAll(".mobile-btn");
 
-    if (windowWidth < 768) {
+    content.forEach((item) => {
+      item.setAttribute("tabindex", "0");
+    });
+    mobileBtns.forEach((btn) => {
+      btn.setAttribute("tabindex", "-1");
+    });
+
+    if (menuOpen) {
       content.forEach((item) => {
-        item.setAttribute("tabindex", "0");
+        item.setAttribute("tabindex", "-1");
       });
+
       mobileBtns.forEach((btn) => {
-        btn.setAttribute("tabindex", "-1");
+        btn.setAttribute("tabindex", "0");
       });
-
-      if (menuOpen) {
-        content.forEach((item) => {
-          item.setAttribute("tabindex", "-1");
-        });
-
-        mobileBtns.forEach((btn) => {
-          btn.setAttribute("tabindex", "0");
-        });
-      }
     }
   }, [windowWidth, menuOpen]);
 
