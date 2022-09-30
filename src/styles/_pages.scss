@@ -253,20 +253,20 @@
         color: $color-secondary-dark;
 
         &.reset {
-            padding: 0.25em 1em;
+            padding: 0;
             width: fit-content;
             align-self: flex-end;
             font-size: 0.8rem;
             font-weight: 400;
-            margin: 1em 0;
-            //border: $border-soft-dark;
+            margin: 0;
+            margin-bottom: 0.5em;
         }
-
     }
 
     form {
 
         padding: 0 1em;
+        width: 90%;
 
         .input-group {
             width: 100%;

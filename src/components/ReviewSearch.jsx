@@ -67,7 +67,11 @@ function ReviewSearch({ setSearch }) {
           <label htmlFor="username">Username</label>
           <input type="text" name="username" onChange={handleChange} />
         </div>
-        <button className="reset" type="reset" onClick={() => handleReset()}>
+        <button
+          className="reset btn-link"
+          type="reset"
+          onClick={() => handleReset()}
+        >
           <FaTimes /> Clear all
         </button>
       </form>
