@@ -232,10 +232,14 @@
 }
 
 .review-search {
+
     width: 90%;
     max-width: $element-width-l;
-    border: 2px solid $color-secondary;
     border-radius: 5px;
+    background-color: $color-secondary-muted;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
     button {
         display: flex;
@@ -243,18 +247,74 @@
         justify-content: center;
         width: 100%;
         gap: 0.5em;
-        padding: 0.5em 1em;
-        font-size: 1.1rem;
+        padding: 1em;
+        font-size: 1rem;
+        font-weight: 600;
+        color: $color-secondary-dark;
+
+        &.reset {
+            padding: 0.25em 1em;
+            width: fit-content;
+            align-self: flex-end;
+            font-size: 0.8rem;
+            font-weight: 400;
+            margin: 1em 0;
+            //border: $border-soft-dark;
+        }
+
     }
 
     form {
-        .reset {
-            width: fit-content;
-            align-self: flex-start;
-            font-size: 0.8rem;
-            border: 1px solid rgba(0, 0, 0, 0.187);
+
+        padding: 0 1em;
+
+        .input-group {
+            width: 100%;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 0.5em;
+            gap: 1em;
+
+            label {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                text-align: end;
+                flex: 1 1 10%;
+                color: $color-secondary-muted-dark;
+            }
+
+            input,
+            select,
+            textarea {
+                flex: 1 1 80%;
+                background-color: $color-secondary-muted-light;
+            }
         }
     }
+
+    @media screen and (max-width: $breakpoint-md) {
+
+        form {
+            .input-group {
+                flex-direction: column;
+                align-items: center;
+                gap: 0;
+                margin-top: 0;
+
+                label {
+                    width: 100%;
+                    text-align: left;
+                }
+
+                input {
+                    width: 100%;
+                }
+            }
+        }
+    }
+
 }
 
 .sort-by {
@@ -382,11 +442,12 @@
         flex-direction: column;
         align-items: center;
         width: 100%;
-        gap: 1em;
+        gap: 0.5em;
 
         p.error {
             bottom: -1.6em;
             right: 0;
+            text-align: end;
         }
 
         .btn-primary {
