@@ -27,7 +27,6 @@ form {
         color: $color-dark;
 
         label {
-            margin-bottom: 0.5em;
             font-size: $font-size-base;
             color: $color-dark;
         }
@@ -35,6 +34,7 @@ form {
         input,
         textarea,
         select {
+            margin-top: 0.25em;
             font-size: $font-size-base;
             color: $color-dark;
             width: 100%;
@@ -246,4 +246,27 @@ p.error {
     margin: 0;
     padding: 0 2px;
     color: rgb(79, 4, 4);
+}
+
+// SCROLL TO TOP
+
+.scroll-to-top {
+    position: fixed;
+    bottom: 3%;
+    right: 7%;
+    z-index: 2;
+    place-content: center;
+    place-items: center;
+    min-width: 2.6em;
+    min-height: 2.6em;
+    line-height: 0;
+    border-radius: 50%;
+    background-color: $color-primary-light;
+    color: $color-white;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+        background-color: $color-primary;
+        transform: scale(1.05);
+    }
 }
