@@ -24,7 +24,6 @@ function App() {
       localStorage?.removeItem("token");
       localStorage?.removeItem("user");
       User.clearData();
-      console.log("Logged out" + JSON.stringify(User.getData()));
     }
 
     if (!isExpired && token) {
@@ -32,7 +31,6 @@ function App() {
       if (userData) {
         User.setData(userData);
         setUser(User.getData());
-        console.log("Logged in" + JSON.stringify(User.getData()));
       }
     }
   }, [isExpired]);
