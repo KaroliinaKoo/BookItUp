@@ -11,6 +11,10 @@ const User = (function () {
     return { id, username, email };
   };
 
+  const getID = () => {
+    return id;
+  };
+
   const getName = () => {
     return username;
   };
@@ -36,6 +40,7 @@ const User = (function () {
 
   return {
     getData,
+    getID,
     getName,
     getEmail,
     setData,
