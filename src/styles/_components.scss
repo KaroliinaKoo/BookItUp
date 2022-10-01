@@ -18,6 +18,23 @@ form {
     padding: 1.5em;
     gap: 1em;
     width: 100%;
+    position: relative;
+
+    p.error {
+        color: $color-error;
+        position: absolute;
+        font-size: 0.8rem;
+        margin: 0;
+        padding: 0 2px;
+
+        &.form-error {
+            background-color: $color-error-opaque;
+            width: 90%;
+            padding: 0.5em;
+            text-align: center;
+            bottom: 0;
+        }
+    }
 
     .input-group {
         display: flex;
@@ -51,6 +68,11 @@ form {
                 font-style: italic;
                 opacity: 0.9;
                 font-size: 0.9rem;
+            }
+
+            &.error {
+                border: 1px solid $color-error-opaque;
+                box-shadow: 0 0 1px 1px $color-error-opaque;
             }
         }
 
@@ -240,13 +262,13 @@ input[type="submit"] {
     }
 
     &.success {
-        background-color: #c4ffdf;
-        color: rgb(6, 60, 6);
+        color: $color-success;
+        background-color: $color-success-light;
     }
 
     &.error {
-        color: rgb(79, 4, 4);
-        background-color: rgb(254, 195, 195);
+        color: $color-error;
+        background-color: $color-error-light;
     }
 }
 
