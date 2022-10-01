@@ -33,7 +33,7 @@ function Login() {
 
   useEffect(() => {
     setFormErrorMessage("");
-  }, [register]);
+  }, [register, error]);
 
   const handleValidation = (e) => {
     if (!register) {
@@ -74,21 +74,21 @@ function Login() {
         }
         break;
 
-      case "password_confirmation":
-        if (!value) {
-          errorObj.password_confirmation = "Confirm password is required";
-        } else if (value !== formData.password) {
-          errorObj.password_confirmation = "Passwords do not match";
-        } else {
-          errorObj.password_confirmation = "";
-        }
-        break;
-
       default:
         break;
     }
     setError(errorObj);
   };
+
+  useEffect(() => {
+    if (register) {
+      if (passwordConfirmation === formData.password) {
+        setError({ ...error, password_confirmation: "" });
+      } else {
+        setError({ ...error, password_confirmation: "Passwords do not match" });
+      }
+    }
+  }, [passwordConfirmation, formData.password]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -103,40 +103,52 @@ function Login() {
         setFormErrorMessage("Please fill out the form correctly");
         return;
       }
-      if (formIsValid) {
-        setFormErrorMessage("");
-      }
+      setFormErrorMessage("");
       // register
       fetch("http://localhost:3002/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       })
-        .then((r) => r.json())
+        .then((response) => {
+          if (response.status === 201) {
+            return response.json();
+          } else if (response.status === 400) {
+            setFormErrorMessage("An account with this e-mail already exists");
+            throw new Error("Status Error: " + response.status);
+          }
+        })
         .then((user) => {
-          console.log("Registered: " + JSON.stringify(user));
-          navigate("/");
+          console.log(user);
+          setRegister(false);
+          formData.password = "";
+          setShowPassword(false);
         });
-    } else {
+    }
+    if (!register) {
       // login
       fetch("http://localhost:3002/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       })
-        .then((r) => r.json())
-        .then((user) => {
-          if (!user.ok) {
-            setFormErrorMessage(JSON.stringify(user));
+        .then((response) => {
+          if (response.status === 200) {
+            return response.json();
           } else {
-            console.log("Logged in: " + JSON.stringify(user));
-            user.accessToken && localStorage.setItem("token", user.accessToken);
-            user.accessToken &&
-              localStorage.setItem("user", JSON.stringify(user.user));
-            User.setData(user.user);
-            navigate("/");
-            window.location.reload();
+            setFormErrorMessage(
+              "E-mail or password is incorrect, or the account does not exist"
+            );
+            throw new Error("Status Error: " + response.status);
           }
+        })
+        .then((user) => {
+          user.accessToken && localStorage.setItem("token", user.accessToken);
+          user.accessToken &&
+            localStorage.setItem("user", JSON.stringify(user.user));
+          User.setData(user.user);
+          navigate("/");
+          window.location.reload();
         });
     }
   };
