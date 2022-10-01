@@ -118,8 +118,7 @@ function Login() {
             throw new Error("Status Error: " + response.status);
           }
         })
-        .then((user) => {
-          console.log(user);
+        .then(() => {
           setRegister(false);
           formData.password = "";
           setShowPassword(false);
@@ -202,12 +201,13 @@ function Login() {
               type="email"
               id="email"
               name="email"
-              placeholder="john.doe@yourmail.com"
+              placeholder="Enter your e-mail"
               autoComplete="on"
               maxLength={100}
               required
               autoFocus
             />
+            {register && error.email && <p className="error">{error.email}</p>}
           </div>
           {register && (
             <div className="input-group">
@@ -219,7 +219,7 @@ function Login() {
                 type="username"
                 id="username"
                 name="username"
-                placeholder="Your username"
+                placeholder="Enter your username"
                 autoComplete="on"
                 maxLength={18}
                 minLength={3}
@@ -239,18 +239,26 @@ function Login() {
               type={showPassword ? "text" : "password"}
               id="password"
               name="password"
-              placeholder="Your password"
+              placeholder="Enter your password"
               autoComplete="off"
               maxLength={32}
               minLength={6}
               required
             />
+            {register && error.password && (
+              <p className="error">{error.password}</p>
+            )}
             <button
+              aria-label="Toggle password visibility"
               type="button"
               className="show-password"
               onClick={() => setShowPassword(!showPassword)}
             >
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
+              {showPassword ? (
+                <FaEyeSlash aria-label="hide" />
+              ) : (
+                <FaEye aria-label="show" />
+              )}
             </button>
           </div>
 
@@ -264,18 +272,23 @@ function Login() {
                 type={showPassword ? "text" : "password"}
                 id="password_confirmation"
                 name="password_confirmation"
-                placeholder="Write your password again"
+                placeholder="Enter your password again"
                 autoComplete="off"
                 maxLength={32}
                 minLength={6}
                 required
               />
               <button
+                aria-label="Toggle password visibility"
                 type="button"
                 className="show-password"
                 onClick={() => setShowPassword(!showPassword)}
               >
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                {showPassword ? (
+                  <FaEyeSlash aria-label="hide" />
+                ) : (
+                  <FaEye aria-label="show" />
+                )}
               </button>
               {register && error.password_confirmation && (
                 <p className="error">{error.password_confirmation}</p>

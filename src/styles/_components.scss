@@ -22,10 +22,14 @@ form {
 
     p.error {
         color: $color-error;
-        position: absolute;
+        position: relative;
+        width: 100%;
+        max-width: 100%;
+        text-align: end;
         font-size: 0.8rem;
         margin: 0;
         padding: 0 2px;
+        height: 0;
 
         &.form-error {
             background-color: $color-error-opaque;
@@ -39,6 +43,7 @@ form {
     .input-group {
         display: flex;
         flex-direction: column;
+        position: relative;
         width: 100%;
         font-size: $font-size-base;
         color: $color-dark;
@@ -270,14 +275,6 @@ input[type="submit"] {
         color: $color-error;
         background-color: $color-error-light;
     }
-}
-
-p.error {
-    position: absolute;
-    font-size: 0.8rem;
-    margin: 0;
-    padding: 0 2px;
-    color: rgb(79, 4, 4);
 }
 
 // SCROLL TO TOP

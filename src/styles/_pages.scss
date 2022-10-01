@@ -56,10 +56,33 @@
         }
 
         .form-control {
+            padding: 0;
             width: 100%;
             display: flex;
             flex-direction: column;
             gap: 0.5em;
+
+            p.error {
+                width: 95%;
+                height: auto;
+            }
+        }
+
+        button.show-password {
+            padding: 0;
+            width: fit-content;
+            font-size: 0.9rem;
+            //border: $border-soft-dark;
+            //padding: 0 0.5em;
+            color: $color-secondary-muted-dark;
+            display: flex;
+            align-items: center;
+            gap: 0.5em;
+
+            svg {
+                width: 1.4em;
+                height: 1.4em;
+            }
         }
 
         .btn-container {
@@ -518,13 +541,7 @@
         flex-direction: column;
         align-items: center;
         width: 100%;
-        gap: 0.5em;
-
-        p.error {
-            bottom: -1.6em;
-            right: 0;
-            text-align: end;
-        }
+        gap: 1em;
 
         .btn-primary {
             background-color: $color-secondary;
@@ -537,25 +554,24 @@
 
         .input-group {
             width: 100%;
-            flex-direction: row;
+            flex-direction: column;
             justify-content: space-between;
             align-items: center;
             border-color: $color-secondary-muted;
             position: relative;
-            margin-top: 1em;
 
             label {
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
-                text-align: right;
-                width: 20%;
+                text-align: left;
+                width: 100%;
                 color: $color-secondary-muted-dark;
             }
 
             input {
                 background-color: $color-secondary-muted-light;
-                width: 75%;
+                width: 100%;
 
                 &#password {
                     padding-right: 2.8em;
@@ -564,14 +580,11 @@
 
             .show-password {
                 position: absolute;
-                top: 50%;
-                right: 1%;
+                top: 78%;
+                right: 0;
                 transform: translateY(-50%);
                 width: 2.8em;
                 height: 2.8em;
-                display: flex;
-                justify-content: center;
-                align-items: center;
                 color: $color-secondary-muted-dark;
 
                 svg {
@@ -585,27 +598,5 @@
     @media screen and (max-width: $breakpoint-sm) {
 
         border-radius: 0;
-
-        .form-control {
-
-            .input-group {
-                flex-direction: column;
-                align-items: center;
-                gap: 0;
-
-                label {
-                    width: 100%;
-                    text-align: left;
-                }
-
-                input {
-                    width: 100%;
-                }
-
-                .show-password {
-                    top: 75%;
-                }
-            }
-        }
     }
 }
