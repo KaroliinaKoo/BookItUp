@@ -1,86 +1,201 @@
 import User from "../modules/user";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useEffect } from "react";
 
 function MyProfile() {
-  const [editProfile, setEditProfile] = useState(false);
+  const [changePassword, setChangePassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [formIsValid, setFormIsValid] = useState(false);
+  const [formErrorMessage, setFormErrorMessage] = useState("");
+
   const [formData, setFormData] = useState({
-    username: User.getName(),
-    email: User.getEmail(),
-    password: "",
+    currentPassword: "",
     newPassword: "",
+    confirmPassword: "",
   });
 
-  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
+
+  useEffect(() => {
+    setFormErrorMessage("");
+  }, [error]);
+
+  useEffect(() => {
+    setFormIsValid(Object.values(error).every((err) => err === ""));
+  }, [error]);
+
+  useEffect(() => {
+    if (formData.confirmPassword !== formData.newPassword) {
+      setError({ ...error, confirmPassword: "Passwords do not match" });
+    } else {
+      setError({ ...error, confirmPassword: "" });
+    }
+  }, [formData]);
+
+  const handleValidation = (e) => {
+    let { name, value } = e.target;
+    let errorObj = { ...error };
+    switch (name) {
+      case "currentPassword":
+        if (!value) {
+          errorObj.currentPassword = "Current password is required";
+        } else {
+          errorObj.currentPassword = "";
+        }
+        break;
+
+      case "newPassword":
+        if (!value) {
+          errorObj.newPassword = "New password is required";
+        } else if (value.length < 6) {
+          errorObj.newPassword = "Password must be at least 6 characters";
+        } else {
+          errorObj.newPassword = "";
+        }
+        break;
+
+      case "confirmPassword":
+        if (!value) {
+          errorObj.confirmPassword = "Confirm password is required";
+        }
+        break;
+
+      default:
+        break;
+    }
+    setError(errorObj);
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    handleValidation(e);
   };
 
   const handleReset = () => {
     setFormData({
-      username: User.getName(),
-      email: User.getEmail(),
-      password: "",
+      currentPassword: "",
       newPassword: "",
+      confirmPassword: "",
     });
-    setEditProfile(!editProfile);
+    setShowPassword(false);
+    setChangePassword(false);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!formIsValid) {
+      setFormErrorMessage("Please fill out the form correctly");
+      return;
+    }
+    setFormErrorMessage("");
+
+    let param = {
+      password: formData.newPassword,
+    };
+
+    fetch(`http://localhost:3002/users/${User.getID()}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(param),
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        } else {
+          throw new Error("Status Error: " + response.status);
+        }
+      })
+      .then((data) => {
+        console.log("Password changed successfully");
+        console.log(data);
+        handleReset();
+      });
   };
 
   return (
     <div className="user-profile">
       <h2>My Profile</h2>
 
-      {editProfile ? (
-        <form className="form-control">
+      {changePassword ? (
+        <form className="form-control" onSubmit={handleSubmit}>
           <div className="input-group">
-            <label htmlFor="username">Username</label>
+            <label htmlFor="currentPassword">Current Password</label>
             <input
-              value={formData.username}
-              onChange={handleChange}
-              type="username"
-              name="username"
-              placeholder="Your username"
-              maxLength={18}
-              minLength={3}
-              required
-              autoFocus
-            />
-          </div>
-          <div className="input-group">
-            <label htmlFor="email">E-mail</label>
-            <input
-              value={formData.email}
-              onChange={handleChange}
-              type="email"
-              name="email"
-              placeholder="Your e-mail"
-              maxLength={100}
-              required
-            />
-          </div>
-          <div className="input-group">
-            <label htmlFor="password">Password</label>
-            <input
-              value={formData.password}
+              className={error.currentPassword && "error"}
+              value={formData.currentPassword}
               onChange={handleChange}
               type={showPassword ? "text" : "password"}
-              id="password"
-              name="password"
-              placeholder="Your current password"
+              id="currentPassword"
+              name="currentPassword"
+              placeholder="Enter your current password"
               autoComplete="off"
               maxLength={32}
-              minLength={8}
+              minLength={6}
               required
             />
-            <button
-              type="button"
-              className="show-password"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
-            </button>
+            {error.currentPassword && (
+              <p className="error">{error.currentPassword}</p>
+            )}
           </div>
+
+          <div className="input-group">
+            <label htmlFor="password">New Password</label>
+            <input
+              className={error.newPassword && "error"}
+              value={formData.newPassword}
+              onChange={handleChange}
+              type={showPassword ? "text" : "password"}
+              id="newPassword"
+              name="newPassword"
+              placeholder="Enter your new password"
+              autoComplete="off"
+              maxLength={32}
+              minLength={6}
+              required
+            />
+            {error.newPassword && <p className="error">{error.newPassword}</p>}
+          </div>
+
+          <div className="input-group">
+            <label htmlFor="confirmPassword">Confirm New Password</label>
+            <input
+              className={error.confirmPassword && "error"}
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              type={showPassword ? "text" : "password"}
+              id="confirmPassword"
+              name="confirmPassword"
+              placeholder="Enter your new password again"
+              autoComplete="off"
+              maxLength={32}
+              minLength={6}
+              required
+            />
+            {error.confirmPassword && (
+              <p className="error">{error.confirmPassword}</p>
+            )}
+          </div>
+          <button
+            aria-label="Toggle password visibility"
+            type="button"
+            className="show-password"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? "Hide all passwords" : "Show all passwords"}
+            {showPassword ? (
+              <FaEyeSlash aria-label="hide" />
+            ) : (
+              <FaEye aria-label="show" />
+            )}
+          </button>
           <div className="btn-container">
             <button
               className="btn-secondary small"
@@ -93,6 +208,7 @@ function MyProfile() {
               Confirm Changes
             </button>
           </div>
+          {formErrorMessage && <p className="error">{formErrorMessage}</p>}
         </form>
       ) : (
         <>
@@ -109,11 +225,10 @@ function MyProfile() {
           <div className="btn-container">
             <button
               className="btn-primary small"
-              onClick={() => setEditProfile(!editProfile)}
+              onClick={() => setChangePassword(true)}
             >
-              Edit Profile
+              Change password
             </button>
-            <button className="btn-primary small">Change password</button>
           </div>
         </>
       )}
