@@ -16,15 +16,26 @@ function Login() {
     email: "",
     username: "",
     password: "",
-    confirmPassword: "",
+    password_confirmation: "",
   });
 
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [register, setRegister] = useState(false);
+  const [formIsValid, setFormIsValid] = useState(false);
+  const [formErrorMessage, setFormErrorMessage] = useState("");
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      navigate("/");
+    }
+  }, []);
+
+  useEffect(() => {
+    setFormErrorMessage("");
+  }, [register]);
+
+  const handleValidation = (e) => {
     if (!register) {
       return;
     }
@@ -44,6 +55,10 @@ function Login() {
       case "username":
         if (!value) {
           errorObj.username = "Username is required";
+        } else if (value.length < 3) {
+          errorObj.username = "Username must be at least 3 characters";
+        } else if (value.length > 18) {
+          errorObj.username = "Username must be less than 18 characters";
         } else {
           errorObj.username = "";
         }
@@ -59,13 +74,13 @@ function Login() {
         }
         break;
 
-      case "confirmPassword":
+      case "password_confirmation":
         if (!value) {
-          errorObj.confirmPassword = "Confirm password is required";
+          errorObj.password_confirmation = "Confirm password is required";
         } else if (value !== formData.password) {
-          errorObj.confirmPassword = "Passwords do not match";
+          errorObj.password_confirmation = "Passwords do not match";
         } else {
-          errorObj.confirmPassword = "";
+          errorObj.password_confirmation = "";
         }
         break;
 
@@ -75,10 +90,22 @@ function Login() {
     setError(errorObj);
   };
 
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    handleValidation(e);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (register) {
+      if (!formIsValid) {
+        setFormErrorMessage("Please fill out the form correctly");
+        return;
+      }
+      if (formIsValid) {
+        setFormErrorMessage("");
+      }
       // register
       fetch("http://localhost:3002/register", {
         method: "POST",
@@ -99,16 +126,31 @@ function Login() {
       })
         .then((r) => r.json())
         .then((user) => {
-          console.log("Logged in :" + JSON.stringify(user));
-          user.accessToken && localStorage.setItem("token", user.accessToken);
-          user.accessToken &&
-            localStorage.setItem("user", JSON.stringify(user.user));
-          User.setData(user.user);
-          navigate("/");
-          window.location.reload();
+          if (!user.ok) {
+            setFormErrorMessage(JSON.stringify(user));
+          } else {
+            console.log("Logged in: " + JSON.stringify(user));
+            user.accessToken && localStorage.setItem("token", user.accessToken);
+            user.accessToken &&
+              localStorage.setItem("user", JSON.stringify(user.user));
+            User.setData(user.user);
+            navigate("/");
+            window.location.reload();
+          }
         });
     }
   };
+
+  const handleConfirmPassword = (e) => {
+    setPasswordConfirmation(e.target.value);
+    handleValidation(e);
+  };
+
+  useEffect(() => {
+    if (register) {
+      setFormIsValid(Object.values(error).every((err) => err === ""));
+    }
+  }, [error, register]);
 
   return (
     <div className="container-card login">
@@ -142,6 +184,7 @@ function Login() {
           <div className="input-group">
             <label htmlFor="email">E-mail</label>
             <input
+              className={register && error.email ? "error" : ""}
               value={formData.email}
               onChange={handleChange}
               type="email"
@@ -159,6 +202,7 @@ function Login() {
             <div className="input-group">
               <label htmlFor="username">Username</label>
               <input
+                className={error.username && "error"}
                 value={formData.username}
                 onChange={handleChange}
                 type="username"
@@ -178,6 +222,7 @@ function Login() {
           <div className="input-group">
             <label htmlFor="password">Password</label>
             <input
+              className={register && error.password ? "error" : ""}
               value={formData.password}
               onChange={handleChange}
               type={showPassword ? "text" : "password"}
@@ -186,7 +231,7 @@ function Login() {
               placeholder="Your password"
               autoComplete="off"
               maxLength={32}
-              minLength={8}
+              minLength={6}
               required
             />
             <button
@@ -203,17 +248,18 @@ function Login() {
 
           {register && (
             <div className="input-group">
-              <label htmlFor="confirm-password">Confirm Password</label>
+              <label htmlFor="password_confirmation">Confirm Password</label>
               <input
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                className={error.password_confirmation && "error"}
+                value={passwordConfirmation}
+                onChange={handleConfirmPassword}
                 type={showPassword ? "text" : "password"}
-                id="confirmPassword"
-                name="confirm-password"
+                id="password_confirmation"
+                name="password_confirmation"
                 placeholder="Write your password again"
                 autoComplete="off"
                 maxLength={32}
-                minLength={8}
+                minLength={6}
                 required
               />
               <button
@@ -223,8 +269,8 @@ function Login() {
               >
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
-              {register && error.confirmPassword && (
-                <p className="error">{error.confirmPassword}</p>
+              {register && error.password_confirmation && (
+                <p className="error">{error.password_confirmation}</p>
               )}
             </div>
           )}
@@ -233,6 +279,9 @@ function Login() {
             {register ? "Register" : "Sign In"}
           </button>
         </div>
+        {formErrorMessage !== "" && (
+          <p className="error form-error">{formErrorMessage}</p>
+        )}
       </form>
     </div>
   );
