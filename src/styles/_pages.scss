@@ -98,19 +98,74 @@
     }
 
     .user-reviews {
-        width: 90%;
-        max-height: 70vh;
+        width: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        border: 0.1rem solid $color-grey;
+
+        .card {
+
+            .user-tools {
+                display: flex;
+                gap: 1em;
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                padding: 0 0.5em;
+
+                button {
+                    display: flex;
+                    place-items: center;
+                    padding: 0.5em;
+                    gap: 0.5em;
+                    font-size: 0.9rem;
+
+                    svg {
+                        line-height: 0;
+                        width: 0.7rem;
+                        height: 0.7rem;
+                    }
+                }
+
+
+            }
+        }
+
+
     }
 }
 
 .feedback-form {
     background-color: $color-white;
     max-width: $element-width-l;
+
+    .input-group {
+
+        &:has(:required) {
+            &:before {
+                content: "*";
+                position: absolute;
+                top: -3%;
+                left: -1.8%;
+                color: $color-primary;
+                font-size: 1rem;
+                font-weight: 200;
+            }
+        }
+    }
+
+    p.rating-heading {
+        &:before {
+            content: "*";
+            position: relative;
+            top: -3%;
+            left: -1.8%;
+            color: $color-primary;
+            font-size: 1rem;
+            font-weight: 200;
+        }
+    }
 }
 
 .hero-container {
@@ -459,11 +514,6 @@
             }
         }
 
-        p {
-            font-size: $font-size-base;
-            margin: $margin-base 0;
-        }
-
         .btn-delete,
         .btn-edit {
             position: absolute;
@@ -477,6 +527,8 @@
         }
 
         .num-display {
+            grid-column: 1 / span 1;
+            grid-row: 1 / span 2;
             width: calc($font-size-base * 2.6);
             height: calc($font-size-base * 2.6);
             display: flex;
@@ -495,22 +547,50 @@
             grid-row: 2 / 3;
         }
 
-        .text-display {
+        .body-display {
+            font-size: $font-size-base;
+            margin: 1em 2vw;
             grid-row: 3 / 4;
-            grid-column: 2 / span 4;
+            grid-column: 1 / span 4;
+
+            button {
+                padding: 0;
+                margin: 0;
+                font-size: 0.9rem;
+                font-weight: 600;
+                color: $color-secondary-muted-dark;
+            }
+
+            &.collapsed {
+                p {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+            }
+
+            &.expanded {
+                p {
+                    white-space: normal;
+                    overflow: visible;
+                }
+            }
         }
 
         .name-display {
+            display: flex;
+            align-items: center;
+            gap: 0.25em;
             grid-row: 4 / 5;
-            grid-column: 2 / span 4;
-            text-align: right;
+            grid-column: 1 / span 3;
+            text-align: left;
             font-size: calc($font-size-base * 0.8);
         }
 
         .date-display {
             grid-row: 4 / 5;
-            grid-column: 2 / span 3;
-            text-align: left;
+            grid-column: 3 / span 4;
+            text-align: right;
             font-size: calc($font-size-base * 0.8);
         }
     }

@@ -25,9 +25,9 @@ function MyReviews() {
   }, [itemIsEditing]);
 
   return (
-    <div className="user-reviews">
+    <>
       <h2>My Reviews</h2>
-      <div className="container">
+      <div className="user-reviews">
         {itemIsLoading && <div className="spinner" role="status" />}
         <div className="feedback-list">
           {MyReviews.length === 0 && (
@@ -38,15 +38,15 @@ function MyReviews() {
           ))}
         </div>
       </div>
-      <NavLink to="/add-review" className="btn-primary small">
-        Add a Review
-      </NavLink>
       {showForm && (
         <div className="modal">
           <ReviewForm />
         </div>
       )}
-    </div>
+      <NavLink to="/add-review" className="btn-primary small">
+        Add a Review
+      </NavLink>
+    </>
   );
 }
 

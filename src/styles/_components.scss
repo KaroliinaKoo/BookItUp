@@ -49,8 +49,16 @@ form {
         color: $color-dark;
 
         label {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
             font-size: $font-size-base;
             color: $color-dark;
+
+            .character-count {
+                color: $color-grey-dark;
+                font-size: 0.8rem;
+            }
         }
 
         input,
