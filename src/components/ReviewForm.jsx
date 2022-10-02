@@ -60,17 +60,21 @@ function ReviewForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    const today = new Date();
+    const date = today.toISOString().slice(0, 10);
+
     if (
       author.replace(/\s+/g, "").length >= authorMinLength &&
       title.replace(/\s+/g, "").length >= titleMinLength &&
       ratingRegex.test(rating)
     ) {
       const newFeedback = {
-        body,
+        username,
         title,
         author,
-        username,
+        body,
         rating,
+        date,
       }; // create a new feedback object with the text and rating values from the form fields
       if (itemIsEditing.isEditing) {
         updateItem(itemIsEditing.item.id, newFeedback); // update the item in the list of feedbacks
@@ -108,6 +112,7 @@ function ReviewForm() {
         name="title"
         onChange={(e) => setTitle(e.target.value)}
         minLength={titleMinLength}
+        maxLength={50}
         placeholder="e.g Harry Potter and the Goblet of Fire"
         list="titles_list"
         autoFocus
@@ -125,6 +130,7 @@ function ReviewForm() {
         name="author"
         onChange={(e) => setAuthor(e.target.value)}
         minLength={authorMinLength}
+        maxLength={40}
         placeholder="e.g J.K. Rowling"
         list="authors_list"
       />
@@ -136,13 +142,19 @@ function ReviewForm() {
       </datalist>
 
       <div className="input-group">
-        <label htmlFor="body">Your Review</label>
+        <label htmlFor="body">
+          Your Review
+          <span aria-label="Characters left" className="character-count">
+            {2000 - body.length}/2000
+          </span>
+        </label>
+
         <textarea
           name="body"
           placeholder="What did you think about the book?"
           value={body}
           onChange={(e) => setBody(e.target.value)}
-          maxLength={1000}
+          maxLength={3000}
         />
       </div>
 

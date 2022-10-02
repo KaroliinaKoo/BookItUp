@@ -20,7 +20,7 @@ function RatingSelector({ select }) {
 
   return (
     <section className="rating-container">
-      Select a Rating:
+      <p className="rating-heading">Select a Rating:</p>
       <span className="detail-text">
         How would you rate the book on a scale of 1 to 10?
       </span>
