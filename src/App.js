@@ -13,9 +13,8 @@ import User from "./modules/user";
 import { useEffect, useState } from "react";
 import { useJwt } from "react-jwt";
 
-const token = localStorage.getItem("token");
-
 function App() {
+  const token = localStorage.getItem("token");
   const [user, setUser] = useState(User.getData());
   const { decodedToken, isExpired } = useJwt(token);
 
@@ -33,7 +32,7 @@ function App() {
         setUser(User.getData());
       }
     }
-  }, [isExpired]);
+  }, [isExpired, token]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
