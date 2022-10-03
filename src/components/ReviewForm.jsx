@@ -84,7 +84,7 @@ function ReviewForm() {
         addItem(newFeedback); // add the feedback to the list of feedbacks
         reset();
         showAlert("success", "Review submitted successfully!");
-        navigate("/find-reviews");
+        navigate("/dashboard");
       }
     } else {
       showAlert("error", "Error");

@@ -4,8 +4,8 @@ import MyProfile from "../components/MyProfile";
 import MyReviews from "../components/MyReviews";
 
 function UserDashboard() {
-  const [showProfile, setShowProfile] = useState(true);
-  const [showReviews, setShowReviews] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
+  const [showReviews, setShowReviews] = useState(true);
 
   const userIsAuthenticated = () => {
     return localStorage.getItem("token");
@@ -34,16 +34,16 @@ function UserDashboard() {
           <h1>{User.getName()}'s Dashboard</h1>
           <div className="user-dashboard nav">
             <button
-              className={`btn-secondary small ${showProfile ? "active" : ""}`}
-              onClick={handleProfileClick}
-            >
-              Profile
-            </button>
-            <button
               className={`btn-secondary small ${showReviews ? "active" : ""}`}
               onClick={handleReviewsClick}
             >
-              Reviews
+              My Reviews
+            </button>
+            <button
+              className={`btn-secondary small ${showProfile ? "active" : ""}`}
+              onClick={handleProfileClick}
+            >
+              My Profile
             </button>
           </div>
           {showProfile && <MyProfile />}

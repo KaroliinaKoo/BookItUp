@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import Prompt from "../components/shared/Prompt";
 
 const FeedbackContext = createContext();
 
@@ -46,12 +47,10 @@ export const FeedbackProvider = ({ children }) => {
 
   // DELETE
   const deleteItem = async (id) => {
-    if (window.confirm("Are you sure you want to delete this item?")) {
-      await fetch(`http://localhost:3001/review/${id}`, {
-        method: "DELETE",
-      });
-      setFeedback(feedback.filter((item) => item.id !== id));
-    }
+    await fetch(`http://localhost:3001/review/${id}`, {
+      method: "DELETE",
+    });
+    setFeedback(feedback.filter((item) => item.id !== id));
   };
 
   // EDIT

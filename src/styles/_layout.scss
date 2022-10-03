@@ -33,6 +33,49 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+
+  .modal-content {
+    position: relative;
+    background-color: $color-primary-muted-light;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    padding-top: 2em;
+    min-width: 20em;
+    min-height: 10em;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    overflow: auto;
+    box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5);
+
+    .close {
+      position: absolute;
+      top: 2%;
+      right: 2%;
+      width: 1.4rem;
+      height: 1.4rem;
+      color: black;
+      cursor: pointer;
+    }
+
+    p {
+      padding: 1rem;
+      white-space: pre-wrap;
+      text-align: center;
+      line-height: 2rem;
+    }
+
+
+    .btn-container {
+      display: flex;
+      justify-content: center;
+    }
+  }
 }
 
 header {

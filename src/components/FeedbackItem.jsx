@@ -3,11 +3,14 @@ import { FaTimes, FaEdit, FaUserCircle } from "react-icons/fa";
 import { useContext, useState } from "react";
 import FeedbackContext from "../context/FeedbackContext";
 import AlertContext from "../context/AlertContext";
+import Prompt from "./shared/Prompt";
 
 function ReviewItem({ item, profileView }) {
+  const [showPrompt, setShowPrompt] = useState(false);
   const { deleteItem, editItem } = useContext(FeedbackContext);
   const { showAlert } = useContext(AlertContext);
   const [expandBody, setExpandBody] = useState(false);
+
   const formatDate = (date) => {
     const d = new Date(date);
     const month = d.toLocaleString("default", { month: "long" });
@@ -18,11 +21,20 @@ function ReviewItem({ item, profileView }) {
 
   const handleDelete = () => {
     deleteItem(item.id);
-    showAlert("error", "Item deleted successfully");
+    showAlert("success", "Item deleted successfully");
   };
 
   return (
     <Card className={profileView ? "profile-view" : ""}>
+      <Prompt
+        title="Delete Review"
+        message={`Are you sure you want to permanently delete the review:
+        \n"${item.title}"?
+        \nThis action cannot be undone!`}
+        visible={showPrompt}
+        onConfirm={() => handleDelete()}
+        onCancel={() => setShowPrompt(false)}
+      />
       <div className="num-display" aria-label="Rating">
         {item.rating}
         <span>/10</span>
@@ -57,15 +69,15 @@ function ReviewItem({ item, profileView }) {
       </div>
       {profileView && (
         <div className="user-tools">
-          <button onClick={handleDelete}>
-            <FaTimes className="btn-icon" /> Delete Review
+          <button onClick={() => setShowPrompt(true)}>
+            <FaTimes className="btn-icon" /> Delete
           </button>
           <button
             onClick={() => {
               editItem(item);
             }}
           >
-            <FaEdit className="btn-icon" /> Edit Review
+            <FaEdit className="btn-icon" /> Edit
           </button>
         </div>
       )}
