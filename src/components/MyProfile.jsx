@@ -122,8 +122,6 @@ function MyProfile() {
 
   return (
     <div className="user-profile">
-      <h2>My Profile</h2>
-
       {changePassword ? (
         <form className="form-control" onSubmit={handleSubmit}>
           <div className="input-group">

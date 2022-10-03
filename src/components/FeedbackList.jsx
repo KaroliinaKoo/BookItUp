@@ -25,7 +25,7 @@ function FeedbackList({ search, sortBy }) {
           } else if (
             item.title.toLowerCase().includes(search.title.toLowerCase()) &&
             item.author.toLowerCase().includes(search.author.toLowerCase()) &&
-            item.rating.toString().includes(search.rating) &&
+            item.rating.toString() === search.rating &&
             item.username.toLowerCase().includes(search.username.toLowerCase())
           ) {
             return item;
