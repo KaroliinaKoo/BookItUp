@@ -9,7 +9,7 @@ function NewReview() {
   return (
     <>
       {auth && (
-        <div className="container white">
+        <div className="container">
           <ReviewForm />
         </div>
       )}

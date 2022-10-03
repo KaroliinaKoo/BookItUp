@@ -1,6 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import Prompt from "../components/shared/Prompt";
+import { Navigate } from "react-router-dom";
 
 const FeedbackContext = createContext();
 
@@ -11,8 +10,6 @@ export const FeedbackProvider = ({ children }) => {
     item: {},
     isEditing: false,
   });
-
-  const location = useLocation();
 
   //INITIAL FETCH
   useEffect(() => {
@@ -26,11 +23,6 @@ export const FeedbackProvider = ({ children }) => {
     };
     fetchFeedback();
   }, []);
-
-  //DETECT ROUTE CHANGE
-  useEffect(() => {
-    setItemIsEditing({ item: {}, isEditing: false });
-  }, [location]);
 
   // ADD
   const addItem = async (item) => {

@@ -310,8 +310,7 @@ main {
   overflow-y: auto;
   width: 100%;
   height: 100%;
-  max-width: $element-width-l;
-  background-color: $color-primary-muted-light;
+  //background-color: $color-primary-muted-light;
 
   h1,
   h2,
@@ -319,7 +318,8 @@ main {
     text-align: center;
   }
 
-  &.white {
+  &:has(.feedback-form) {
+    padding: 0;
     background-color: $color-white;
   }
 
@@ -339,6 +339,7 @@ main {
   border-radius: 0.5em;
   height: fit-content;
   max-width: $element-width-m;
+  background-color: $color-primary-muted-light;
 }
 
 /* CUSTOM SCROLLBAR */

@@ -78,14 +78,13 @@ function ReviewForm() {
       }; // create a new feedback object with the text and rating values from the form fields
       if (itemIsEditing.isEditing) {
         updateItem(itemIsEditing.item.id, newFeedback); // update the item in the list of feedbacks
-        reset();
         showAlert("success", "Review updated successfully!");
       } else {
         addItem(newFeedback); // add the feedback to the list of feedbacks
-        reset();
         showAlert("success", "Review submitted successfully!");
-        navigate("/dashboard");
       }
+      reset();
+      navigate("/dashboard");
     } else {
       showAlert("error", "Error");
     }
@@ -99,8 +98,9 @@ function ReviewForm() {
   };
 
   const handleCancel = () => {
-    reset();
     cancelEdit();
+    reset();
+    navigate("/dashboard");
   };
 
   return (
@@ -154,7 +154,7 @@ function ReviewForm() {
           placeholder="What did you think about the book?"
           value={body}
           onChange={(e) => setBody(e.target.value)}
-          maxLength={3000}
+          maxLength={2000}
         />
       </div>
 

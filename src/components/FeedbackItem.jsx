@@ -3,6 +3,7 @@ import { FaTimes, FaEdit, FaUserCircle } from "react-icons/fa";
 import { useContext, useState } from "react";
 import FeedbackContext from "../context/FeedbackContext";
 import AlertContext from "../context/AlertContext";
+import { useNavigate } from "react-router-dom";
 import Prompt from "./shared/Prompt";
 
 function ReviewItem({ item, profileView }) {
@@ -10,6 +11,7 @@ function ReviewItem({ item, profileView }) {
   const { deleteItem, editItem } = useContext(FeedbackContext);
   const { showAlert } = useContext(AlertContext);
   const [expandBody, setExpandBody] = useState(false);
+  const navigate = useNavigate();
 
   const formatDate = (date) => {
     const d = new Date(date);
@@ -75,6 +77,7 @@ function ReviewItem({ item, profileView }) {
           <button
             onClick={() => {
               editItem(item);
+              navigate("/add-review");
             }}
           >
             <FaEdit className="btn-icon" /> Edit

@@ -6,7 +6,7 @@
     .user-dashboard.nav {
         display: flex;
         flex-direction: row;
-        justify-content: space-evenly;
+        justify-content: center;
         background-color: white;
         width: 100%;
         height: fit-content;
@@ -37,6 +37,7 @@
         flex-direction: column;
         gap: 1em;
         width: 90%;
+        max-width: $element-width-m;
 
         p {
             margin-left: 1.5em;
@@ -99,6 +100,7 @@
 
     .user-reviews {
         width: 100%;
+        max-width: $element-width-l;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -127,20 +129,18 @@
                         height: 0.7rem;
                     }
                 }
-
-
             }
         }
-
-
     }
 }
 
 .feedback-form {
     background-color: $color-white;
     max-width: $element-width-l;
-    padding-top: 0;
+    min-height: 100%;
+    padding-top: 1em;
     padding-bottom: 0;
+    border-radius: 0.5em;
 
     .input-group {
 
@@ -173,6 +173,7 @@
 .hero-container {
     width: 100%;
     height: 100%;
+    max-width: $element-width-xxl;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -202,20 +203,14 @@
         background-position: center;
         background-repeat: no-repeat;
         padding: calc(2vw + 2em);
-        color: black;
         display: flex;
-        width: 100%;
-        max-width: $element-width-xl;
-        height: 100%;
         flex-direction: column;
         align-items: center;
+        width: 100%;
+        height: 100%;
         justify-content: space-around;
         text-align: center;
         transition: all 0.2s ease-in-out;
-
-        //box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.138);
-
-        @media screen and (max-width: $breakpoint-md) {}
 
         h1 {
             font-size: 2.6rem;
@@ -486,11 +481,11 @@
 
     .card {
         display: grid;
-        grid-template-columns: 3rem 2rem 2fr;
+        grid-template-columns: 3.5em 2em 2fr;
         grid-template-rows: auto 1rem auto 1rem;
         width: 100%;
         column-gap: 0.5em;
-        padding: 0.8em;
+        padding: 1.2em;
 
 
         h2 {
@@ -551,9 +546,9 @@
 
         .body-display {
             font-size: $font-size-base;
-            margin: 1em 2vw;
+            margin: 1em 0;
             grid-row: 3 / 4;
-            grid-column: 1 / span 4;
+            grid-column: 2 / span 4;
 
             button {
                 padding: 0;
@@ -576,6 +571,10 @@
                     white-space: normal;
                     overflow: visible;
                 }
+            }
+
+            @media screen and (max-width: $breakpoint-sm) {
+                grid-column: 1 / span 4;
             }
         }
 
@@ -678,7 +677,6 @@
     }
 
     @media screen and (max-width: $breakpoint-sm) {
-
         border-radius: 0;
     }
 }
