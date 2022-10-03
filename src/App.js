@@ -48,7 +48,7 @@ function App() {
           <main>
             <Alert />
             <Routes>
-              <Route path="/" element={<Main user={user} />} />
+              <Route path="/" element={<Main />} />
               <Route path="/find-reviews" element={<FindReviews />} />
               <Route path="/add-review" element={<NewReview />} />
               <Route path="/login" element={<Login />} />

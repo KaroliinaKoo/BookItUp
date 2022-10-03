@@ -1,13 +1,14 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import User from "../modules/user";
 
-function Main({ user }) {
+function Main() {
   return (
     <div className="hero-container">
       <div className="hero-card">
         <p>The Best Reads</p> <p>Wherever you are.</p>
-        {user?.id ? (
-          <div className="user-welcome">Hi, {user?.username}</div>
+        {User?.isAuthorized() ? (
+          <div className="user-welcome">Hi, {User?.getName()}</div>
         ) : (
           <NavLink to="/login" className="btn-primary btn-cta">
             Sign Up Today
