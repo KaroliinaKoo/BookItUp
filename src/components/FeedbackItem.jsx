@@ -1,13 +1,15 @@
 import Card from "./shared/Card";
-import { FaTimes, FaEdit, FaUserCircle } from "react-icons/fa";
+import { FaTimes, FaEdit, FaUserCircle, FaRegComments } from "react-icons/fa";
 import { useContext, useState } from "react";
 import FeedbackContext from "../context/FeedbackContext";
 import AlertContext from "../context/AlertContext";
 import { useNavigate } from "react-router-dom";
 import Prompt from "./shared/Prompt";
+import NewComment from "./NewComment";
 
 function ReviewItem({ item, profileView }) {
   const [showPrompt, setShowPrompt] = useState(false);
+  const [showForm, setShowForm] = useState(false);
   const { deleteItem, editItem } = useContext(FeedbackContext);
   const { showAlert } = useContext(AlertContext);
   const [expandBody, setExpandBody] = useState(false);
@@ -55,20 +57,6 @@ function ReviewItem({ item, profileView }) {
           </button>
         )}
       </div>
-      {!profileView && (
-        <div className="name-display">
-          <FaUserCircle /> {item.username}
-        </div>
-      )}
-      <div className="date-display">
-        {formatDate(item.date)}
-        {item.updatedDate && (
-          <>
-            <span> Edited: </span>
-            {item.updatedDate}
-          </>
-        )}
-      </div>
       {profileView && (
         <div className="user-tools">
           <button onClick={() => setShowPrompt(true)}>
@@ -83,6 +71,23 @@ function ReviewItem({ item, profileView }) {
             <FaEdit className="btn-icon" /> Edit
           </button>
         </div>
+      )}
+      <div className="review-footer">
+        {!showForm && item.body.length > 0 && (
+          <button className="toggle-comment" onClick={() => setShowForm(true)}>
+            <FaRegComments title="Add a Comment" aria-label="Add a Comment" />0
+            Comments
+          </button>
+        )}
+        {!profileView && (
+          <div className="name-display">
+            <FaUserCircle /> {item.username}
+          </div>
+        )}
+        <div className="date-display">{formatDate(item.date)}</div>
+      </div>
+      {!profileView && showForm && (
+        <NewComment showForm={showForm} setShowForm={setShowForm} />
       )}
     </Card>
   );

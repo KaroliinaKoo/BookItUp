@@ -481,16 +481,15 @@
 
     .card {
         display: grid;
-        grid-template-columns: 3.5em 2em 2fr;
-        grid-template-rows: auto 1rem auto 1rem;
+        grid-template-columns: 3.5em 3fr 1fr;
+        grid-template-rows: auto 1em auto 1em auto;
         width: 100%;
-        column-gap: 0.5em;
-        padding: 1.2em;
-
+        padding: 0;
+        gap: 0.5em;
 
         h2 {
             grid-column: 2 / span 4;
-            grid-row: 1 / span 1;
+            grid-row: 1 / 2;
             font-size: $font-size-base;
             font-weight: 600;
             text-transform: uppercase;
@@ -524,7 +523,7 @@
         }
 
         .num-display {
-            grid-column: 1 / span 1;
+            grid-column: 1 / 2;
             grid-row: 1 / span 2;
             width: calc($font-size-base * 2.6);
             height: calc($font-size-base * 2.6);
@@ -551,9 +550,10 @@
             grid-column: 2 / span 4;
 
             button {
+                position: relative;
                 padding: 0;
                 margin: 0;
-                font-size: 0.9rem;
+                font-size: 0.75rem;
                 font-weight: 600;
                 color: $color-secondary-muted-dark;
             }
@@ -578,21 +578,99 @@
             }
         }
 
-        .name-display {
-            display: flex;
-            align-items: center;
-            gap: 0.25em;
+        .review-footer {
+            grid-column: 1 / span 4;
             grid-row: 4 / 5;
-            grid-column: 1 / span 3;
-            text-align: left;
-            font-size: calc($font-size-base * 0.8);
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5em;
+            align-items: center;
+            width: 100%;
+            background-color: $color-secondary-muted-light;
+
+            button.toggle-comment {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: transparent;
+                border: none;
+                gap: 0.5em;
+                padding: 0;
+                margin: 0 0.5em;
+                color: $color-dark;
+                position: absolute;
+                font-size: 0.8rem;
+                left: 5%;
+
+                svg {
+                    font-size: 1rem;
+                }
+            }
+
+            .name-display {
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                gap: 0.25em;
+                text-align: right;
+                font-size: calc($font-size-base * 0.75);
+            }
+
+            .date-display {
+                text-align: right;
+                font-size: calc($font-size-base * 0.75);
+                color: $color-secondary-muted-dark;
+            }
         }
 
-        .date-display {
-            grid-row: 4 / 5;
-            grid-column: 3 / span 4;
-            text-align: right;
-            font-size: calc($font-size-base * 0.8);
+        .add-comment {
+            display: flex;
+            width: 100%;
+            grid-column: 1 / span 4;
+
+            form {
+                padding: 0;
+
+                .input-group {
+                    width: 100%;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    align-items: flex-start;
+                    margin-top: 0.5em;
+
+                    label {
+                        font-size: 0.9rem;
+                        color: $color-secondary-muted-dark;
+                    }
+
+                    textarea {
+                        background-color: $color-secondary-muted-light;
+                        resize: none;
+                    }
+                }
+            }
+
+            button.submit,
+            button.toggle {
+                font-size: 0.8rem;
+                color: $color-white;
+                width: 6em;
+            }
+
+            .new-comment {
+                width: 100%;
+            }
+        }
+
+        @media screen and (max-width: $breakpoint-sm) {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            .body-display {
+                max-width: 100%;
+            }
         }
     }
 }
