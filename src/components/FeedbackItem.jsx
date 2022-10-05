@@ -39,52 +39,59 @@ function ReviewItem({ item, profileView }) {
         onConfirm={() => handleDelete()}
         onCancel={() => setShowPrompt(false)}
       />
-      <div className="num-display" aria-label="Rating">
-        {item.rating}
-        <span>/10</span>
+      <div className="review-header">
+        <div className="num-display" aria-label="Rating">
+          {item.rating}
+          <span>/10</span>
+        </div>
+        <div className="review-title">
+          <h2>{item.title}</h2>
+          <span className="author-display">by {item.author}</span>
+        </div>
       </div>
-      <h2>{item.title}</h2>
-      <span className="author-display">by {item.author}</span>
-      <div
-        className={`body-display ${
-          item.body.length > 100 && (expandBody ? "expanded" : "collapsed")
-        }`}
-      >
-        <p>{item.body}</p>
-        {item.body.length > 100 && (
-          <button onClick={() => setExpandBody(!expandBody)}>
-            {expandBody ? "Show Less" : "Show More"}
-          </button>
-        )}
-      </div>
-      {profileView && (
-        <div className="user-tools">
-          <button onClick={() => setShowPrompt(true)}>
-            <FaTimes className="btn-icon" /> Delete
-          </button>
-          <button
-            onClick={() => {
-              editItem(item);
-              navigate("/add-review");
-            }}
-          >
-            <FaEdit className="btn-icon" /> Edit
-          </button>
+      {item.body && (
+        <div
+          className={`body-display ${
+            item.body.length > 100 && (expandBody ? "expanded" : "collapsed")
+          }`}
+        >
+          <p>{item.body}</p>
+          {item.body.length > 100 && (
+            <button onClick={() => setExpandBody(!expandBody)}>
+              {expandBody ? "Show Less" : "Show More"}
+            </button>
+          )}
         </div>
       )}
+
       <div className="review-footer">
-        {!showForm && item.body.length > 0 && (
-          <button className="toggle-comment" onClick={() => setShowForm(true)}>
-            <FaRegComments title="Add a Comment" aria-label="Add a Comment" />0
-            Comments
-          </button>
-        )}
-        {!profileView && (
-          <div className="name-display">
-            <FaUserCircle /> {item.username}
+        {profileView && (
+          <div className="user-tools">
+            <button onClick={() => setShowPrompt(true)}>
+              <FaTimes className="btn-icon" /> Delete
+            </button>
+            <button
+              onClick={() => {
+                editItem(item);
+                navigate("/add-review");
+              }}
+            >
+              <FaEdit className="btn-icon" /> Edit
+            </button>
           </div>
         )}
-        <div className="date-display">{formatDate(item.date)}</div>
+        <button className="toggle-comment" onClick={() => setShowForm(true)}>
+          <FaRegComments title="Add a Comment" aria-label="Add a Comment" />0
+          Comments
+        </button>
+        <div className="detail-container">
+          {!profileView && (
+            <div className="name-display">
+              <FaUserCircle /> {item.username}
+            </div>
+          )}
+          <div className="date-display">{formatDate(item.date)}</div>
+        </div>
       </div>
       {!profileView && showForm && (
         <NewComment showForm={showForm} setShowForm={setShowForm} />

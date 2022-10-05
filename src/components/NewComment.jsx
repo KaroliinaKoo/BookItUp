@@ -24,7 +24,7 @@ function NewComment({ showForm, setShowForm }) {
         <div className="new-comment">
           <form onSubmit={handleSubmit}>
             <div className="input-group">
-              <label htmlFor="comment">Comment</label>
+              <label htmlFor="comment">Add a Comment</label>
               <textarea
                 name="comment"
                 id="comment"

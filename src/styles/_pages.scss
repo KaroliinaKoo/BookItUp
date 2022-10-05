@@ -109,11 +109,9 @@
         .card {
 
             .user-tools {
+                flex: 1 1 50%;
                 display: flex;
                 gap: 1em;
-                position: absolute;
-                bottom: 0;
-                left: 0;
                 padding: 0 0.5em;
 
                 button {
@@ -480,53 +478,19 @@
     max-width: $element-width-l;
 
     .card {
-        display: grid;
-        grid-template-columns: 3.5em 3fr 1fr;
-        grid-template-rows: auto 1em auto 1em auto;
-        width: 100%;
+        display: flex;
+        flex-direction: column;
         padding: 0;
-        gap: 0.5em;
 
-        h2 {
-            grid-column: 2 / span 4;
-            grid-row: 1 / 2;
-            font-size: $font-size-base;
-            font-weight: 600;
-            text-transform: uppercase;
-            color: $color-dark;
-            text-align: left;
-            margin: 0;
+        .review-header {
             display: flex;
-            align-items: center;
-        }
-
-        span {
-            font-size: calc($font-size-base * 0.8);
-            font-weight: 400;
-
-            &.date-display,
-            &.author-display {
-                color: $color-secondary-muted-dark;
-            }
-        }
-
-        .btn-delete,
-        .btn-edit {
-            position: absolute;
-            bottom: 25px;
-            right: 25px;
-            color: $color-secondary-muted-dark;
-        }
-
-        .btn-edit {
-            right: 60px;
+            gap: 0.5em;
+            padding: 0.5em;
         }
 
         .num-display {
-            grid-column: 1 / 2;
-            grid-row: 1 / span 2;
-            width: calc($font-size-base * 2.6);
-            height: calc($font-size-base * 2.6);
+            width: calc($font-size-base * 2.8);
+            height: calc($font-size-base * 2.8);
             display: flex;
             place-content: center;
             place-items: center;
@@ -536,18 +500,47 @@
             background: $color-primary;
             color: $color-white;
             line-height: 0;
+            margin: 0.2em;
+            flex: 0 0 auto;
+
+            span {
+                font-size: 0.8rem;
+                font-weight: 400;
+                line-height: 0;
+            }
         }
 
-        .author-display {
-            grid-column: 2 / span 4;
-            grid-row: 2 / 3;
+        .review-title {
+
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+
+            h2 {
+                margin: 0;
+                font-size: $font-size-base;
+                font-weight: 600;
+                text-transform: uppercase;
+                color: $color-dark;
+                text-align: left;
+
+            }
+
+            .author-display {
+                text-align: right;
+                font-size: calc($font-size-base * 0.75);
+                color: $color-secondary-muted-dark;
+            }
         }
 
         .body-display {
-            font-size: $font-size-base;
-            margin: 1em 0;
-            grid-row: 3 / 4;
-            grid-column: 2 / span 4;
+            padding: 1.5em;
+
+            p {
+                font-size: $font-size-base;
+                max-width: 95%;
+            }
 
             button {
                 position: relative;
@@ -572,21 +565,27 @@
                     overflow: visible;
                 }
             }
-
-            @media screen and (max-width: $breakpoint-sm) {
-                grid-column: 1 / span 4;
-            }
         }
 
         .review-footer {
-            grid-column: 1 / span 4;
-            grid-row: 4 / 5;
             display: flex;
-            justify-content: flex-end;
-            gap: 0.5em;
+            justify-content: space-between;
             align-items: center;
             width: 100%;
-            background-color: $color-secondary-muted-light;
+            padding: 0 0.5em;
+            background-color: $color-primary-muted-light;
+
+            .btn-delete,
+            .btn-edit {
+                position: absolute;
+                bottom: 25px;
+                right: 25px;
+                color: $color-secondary-muted-dark;
+            }
+
+            .btn-edit {
+                right: 60px;
+            }
 
             button.toggle-comment {
                 display: flex;
@@ -596,40 +595,54 @@
                 border: none;
                 gap: 0.5em;
                 padding: 0;
-                margin: 0 0.5em;
+                margin: 0 0.25em;
                 color: $color-dark;
-                position: absolute;
                 font-size: 0.8rem;
-                left: 5%;
 
                 svg {
                     font-size: 1rem;
                 }
             }
 
-            .name-display {
+            .detail-container {
+                white-space: nowrap;
                 display: flex;
-                align-items: center;
                 justify-content: flex-end;
-                gap: 0.25em;
-                text-align: right;
-                font-size: calc($font-size-base * 0.75);
+                gap: 0.5em;
+
+                .name-display {
+                    flex: 1 1 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-end;
+                    gap: 0.25em;
+                    font-size: calc($font-size-base * 0.75);
+                }
+
+                .date-display {
+                    flex: 1 1 50%;
+                    min-width: 12em;
+                    text-align: right;
+                    font-size: calc($font-size-base * 0.75);
+                    color: $color-secondary-muted-dark;
+                }
             }
 
-            .date-display {
-                text-align: right;
-                font-size: calc($font-size-base * 0.75);
-                color: $color-secondary-muted-dark;
+            @media screen and (max-width: $breakpoint-sm) {
+                flex-direction: column-reverse;
+                align-items: center;
+                gap: 0.5em;
             }
         }
 
         .add-comment {
             display: flex;
             width: 100%;
-            grid-column: 1 / span 4;
+            background-color: $color-primary-muted-light;
 
             form {
-                padding: 0;
+                padding: 0 1em;
+                gap: 0.5em;
 
                 .input-group {
                     width: 100%;
@@ -639,23 +652,29 @@
                     margin-top: 0.5em;
 
                     label {
-                        font-size: 0.9rem;
+                        font-size: 0.85rem;
                         color: $color-secondary-muted-dark;
                     }
 
                     textarea {
-                        background-color: $color-secondary-muted-light;
+                        background-color: $color-white;
                         resize: none;
                     }
                 }
             }
 
-            button.submit,
-            button.toggle {
-                font-size: 0.8rem;
-                color: $color-white;
-                width: 6em;
+            .btn-container {
+                justify-content: flex-start;
+
+                button.submit,
+                button.toggle {
+                    font-size: 0.8rem;
+                    color: $color-white;
+                    max-width: 10em;
+                    margin-top: 0;
+                }
             }
+
 
             .new-comment {
                 width: 100%;
@@ -665,10 +684,11 @@
         @media screen and (max-width: $breakpoint-sm) {
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
 
             .body-display {
+                padding: 0 0.5em;
                 max-width: 100%;
             }
         }
