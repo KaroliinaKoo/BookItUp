@@ -2,6 +2,10 @@
 
 Check for and install dependencies.
 
-## `npm run dev`
+## `tsc --watch`
+
+Start to watch the source folder for TS -> JS compilation
+
+### `npm run dev`
 
 Start the environment.
