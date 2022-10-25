@@ -1,7 +1,7 @@
 import React from "react";
 import { useContext } from "react";
 import FeedbackItem from "./FeedbackItem";
-import FeedbackContext from "../context/FeedbackContext";
+import { FeedbackContext } from "../context/FeedbackContext";
 
 function FeedbackList({ search, sortBy }) {
   const { feedback, itemIsLoading } = useContext(FeedbackContext);

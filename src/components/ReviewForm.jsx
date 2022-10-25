@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import Button from "../components/shared/Button";
 import Input from "../components/shared/Input";
 import RatingSelector from "../components/RatingSelector";
-import FeedbackContext from "../context/FeedbackContext";
+import { FeedbackContext } from "../context/FeedbackContext";
 import AlertContext from "../context/AlertContext";
 import { useNavigate } from "react-router-dom";
 import User from "../modules/user";

@@ -1,7 +1,7 @@
 import Card from "./shared/Card";
 import { FaTimes, FaEdit, FaUserCircle, FaRegComments } from "react-icons/fa";
 import { useContext, useState } from "react";
-import FeedbackContext from "../context/FeedbackContext";
+import { FeedbackContext } from "../context/FeedbackContext";
 import AlertContext from "../context/AlertContext";
 import { useNavigate } from "react-router-dom";
 import Prompt from "./shared/Prompt";

@@ -7,7 +7,7 @@ import Header from "./components/Header";
 import UserDashboard from "./features/UserDashboard";
 import Alert from "./components/Alert";
 import { Routes, Route } from "react-router-dom";
-import { FeedbackProvider } from "./context/FeedbackContext";
+import { FeedbackContext } from "./context/FeedbackContext";
 import { AlertProvider } from "./context/AlertContext";
 import User from "./modules/user";
 import { useEffect, useState } from "react";
@@ -41,7 +41,7 @@ function App() {
   };
 
   return (
-    <FeedbackProvider>
+    <FeedbackContext.Provider>
       <AlertProvider>
         <div className="App">
           <Header user={user} handleLogout={handleLogout} />
@@ -58,7 +58,7 @@ function App() {
           </main>
         </div>
       </AlertProvider>
-    </FeedbackProvider>
+    </FeedbackContext.Provider>
   );
 }
 

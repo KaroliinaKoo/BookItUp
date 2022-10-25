@@ -1,5 +1,5 @@
 import User from "../modules/user";
-import FeedbackContext from "../context/FeedbackContext";
+import { FeedbackContext } from "../context/FeedbackContext";
 import { useContext, useState, useEffect } from "react";
 import FeedbackItem from "./FeedbackItem";
 import { NavLink } from "react-router-dom";

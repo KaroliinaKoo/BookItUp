@@ -1,7 +1,7 @@
+import { UserDataTypes } from "../queries/DataTypes";
+
 const User = (function () {
-  let id = "";
-  let username = "";
-  let email = "";
+  let id: number, username: string, email: string;
 
   const isAuthorized = () => {
     return getToken() ? true : false;
@@ -27,15 +27,20 @@ const User = (function () {
     return localStorage.getItem("token");
   };
 
-  const setData = (data) => {
-    id = data.id || "";
-    username = data.username || "";
-    email = data.email || "";
+  const setData = (data: UserDataTypes) => {
+    if (getToken()) {
+      username = data.username;
+      email = data.email;
+      id = data.id;
+    } else {
+      console.log("No token found");
+    }
   };
 
   const clearData = () => {
-    id = "";
+    id = 0;
     username = "";
+    email = "";
   };
 
   return {

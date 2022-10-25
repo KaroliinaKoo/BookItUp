@@ -1,12 +1,46 @@
-import { createContext, useState, useEffect } from "react";
-import { Navigate } from "react-router-dom";
+import { createContext, useState, useContext, useEffect } from "react";
+import { FeedbackTypes } from "../queries/DataTypes";
+import React from "react";
 
-const FeedbackContext = createContext();
+// Interfaces
 
-export const FeedbackProvider = ({ children }) => {
-  const [feedback, setFeedback] = useState([]);
-  const [itemIsLoading, setItemIsLoading] = useState(true);
-  const [itemIsEditing, setItemIsEditing] = useState({
+interface FeedbackContextTypes {
+  feedback: FeedbackTypes[];
+  itemIsLoading: boolean;
+  itemIsEditing: itemIsEditingTypes;
+  deleteItem: (id: number) => void;
+  addItem: (item: FeedbackTypes) => void;
+  editItem: (item: FeedbackTypes) => void;
+  updateItem: (id: number, updatedItem: FeedbackTypes) => void;
+  cancelEdit: () => void;
+}
+
+interface itemIsEditingTypes {
+  item: FeedbackTypes | {};
+  isEditing: boolean;
+}
+
+// Context
+
+export const FeedbackContext = createContext<FeedbackContextTypes | null>(null);
+
+// Provider
+
+export function Provider({ children }: { children: JSX.Element }): JSX.Element {
+  const context = useContext(FeedbackContext);
+
+  if (!context) {
+    throw new Error("useFeedbackContext must be used within a FeedbackContext");
+  }
+
+  const [feedback, setFeedback] = useState<FeedbackContextTypes["feedback"]>(
+    []
+  );
+  const [itemIsLoading, setItemIsLoading] =
+    useState<FeedbackContextTypes["itemIsLoading"]>(true);
+  const [itemIsEditing, setItemIsEditing] = useState<
+    FeedbackContextTypes["itemIsEditing"]
+  >({
     item: {},
     isEditing: false,
   });
@@ -25,7 +59,7 @@ export const FeedbackProvider = ({ children }) => {
   }, []);
 
   // ADD
-  const addItem = async (item) => {
+  const addItem = async (item: FeedbackTypes) => {
     const response = await fetch("http://localhost:3001/review", {
       method: "POST",
       headers: {
@@ -33,25 +67,25 @@ export const FeedbackProvider = ({ children }) => {
       },
       body: JSON.stringify(item),
     });
-    const data = await response.json();
+    const data: FeedbackTypes = await response.json();
     setFeedback([data, ...feedback]);
   };
 
   // DELETE
-  const deleteItem = async (id) => {
+  const deleteItem = async (id: number) => {
     await fetch(`http://localhost:3001/review/${id}`, {
       method: "DELETE",
     });
-    setFeedback(feedback.filter((item) => item.id !== id));
+    setFeedback(feedback.filter((item: FeedbackTypes) => item.id !== id));
   };
 
   // EDIT
-  const editItem = (item) => {
+  const editItem = (item: FeedbackTypes) => {
     setItemIsEditing({ item, isEditing: true });
   };
 
   // UPDATE
-  const updateItem = async (id, updatedItem) => {
+  const updateItem = async (id: number, updatedItem: FeedbackTypes) => {
     const response = await fetch(`http://localhost:3001/review/${id}`, {
       method: "PUT",
       headers: {
@@ -68,7 +102,6 @@ export const FeedbackProvider = ({ children }) => {
   };
 
   // CANCEL EDIT
-
   const cancelEdit = () => {
     setItemIsEditing({
       item: {},
@@ -92,6 +125,4 @@ export const FeedbackProvider = ({ children }) => {
       {children}
     </FeedbackContext.Provider>
   );
-};
-
-export default FeedbackContext;
+}
