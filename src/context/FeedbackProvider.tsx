@@ -1,17 +1,11 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { FeedbackTypes } from "../queries/DataTypes";
 import React from "react";
 import { FeedbackContext, FeedbackContextTypes } from "./FeedbackContext";
 
 // Provider
 
-export function Provider({ children }: { children: JSX.Element }): JSX.Element {
-  const context = useContext(FeedbackContext);
-
-  if (!context) {
-    throw new Error("useFeedbackContext must be used within a FeedbackContext");
-  }
-
+export const FeedbackProvider: React.FC = ({ children }: any) => {
   const [feedback, setFeedback] = useState<FeedbackContextTypes["feedback"]>(
     []
   );
@@ -104,4 +98,10 @@ export function Provider({ children }: { children: JSX.Element }): JSX.Element {
       {children}
     </FeedbackContext.Provider>
   );
-}
+};
+
+// const context = useContext(FeedbackContext);
+
+// if (!context) {
+//   throw new Error("useFeedbackContext must be used within a FeedbackContext");
+// }
