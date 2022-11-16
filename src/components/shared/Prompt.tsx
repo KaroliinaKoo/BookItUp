@@ -1,4 +1,15 @@
 import { FaTimes } from "react-icons/fa";
+import React from "react";
+
+export type PropTypes = {
+  message?: string;
+  onConfirm: () => void;
+  onCancel: () => void;
+  confirmText?: string;
+  cancelText?: string;
+  title?: string;
+  visible?: boolean;
+};
 
 function Prompt({
   message,
@@ -8,7 +19,7 @@ function Prompt({
   cancelText,
   title,
   visible,
-}) {
+}: PropTypes) {
   return (
     <div className="modal" style={{ display: visible ? "block" : "none" }}>
       <div className="modal-content">
@@ -18,14 +29,14 @@ function Prompt({
           className="close"
           onClick={onCancel}
         />
-        <h2>{title}</h2>
-        <p>{message ? message : "Are you sure?"}</p>
+        <h2>{title ?? "Confirm Action"}</h2>
+        <p>{message ?? "Are you sure?"}</p>
         <div className="btn-container">
           <button onClick={onCancel} className="btn-secondary small">
-            {cancelText ? cancelText : "Cancel"}
+            {cancelText ?? "Cancel"}
           </button>
           <button onClick={onConfirm} className="btn-primary small">
-            {confirmText ? confirmText : "Confirm"}
+            {confirmText ?? "Confirm"}
           </button>
         </div>
       </div>

@@ -7,44 +7,39 @@ import Header from "./components/Header";
 import UserDashboard from "./features/UserDashboard";
 import Alert from "./components/Alert";
 import { Routes, Route } from "react-router-dom";
-import { FeedbackContext } from "./context/FeedbackContext";
+import { FeedbackProvider } from "./context/FeedbackProvider";
 import { AlertProvider } from "./context/AlertContext";
 import User from "./modules/user";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useJwt } from "react-jwt";
+import React from "react";
 
 function App() {
-  const token = localStorage.getItem("token");
-  const [user, setUser] = useState(User.getData());
-  const { decodedToken, isExpired } = useJwt(token);
+  const token = localStorage.getItem("token") || "";
+  const { isExpired } = useJwt(localStorage.getItem("token")!);
 
   useEffect(() => {
-    if (isExpired || !token) {
-      localStorage?.removeItem("token");
-      localStorage?.removeItem("user");
-      User.clearData();
-    }
-
-    if (!isExpired && token) {
-      const userData = JSON.parse(localStorage.getItem("user"));
-      if (userData) {
-        User.setData(userData);
-        setUser(User.getData());
-      }
+    if (token && isExpired) {
+      console.log("token expired");
+      handleLogout();
+    } else if (token) {
+      User.setData(JSON.parse(localStorage.getItem("user")!));
     }
   }, [isExpired, token]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    User.clearData();
     window.location.href = "/";
+    console.log("user logged out");
   };
 
   return (
-    <FeedbackContext.Provider>
+    <FeedbackProvider>
       <AlertProvider>
         <div className="App">
-          <Header user={user} handleLogout={handleLogout} />
+          <Header user={User.getData()} handleLogout={handleLogout} />
           <main>
             <Alert />
             <Routes>
@@ -58,7 +53,7 @@ function App() {
           </main>
         </div>
       </AlertProvider>
-    </FeedbackContext.Provider>
+    </FeedbackProvider>
   );
 }
 

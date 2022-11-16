@@ -2,20 +2,30 @@ import React from "react";
 import { useState, useContext, useEffect } from "react";
 import { FeedbackContext } from "../context/FeedbackContext";
 
-function RatingSelector({ select }) {
-  const { itemIsEditing } = useContext(FeedbackContext);
+type PropTypes = {
+  select: (rating: number) => void;
+};
 
-  const [rating, setRating] = useState({ select });
+function RatingSelector({ select }: PropTypes) {
+  const context = useContext(FeedbackContext);
+
+  if (!context) {
+    throw new Error("Context not found");
+  }
+
+  const { itemIsEditing } = context;
+
+  const [rating, setRating]: [number, any] = useState(0);
 
   useEffect(() => {
-    if (itemIsEditing.isEditing) {
+    if (itemIsEditing.isEditing && itemIsEditing.item) {
       setRating(itemIsEditing.item.rating);
     }
   }, [itemIsEditing]);
 
-  const handleClick = (e) => {
-    setRating(+e.target.value); // +e.target.value converts the value of the selected rating button to a number
-    select(+e.target.value); // pass the selected rating to the parent component
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setRating(Number(e.currentTarget.value));
+    select(Number(e.currentTarget.value));
   };
 
   return (

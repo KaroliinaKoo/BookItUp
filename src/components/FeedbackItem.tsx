@@ -1,3 +1,4 @@
+import React from "react";
 import Card from "./shared/Card";
 import { FaTimes, FaEdit, FaUserCircle, FaRegComments } from "react-icons/fa";
 import { useContext, useState } from "react";
@@ -6,16 +7,30 @@ import AlertContext from "../context/AlertContext";
 import { useNavigate } from "react-router-dom";
 import Prompt from "./shared/Prompt";
 import NewComment from "./NewComment";
+import { FeedbackTypes } from "../queries/DataTypes";
 
-function ReviewItem({ item, profileView }) {
+type PropTypes = {
+  item: FeedbackTypes;
+  profileView: boolean;
+};
+
+function ReviewItem({ item, profileView }: PropTypes) {
   const [showPrompt, setShowPrompt] = useState(false);
   const [showForm, setShowForm] = useState(false);
-  const { deleteItem, editItem } = useContext(FeedbackContext);
+
+  const context = useContext(FeedbackContext);
+
+  if (!context) {
+    throw new Error("Context not found");
+  }
+
+  const { deleteItem, editItem } = context;
+
   const { showAlert } = useContext(AlertContext);
   const [expandBody, setExpandBody] = useState(false);
   const navigate = useNavigate();
 
-  const formatDate = (date) => {
+  const formatDate: (date: string) => string = (date) => {
     const d = new Date(date);
     const month = d.toLocaleString("default", { month: "long" });
     const day = d.getDate();

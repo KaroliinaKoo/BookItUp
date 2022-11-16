@@ -1,15 +1,21 @@
 import User from "../modules/user";
 import { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+import React from "react";
+import { getUUID } from "../utils/uuid";
 
-function NewComment({ showForm, setShowForm }) {
+type PropTypes = {
+  showForm: boolean;
+  setShowForm: (showForm: boolean) => void;
+};
+
+function NewComment({ showForm, setShowForm }: PropTypes) {
   const [comment, setComment] = useState("");
   const [username, setUsername] = useState(User.getName());
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newComment = {
-      id: uuidv4(),
+      id: getUUID(),
       comment: comment,
       username: username,
     };

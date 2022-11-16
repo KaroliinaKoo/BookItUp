@@ -1,3 +1,4 @@
+import React from "react";
 import User from "../modules/user";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -37,7 +38,7 @@ function MyProfile() {
     }
   }, [formData]);
 
-  const handleValidation = (e) => {
+  const handleValidation = (e: React.ChangeEvent<HTMLInputElement>) => {
     let { name, value } = e.target;
     let errorObj = { ...error };
     switch (name) {
@@ -71,7 +72,7 @@ function MyProfile() {
     setError(errorObj);
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     handleValidation(e);
   };
@@ -86,7 +87,7 @@ function MyProfile() {
     setChangePassword(false);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!formIsValid) {

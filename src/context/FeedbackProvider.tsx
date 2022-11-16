@@ -5,7 +5,7 @@ import { FeedbackContext, FeedbackContextTypes } from "./FeedbackContext";
 
 // Provider
 
-export const FeedbackProvider: React.FC = ({ children }: any) => {
+export const FeedbackProvider = ({ children }: any) => {
   const [feedback, setFeedback] = useState<FeedbackContextTypes["feedback"]>(
     []
   );
@@ -14,7 +14,7 @@ export const FeedbackProvider: React.FC = ({ children }: any) => {
   const [itemIsEditing, setItemIsEditing] = useState<
     FeedbackContextTypes["itemIsEditing"]
   >({
-    item: {},
+    item: undefined,
     isEditing: false,
   });
 
@@ -45,7 +45,7 @@ export const FeedbackProvider: React.FC = ({ children }: any) => {
   };
 
   // DELETE
-  const deleteItem = async (id: number) => {
+  const deleteItem = async (id: FeedbackTypes["id"]) => {
     await fetch(`http://localhost:3001/review/${id}`, {
       method: "DELETE",
     });
@@ -58,7 +58,10 @@ export const FeedbackProvider: React.FC = ({ children }: any) => {
   };
 
   // UPDATE
-  const updateItem = async (id: number, updatedItem: FeedbackTypes) => {
+  const updateItem = async (
+    id: FeedbackTypes["id"],
+    updatedItem: FeedbackTypes
+  ) => {
     const response = await fetch(`http://localhost:3001/review/${id}`, {
       method: "PUT",
       headers: {
@@ -69,7 +72,7 @@ export const FeedbackProvider: React.FC = ({ children }: any) => {
     const data = await response.json();
     setFeedback(feedback.map((item) => (item.id === id ? data : item)));
     setItemIsEditing({
-      item: {},
+      item: undefined,
       isEditing: false,
     });
   };
@@ -77,7 +80,7 @@ export const FeedbackProvider: React.FC = ({ children }: any) => {
   // CANCEL EDIT
   const cancelEdit = () => {
     setItemIsEditing({
-      item: {},
+      item: undefined,
       isEditing: false,
     });
   };
@@ -100,8 +103,4 @@ export const FeedbackProvider: React.FC = ({ children }: any) => {
   );
 };
 
-// const context = useContext(FeedbackContext);
-
-// if (!context) {
-//   throw new Error("useFeedbackContext must be used within a FeedbackContext");
-// }
+export default FeedbackProvider;

@@ -1,3 +1,4 @@
+import React from "react";
 import { NavLink } from "react-router-dom";
 import {
   FaHome,
@@ -8,9 +9,17 @@ import {
   FaUser,
 } from "react-icons/fa";
 
-function LinkList({ openClose, user, handleLogout }) {
-  const checkUserLoggedIn = () => {
-    return localStorage.getItem("token") ? true : false;
+import { UserDataTypes } from "../../queries/DataTypes";
+
+type PropTypes = {
+  openClose: () => void;
+  user: UserDataTypes | null;
+  handleLogout: () => void;
+};
+
+function LinkList({ openClose, user, handleLogout }: PropTypes) {
+  const userIsLoggedIn = () => {
+    return localStorage.getItem("token");
   };
 
   return (
@@ -34,7 +43,7 @@ function LinkList({ openClose, user, handleLogout }) {
           Add a Review
         </NavLink>
       </li>
-      {checkUserLoggedIn() ? (
+      {userIsLoggedIn() ? (
         <>
           <li>
             <NavLink
@@ -43,7 +52,7 @@ function LinkList({ openClose, user, handleLogout }) {
               className="mobile-btn user-info"
             >
               <FaUser />
-              {user.username}
+              {user?.username}
             </NavLink>
           </li>
           <li>

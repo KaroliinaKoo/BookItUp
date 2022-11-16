@@ -1,4 +1,18 @@
-function Input({ type, name, label, error, ...rest }) {
+import React from "react";
+
+type PropTypes = {
+  label: string;
+  error: string;
+};
+
+function Input({
+  type,
+  name,
+  label,
+  value,
+  error,
+  ...rest
+}: PropTypes & React.InputHTMLAttributes<HTMLInputElement>) {
   return (
     <div className="input-group">
       <label htmlFor={name}>{label}</label>
@@ -7,6 +21,7 @@ function Input({ type, name, label, error, ...rest }) {
         {...rest}
         name={name}
         id={name}
+        value={value}
         maxLength={100}
         required
       />

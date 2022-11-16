@@ -1,9 +1,16 @@
+import React from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import LinkList from "./shared/LinkList";
 import { NavLink } from "react-router-dom";
+import { UserDataTypes } from "../queries/DataTypes";
 
-function Header({ user, handleLogout }) {
+type PropTypes = {
+  user: UserDataTypes | null;
+  handleLogout: () => void;
+};
+
+function Header({ user, handleLogout }: PropTypes) {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -46,7 +53,11 @@ function Header({ user, handleLogout }) {
         </NavLink>
         <nav>
           {windowWidth > 768 && (
-            <LinkList user={user} handleLogout={handleLogout} />
+            <LinkList
+              user={user}
+              handleLogout={handleLogout}
+              openClose={handleMobileMenu}
+            />
           )}
           {windowWidth < 768 && (
             <>
@@ -71,7 +82,6 @@ function Header({ user, handleLogout }) {
                   openClose={handleMobileMenu}
                   user={user}
                   handleLogout={handleLogout}
-                  menuOpen={menuOpen}
                 />
               </div>
             </>

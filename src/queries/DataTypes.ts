@@ -1,16 +1,16 @@
-export interface FeedbackTypes {
-  username: string;
+export type FeedbackTypes = {
   title: string;
   author: string;
   body: string;
   rating: number;
   date: string;
-  id: number;
-}
+  id: string;
+  username: UserDataTypes["username"];
+};
 
-export interface UserDataTypes {
+export type UserDataTypes = {
   username: string;
   email: string;
   id: number;
   password?: string;
-}
+};

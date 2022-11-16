@@ -21,7 +21,7 @@ function Login() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
-  const [register, setRegister] = useState(false);
+  const [showRegisterPage, setShowRegisterPage] = useState(false);
   const [formIsValid, setFormIsValid] = useState(false);
   const [formErrorMessage, setFormErrorMessage] = useState("");
 
@@ -33,10 +33,10 @@ function Login() {
 
   useEffect(() => {
     setFormErrorMessage("");
-  }, [register, error]);
+  }, [showRegisterPage, error]);
 
-  const handleValidation = (e) => {
-    if (!register) {
+  const handleValidation = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!showRegisterPage) {
       return;
     }
     let { name, value } = e.target;
@@ -81,7 +81,7 @@ function Login() {
   };
 
   useEffect(() => {
-    if (register) {
+    if (showRegisterPage) {
       if (passwordConfirmation === formData.password) {
         setError({ ...error, password_confirmation: "" });
       } else {
@@ -90,15 +90,15 @@ function Login() {
     }
   }, [passwordConfirmation, formData.password]);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     handleValidation(e);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (register) {
+    if (showRegisterPage) {
       if (!formIsValid) {
         setFormErrorMessage("Please fill out the form correctly");
         return;
@@ -119,12 +119,12 @@ function Login() {
           }
         })
         .then(() => {
-          setRegister(false);
+          setShowRegisterPage(false);
           formData.password = "";
           setShowPassword(false);
         });
     }
-    if (!register) {
+    if (!showRegisterPage) {
       // login
       fetch("http://localhost:3002/login", {
         method: "POST",
@@ -152,39 +152,39 @@ function Login() {
     }
   };
 
-  const handleConfirmPassword = (e) => {
+  const handleConfirmPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPasswordConfirmation(e.target.value);
     handleValidation(e);
   };
 
   useEffect(() => {
-    if (register) {
+    if (showRegisterPage) {
       setFormIsValid(Object.values(error).every((err) => err === ""));
     }
-  }, [error, register]);
+  }, [error, showRegisterPage]);
 
   return (
     <div className="container-card login">
-      <h1>{register ? "Register" : "Login"}</h1>
-      {!register && (
+      <h1>{showRegisterPage ? "Register" : "Login"}</h1>
+      {!showRegisterPage && (
         <div className="toggle-register-container">
           No account?
           <button
             className="toggle-register btn-link"
             type="button"
-            onClick={() => setRegister(true)}
+            onClick={() => setShowRegisterPage(true)}
           >
             Register
           </button>
         </div>
       )}
-      {register && (
+      {showRegisterPage && (
         <div className="toggle-register-container">
           Already have an account?
           <button
             className="toggle-register btn-link"
             type="button"
-            onClick={() => setRegister(false)}
+            onClick={() => setShowRegisterPage(false)}
           >
             Sign In
           </button>
@@ -195,7 +195,7 @@ function Login() {
           <div className="input-group">
             <label htmlFor="email">E-mail</label>
             <input
-              className={register && error.email ? "error" : ""}
+              className={showRegisterPage && error.email ? "error" : ""}
               value={formData.email}
               onChange={handleChange}
               type="email"
@@ -207,9 +207,11 @@ function Login() {
               required
               autoFocus
             />
-            {register && error.email && <p className="error">{error.email}</p>}
+            {showRegisterPage && error.email && (
+              <p className="error">{error.email}</p>
+            )}
           </div>
-          {register && (
+          {showRegisterPage && (
             <div className="input-group">
               <label htmlFor="username">Username</label>
               <input
@@ -225,7 +227,7 @@ function Login() {
                 minLength={3}
                 required
               />
-              {register && error.username && (
+              {showRegisterPage && error.username && (
                 <p className="error">{error.username}</p>
               )}
             </div>
@@ -233,7 +235,7 @@ function Login() {
           <div className="input-group">
             <label htmlFor="password">Password</label>
             <input
-              className={register && error.password ? "error" : ""}
+              className={showRegisterPage && error.password ? "error" : ""}
               value={formData.password}
               onChange={handleChange}
               type={showPassword ? "text" : "password"}
@@ -245,7 +247,7 @@ function Login() {
               minLength={6}
               required
             />
-            {register && error.password && (
+            {showRegisterPage && error.password && (
               <p className="error">{error.password}</p>
             )}
             <button
@@ -262,7 +264,7 @@ function Login() {
             </button>
           </div>
 
-          {register && (
+          {showRegisterPage && (
             <div className="input-group">
               <label htmlFor="password_confirmation">Confirm Password</label>
               <input
@@ -290,14 +292,14 @@ function Login() {
                   <FaEye aria-label="show" />
                 )}
               </button>
-              {register && error.password_confirmation && (
+              {showRegisterPage && error.password_confirmation && (
                 <p className="error">{error.password_confirmation}</p>
               )}
             </div>
           )}
 
           <button type="submit" className="btn btn-primary">
-            {register ? "Register" : "Sign In"}
+            {showRegisterPage ? "Register" : "Sign In"}
           </button>
         </div>
         {formErrorMessage !== "" && (

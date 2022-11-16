@@ -2,15 +2,25 @@ import User from "../modules/user";
 import { FeedbackContext } from "../context/FeedbackContext";
 import { useContext, useState, useEffect } from "react";
 import FeedbackItem from "./FeedbackItem";
+import { FeedbackTypes } from "../queries/DataTypes";
 import { NavLink } from "react-router-dom";
+import React from "react";
 
-function MyReviews({}) {
-  const { feedback, itemIsLoading } = useContext(FeedbackContext);
+function MyReviews() {
+  const context = useContext(FeedbackContext);
+
+  if (!context) {
+    throw new Error("Context not found");
+  }
+  const { feedback, itemIsLoading } = context;
   const username = User.getName();
-  const [MyReviews, setMyReviews] = useState([]);
+  const [myReviews, setMyReviews] = useState<FeedbackTypes[]>([]);
 
   useEffect(() => {
-    setMyReviews(feedback.filter((item) => item.username === username));
+    if (feedback) {
+      const reviews = feedback.filter((item) => item.username === username);
+      setMyReviews(reviews);
+    }
   }, [feedback, username]);
 
   return (
@@ -18,12 +28,14 @@ function MyReviews({}) {
       <div className="user-reviews">
         {itemIsLoading && <div className="spinner" role="status" />}
         <div className="feedback-list">
-          {MyReviews.length === 0 && (
+          {myReviews.length === 0 && (
             <p>You have not written any reviews yet.</p>
           )}
-          {MyReviews.map((item) => (
-            <FeedbackItem key={item.id} item={item} profileView="true" />
-          ))}
+
+          {myReviews.length > 0 &&
+            myReviews.map((item) => (
+              <FeedbackItem key={item.id} item={item} profileView={true} />
+            ))}
         </div>
       </div>
       <NavLink to="/add-review" className="btn-primary small">

@@ -1,55 +1,35 @@
 import React, { useEffect, useState, useContext } from "react";
-import Button from "../components/shared/Button";
-import Input from "../components/shared/Input";
-import RatingSelector from "../components/RatingSelector";
+import Input from "./shared/Input";
+import RatingSelector from "./RatingSelector";
 import { FeedbackContext } from "../context/FeedbackContext";
 import AlertContext from "../context/AlertContext";
 import { useNavigate } from "react-router-dom";
 import User from "../modules/user";
+import { authorsList, titlesList } from "../utils/datalists";
+import { FeedbackTypes } from "../queries/DataTypes";
+import { getUUID } from "../utils/uuid";
 
 function ReviewForm() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [author, setAuthor] = useState("");
-  const [rating, setRating] = useState(undefined);
-  const username = User.getName();
-
+  const [rating, setRating] = useState(0);
   const navigate = useNavigate();
 
-  const { addItem, updateItem, itemIsEditing, cancelEdit } =
-    useContext(FeedbackContext);
+  const context = useContext(FeedbackContext);
 
+  if (!context) {
+    throw new Error("Context not found");
+  }
+
+  const { addItem, updateItem, itemIsEditing, cancelEdit } = context;
   const { showAlert } = useContext(AlertContext);
-
-  const authorsList = [
-    "J.K. Rowling",
-    "George R.R. Martin",
-    "Stephen King",
-    "Terry Pratchett",
-    "Neil Gaiman",
-    "Brandon Sanderson",
-    "J.R.R. Tolkien",
-    "Robert Jordan",
-    "Patrick Rothfuss",
-    "Tad Williams",
-  ];
-
-  const titlesList = [
-    "Harry Potter and the Philosopher's Stone",
-    "Harry Potter and the Chamber of Secrets",
-    "Harry Potter and the Prisoner of Azkaban",
-    "Harry Potter and the Goblet of Fire",
-    "Harry Potter and the Order of the Phoenix",
-    "Harry Potter and the Half-Blood Prince",
-    "Harry Potter and the Deathly Hallows",
-  ];
 
   const titleMinLength = 1;
   const authorMinLength = 1;
-  const ratingRegex = /^([1-9]|10)$/;
 
   useEffect(() => {
-    if (itemIsEditing.isEditing) {
+    if (itemIsEditing.isEditing && itemIsEditing.item) {
       setTitle(itemIsEditing.item.title);
       setBody(itemIsEditing.item.body);
       setAuthor(itemIsEditing.item.author);
@@ -57,26 +37,26 @@ function ReviewForm() {
     }
   }, [itemIsEditing]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const today = new Date();
-    const date = today.toISOString().slice(0, 10);
+    let currentTime = new Date().toJSON();
 
     if (
       author.replace(/\s+/g, "").length >= authorMinLength &&
-      title.replace(/\s+/g, "").length >= titleMinLength &&
-      ratingRegex.test(rating)
+      title.replace(/\s+/g, "").length >= titleMinLength
     ) {
-      const newFeedback = {
-        username,
+      const newFeedback: FeedbackTypes = {
         title,
         author,
         body,
         rating,
-        date,
+        date: currentTime,
+        id: getUUID(),
+        username: User.getName(),
       }; // create a new feedback object with the text and rating values from the form fields
-      if (itemIsEditing.isEditing) {
+
+      if (itemIsEditing.isEditing && itemIsEditing.item) {
         updateItem(itemIsEditing.item.id, newFeedback); // update the item in the list of feedbacks
         showAlert("success", "Review updated successfully!");
       } else {
@@ -94,7 +74,7 @@ function ReviewForm() {
     setBody("");
     setTitle("");
     setAuthor("");
-    setRating(undefined);
+    setRating(0);
   };
 
   const handleCancel = () => {
@@ -115,6 +95,7 @@ function ReviewForm() {
         maxLength={50}
         placeholder="e.g Harry Potter and the Goblet of Fire"
         list="titles_list"
+        error={`Title must be at least ${titleMinLength} characters long`}
         autoFocus
       />
 
@@ -133,6 +114,7 @@ function ReviewForm() {
         maxLength={40}
         placeholder="e.g J.K. Rowling"
         list="authors_list"
+        error={`Author must be at least ${authorMinLength} characters long`}
       />
 
       <datalist id="authors_list">
@@ -172,9 +154,9 @@ function ReviewForm() {
             Cancel
           </button>
         )}
-        <Button type="submit">
+        <button className="btn btn-primary" type="submit">
           {itemIsEditing.isEditing ? "Update Review" : "Submit Review"}
-        </Button>
+        </button>
       </div>
     </form>
   );

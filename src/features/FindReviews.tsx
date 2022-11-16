@@ -2,30 +2,36 @@ import FeedbackList from "../components/FeedbackList";
 import ReviewSearch from "../components/ReviewSearch";
 import { useState } from "react";
 import { FaChevronUp } from "react-icons/fa";
-import { useEffect } from "react";
+import React from "react";
+
+export type Types = {
+  searchBy: "title" | "author" | "rating" | "username";
+  sortBy: "newest" | "oldest" | "highest" | "lowest";
+};
+
+export type SearchByTypes = Record<Types["searchBy"], string>;
+export type SortByTypes = Types["sortBy"];
 
 function FindReview() {
-  const [search, setSearch] = useState({
+  const [searchBy, setSearchBy] = useState({
     title: "",
     author: "",
     rating: "",
     username: "",
   });
 
-  const [sortBy, setSortBy] = useState("newest");
+  const [sortBy, setSortBy] = useState("newest" as SortByTypes);
   const [showScroll, setShowScroll] = useState(false);
-  const [scrollPosition, setScrollPosition] = useState(0);
 
-  const scrollEvent = (e) => {
-    setScrollPosition(e.target.scrollTop);
-    if (e.target.scrollTop > 300) {
+  const scrollEvent = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
+    if (e.currentTarget.scrollTop > 300) {
       setShowScroll(true);
     } else {
       setShowScroll(false);
     }
   };
 
-  const scrollTop = () => {
+  const scrollToTop = () => {
     document.getElementsByClassName("container")[0].scrollTo({
       top: 0,
       behavior: "smooth",
@@ -35,14 +41,14 @@ function FindReview() {
   return (
     <div className="container" onScroll={scrollEvent}>
       <h1>Find Reviews</h1>
-      <ReviewSearch setSearch={setSearch} />
+      <ReviewSearch setSearch={setSearchBy} />
       <div className="sort-by">
         <label htmlFor="sort">Order by:</label>
         <select
           name="sort"
           id="sort"
           value={sortBy}
-          onChange={(e) => setSortBy(e.target.value)}
+          onChange={(e) => setSortBy(e.target.value as SortByTypes)}
         >
           <option value="newest">Newest</option>
           <option value="oldest">Oldest</option>
@@ -50,9 +56,9 @@ function FindReview() {
           <option value="lowest">Lowest Rating</option>
         </select>
       </div>
-      <FeedbackList search={search} sortBy={sortBy} />
+      <FeedbackList searchBy={searchBy} sortBy={sortBy} />
       {showScroll && (
-        <button className="scroll-to-top" onClick={scrollTop}>
+        <button className="scroll-to-top" onClick={scrollToTop}>
           <FaChevronUp />
         </button>
       )}
