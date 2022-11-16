@@ -1,4 +1,4 @@
-import FeedbackList from "../components/FeedbackList";
+import ReviewList from "../components/ReviewList";
 import ReviewSearch from "../components/ReviewSearch";
 import { useState } from "react";
 import { FaChevronUp } from "react-icons/fa";
@@ -56,7 +56,7 @@ function FindReview() {
           <option value="lowest">Lowest Rating</option>
         </select>
       </div>
-      <FeedbackList searchBy={searchBy} sortBy={sortBy} />
+      <ReviewList searchBy={searchBy} sortBy={sortBy} />
       {showScroll && (
         <button className="scroll-to-top" onClick={scrollToTop}>
           <FaChevronUp />

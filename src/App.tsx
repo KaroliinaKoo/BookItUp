@@ -7,7 +7,7 @@ import Header from "./components/Header";
 import UserDashboard from "./features/UserDashboard";
 import Alert from "./components/Alert";
 import { Routes, Route } from "react-router-dom";
-import { FeedbackProvider } from "./context/FeedbackProvider";
+import { DataProvider } from "./context/DataProvider";
 import { AlertProvider } from "./context/AlertContext";
 import User from "./modules/user";
 import { useEffect } from "react";
@@ -36,7 +36,7 @@ function App() {
   };
 
   return (
-    <FeedbackProvider>
+    <DataProvider>
       <AlertProvider>
         <div className="App">
           <Header user={User.getData()} handleLogout={handleLogout} />
@@ -53,7 +53,7 @@ function App() {
           </main>
         </div>
       </AlertProvider>
-    </FeedbackProvider>
+    </DataProvider>
   );
 }
 

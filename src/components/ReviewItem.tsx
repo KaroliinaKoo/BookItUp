@@ -2,15 +2,15 @@ import React from "react";
 import Card from "./shared/Card";
 import { FaTimes, FaEdit, FaUserCircle, FaRegComments } from "react-icons/fa";
 import { useContext, useState } from "react";
-import { FeedbackContext } from "../context/FeedbackContext";
+import { DataContext } from "../context/DataContext";
 import AlertContext from "../context/AlertContext";
 import { useNavigate } from "react-router-dom";
 import Prompt from "./shared/Prompt";
 import NewComment from "./NewComment";
-import { FeedbackTypes } from "../queries/DataTypes";
+import { ReviewDataTypes } from "../queries/DataTypes";
 
 type PropTypes = {
-  item: FeedbackTypes;
+  item: ReviewDataTypes;
   profileView: boolean;
 };
 
@@ -18,7 +18,7 @@ function ReviewItem({ item, profileView }: PropTypes) {
   const [showPrompt, setShowPrompt] = useState(false);
   const [showForm, setShowForm] = useState(false);
 
-  const context = useContext(FeedbackContext);
+  const context = useContext(DataContext);
 
   if (!context) {
     throw new Error("Context not found");

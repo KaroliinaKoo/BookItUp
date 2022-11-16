@@ -132,7 +132,7 @@
     }
 }
 
-.feedback-form {
+.review-form {
     background-color: $color-white;
     max-width: $element-width-l;
     min-height: 100%;
@@ -456,7 +456,7 @@
     }
 }
 
-.feedback-stats {
+.review-stats {
     color: $color-white;
     font-size: calc($font-size-base * 0.9);
     display: flex;
@@ -468,7 +468,7 @@
     border-radius: 10px;
 }
 
-.feedback-list {
+.review-list {
     display: flex;
     flex-direction: column;
     align-items: center;

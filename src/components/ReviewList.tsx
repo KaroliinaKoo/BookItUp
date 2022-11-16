@@ -1,8 +1,8 @@
 import React from "react";
 import { useContext } from "react";
-import FeedbackItem from "./FeedbackItem";
-import { FeedbackContext } from "../context/FeedbackContext";
-import { FeedbackTypes } from "../queries/DataTypes";
+import ReviewItem from "./ReviewItem";
+import { DataContext } from "../context/DataContext";
+import { ReviewDataTypes } from "../queries/DataTypes";
 import { SearchByTypes, SortByTypes } from "../features/FindReviews";
 
 type PropTypes = {
@@ -11,50 +11,52 @@ type PropTypes = {
 };
 
 /**
- * @TODO - figure out why feedback.filter is not working
+ * @TODO - figure out why itemData.filter is not working
  *
  **/
 
-const FeedbackList: React.FC<PropTypes> = ({ searchBy, sortBy }) => {
-  const context = useContext(FeedbackContext);
+const ReviewList: React.FC<PropTypes> = ({ searchBy, sortBy }) => {
+  const context = useContext(DataContext);
 
   if (!context) {
     throw new Error("Context not found");
   }
 
-  const { feedback, itemIsLoading } = context;
+  const { itemData, itemIsLoading } = context;
 
-  if (!itemIsLoading && (!feedback || feedback.length === 0)) {
+  if (!itemIsLoading && (!itemData || itemData.length === 0)) {
     return <p>No reviews found.</p>;
   }
 
   return itemIsLoading ? (
     <div className="spinner" role="status" />
   ) : (
-    <div className="feedback-list">
-      {feedback
-        .filter((item: FeedbackTypes) => {
+    <div className="review-list">
+      {itemData
+        .filter((review: ReviewDataTypes) => {
           if (
             searchBy.title === "" &&
             searchBy.author === "" &&
             searchBy.rating === "" &&
             searchBy.username === ""
           ) {
-            return item;
+            return review;
           } else if (
-            item.title.toLowerCase().includes(searchBy.title.toLowerCase()) &&
-            item.author.toLowerCase().includes(searchBy.author.toLowerCase()) &&
-            item.rating.toString() === searchBy.rating &&
-            item.username
+            review.title.toLowerCase().includes(searchBy.title.toLowerCase()) &&
+            review.author
+              .toLowerCase()
+              .includes(searchBy.author.toLowerCase()) &&
+            review.rating.toString() === searchBy.rating &&
+            review.username
               .toLowerCase()
               .includes(searchBy.username.toLowerCase())
           ) {
-            return item;
+            return review;
           }
         })
 
-        .map((item: FeedbackTypes) => (
-          <FeedbackItem key={item.id} item={item} profileView={false} />
+        .map((review: ReviewDataTypes) => (
+          <ReviewItem key={review.id} item={review} profileView={false} />
         ))
         .sort((a, b) => {
           if (sortBy === "newest") {
@@ -78,4 +80,4 @@ const FeedbackList: React.FC<PropTypes> = ({ searchBy, sortBy }) => {
   );
 };
 
-export default FeedbackList;
+export default ReviewList;

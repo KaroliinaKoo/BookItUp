@@ -1,4 +1,4 @@
-export type FeedbackTypes = {
+export type ReviewDataTypes = {
   title: string;
   author: string;
   body: string;

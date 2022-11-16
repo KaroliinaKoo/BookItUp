@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useContext } from "react";
 import Input from "./shared/Input";
 import RatingSelector from "./RatingSelector";
-import { FeedbackContext } from "../context/FeedbackContext";
+import { DataContext } from "../context/DataContext";
 import AlertContext from "../context/AlertContext";
 import { useNavigate } from "react-router-dom";
 import User from "../modules/user";
 import { authorsList, titlesList } from "../utils/datalists";
-import { FeedbackTypes } from "../queries/DataTypes";
+import { ReviewDataTypes } from "../queries/DataTypes";
 import { getUUID } from "../utils/uuid";
 
 function ReviewForm() {
@@ -16,7 +16,7 @@ function ReviewForm() {
   const [rating, setRating] = useState(0);
   const navigate = useNavigate();
 
-  const context = useContext(FeedbackContext);
+  const context = useContext(DataContext);
 
   if (!context) {
     throw new Error("Context not found");
@@ -46,7 +46,7 @@ function ReviewForm() {
       author.replace(/\s+/g, "").length >= authorMinLength &&
       title.replace(/\s+/g, "").length >= titleMinLength
     ) {
-      const newFeedback: FeedbackTypes = {
+      const newReview: ReviewDataTypes = {
         title,
         author,
         body,
@@ -54,13 +54,13 @@ function ReviewForm() {
         date: currentTime,
         id: getUUID(),
         username: User.getName(),
-      }; // create a new feedback object with the text and rating values from the form fields
+      };
 
       if (itemIsEditing.isEditing && itemIsEditing.item) {
-        updateItem(itemIsEditing.item.id, newFeedback); // update the item in the list of feedbacks
+        updateItem(itemIsEditing.item.id, newReview);
         showAlert("success", "Review updated successfully!");
       } else {
-        addItem(newFeedback); // add the feedback to the list of feedbacks
+        addItem(newReview);
         showAlert("success", "Review submitted successfully!");
       }
       reset();
@@ -84,7 +84,7 @@ function ReviewForm() {
   };
 
   return (
-    <form className="feedback-form" onSubmit={handleSubmit} autoComplete="off">
+    <form className="review-form" onSubmit={handleSubmit} autoComplete="off">
       <h1>{itemIsEditing.isEditing ? "Edit Review" : "Add a Review"}</h1>
       <Input
         label="Book Title"
@@ -141,7 +141,6 @@ function ReviewForm() {
       </div>
 
       <RatingSelector select={(rating) => setRating(rating)} />
-      {/* pass the selected rating to the RatingSelector component */}
       <div className="btn-container">
         {itemIsEditing.isEditing && (
           <button

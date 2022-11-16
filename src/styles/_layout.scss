@@ -242,7 +242,7 @@ header {
               a,
               svg {
 
-                color: $color-primary-dark  !important;
+                color: $color-primary-dark !important;
                 font-weight: 600;
               }
 
@@ -318,7 +318,7 @@ main {
     text-align: center;
   }
 
-  &:has(.feedback-form) {
+  &:has(.review-form) {
     padding: 0;
     background-color: $color-white;
   }

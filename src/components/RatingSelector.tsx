@@ -1,13 +1,13 @@
 import React from "react";
 import { useState, useContext, useEffect } from "react";
-import { FeedbackContext } from "../context/FeedbackContext";
+import { DataContext } from "../context/DataContext";
 
 type PropTypes = {
   select: (rating: number) => void;
 };
 
 function RatingSelector({ select }: PropTypes) {
-  const context = useContext(FeedbackContext);
+  const context = useContext(DataContext);
 
   if (!context) {
     throw new Error("Context not found");

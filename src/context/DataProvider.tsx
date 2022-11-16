@@ -1,18 +1,16 @@
 import { useState, useEffect } from "react";
-import { FeedbackTypes } from "../queries/DataTypes";
+import { ReviewDataTypes } from "../queries/DataTypes";
 import React from "react";
-import { FeedbackContext, FeedbackContextTypes } from "./FeedbackContext";
+import { DataContext, DataContextTypes } from "./DataContext";
 
 // Provider
 
-export const FeedbackProvider = ({ children }: any) => {
-  const [feedback, setFeedback] = useState<FeedbackContextTypes["feedback"]>(
-    []
-  );
+export const DataProvider = ({ children }: any) => {
+  const [itemData, setItemData] = useState<DataContextTypes["itemData"]>([]);
   const [itemIsLoading, setItemIsLoading] =
-    useState<FeedbackContextTypes["itemIsLoading"]>(true);
+    useState<DataContextTypes["itemIsLoading"]>(true);
   const [itemIsEditing, setItemIsEditing] = useState<
-    FeedbackContextTypes["itemIsEditing"]
+    DataContextTypes["itemIsEditing"]
   >({
     item: undefined,
     isEditing: false,
@@ -20,19 +18,19 @@ export const FeedbackProvider = ({ children }: any) => {
 
   //INITIAL FETCH
   useEffect(() => {
-    const fetchFeedback = async () => {
+    const fetchItem = async () => {
       const response = await fetch(
         "http://localhost:3001/review?_sort=id&_order=desc"
       );
       const data = await response.json();
-      setFeedback(data);
+      setItemData(data);
       setItemIsLoading(false);
     };
-    fetchFeedback();
+    fetchItem();
   }, []);
 
   // ADD
-  const addItem = async (item: FeedbackTypes) => {
+  const addItem = async (item: ReviewDataTypes) => {
     const response = await fetch("http://localhost:3001/review", {
       method: "POST",
       headers: {
@@ -40,27 +38,27 @@ export const FeedbackProvider = ({ children }: any) => {
       },
       body: JSON.stringify(item),
     });
-    const data: FeedbackTypes = await response.json();
-    setFeedback([data, ...feedback]);
+    const data: ReviewDataTypes = await response.json();
+    setItemData([data, ...itemData]);
   };
 
   // DELETE
-  const deleteItem = async (id: FeedbackTypes["id"]) => {
+  const deleteItem = async (id: ReviewDataTypes["id"]) => {
     await fetch(`http://localhost:3001/review/${id}`, {
       method: "DELETE",
     });
-    setFeedback(feedback.filter((item: FeedbackTypes) => item.id !== id));
+    setItemData(itemData.filter((item: ReviewDataTypes) => item.id !== id));
   };
 
   // EDIT
-  const editItem = (item: FeedbackTypes) => {
+  const editItem = (item: ReviewDataTypes) => {
     setItemIsEditing({ item, isEditing: true });
   };
 
   // UPDATE
   const updateItem = async (
-    id: FeedbackTypes["id"],
-    updatedItem: FeedbackTypes
+    id: ReviewDataTypes["id"],
+    updatedItem: ReviewDataTypes
   ) => {
     const response = await fetch(`http://localhost:3001/review/${id}`, {
       method: "PUT",
@@ -70,7 +68,7 @@ export const FeedbackProvider = ({ children }: any) => {
       body: JSON.stringify(updatedItem),
     });
     const data = await response.json();
-    setFeedback(feedback.map((item) => (item.id === id ? data : item)));
+    setItemData(itemData.map((item) => (item.id === id ? data : item)));
     setItemIsEditing({
       item: undefined,
       isEditing: false,
@@ -86,9 +84,9 @@ export const FeedbackProvider = ({ children }: any) => {
   };
 
   return (
-    <FeedbackContext.Provider // pass the functions to the context provider so that they can be accessed by the components that use the context provider
+    <DataContext.Provider // pass the functions to the context provider so that they can be accessed by the components that use the context provider
       value={{
-        feedback,
+        itemData,
         itemIsEditing,
         itemIsLoading,
         deleteItem,
@@ -99,8 +97,8 @@ export const FeedbackProvider = ({ children }: any) => {
       }}
     >
       {children}
-    </FeedbackContext.Provider>
+    </DataContext.Provider>
   );
 };
 
-export default FeedbackProvider;
+export default DataProvider;
