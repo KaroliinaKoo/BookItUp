@@ -16,14 +16,18 @@ function ReviewForm() {
   const [rating, setRating] = useState(0);
   const navigate = useNavigate();
 
-  const context = useContext(DataContext);
+  const dataContext = useContext(DataContext);
+  const alertContext = useContext(AlertContext);
 
-  if (!context) {
-    throw new Error("Context not found");
+  if (!dataContext) {
+    throw new Error("DataContext not found");
+  }
+  if (!alertContext) {
+    throw new Error("AlertContext not found");
   }
 
-  const { addItem, updateItem, itemIsEditing, cancelEdit } = context;
-  const { showAlert } = useContext(AlertContext);
+  const { addItem, updateItem, itemIsEditing, cancelEdit } = dataContext;
+  const { showAlert } = alertContext;
 
   const titleMinLength = 1;
   const authorMinLength = 1;

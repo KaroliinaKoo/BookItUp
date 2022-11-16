@@ -18,15 +18,19 @@ function ReviewItem({ item, profileView }: PropTypes) {
   const [showPrompt, setShowPrompt] = useState(false);
   const [showForm, setShowForm] = useState(false);
 
-  const context = useContext(DataContext);
+  const dataContext = useContext(DataContext);
+  const alertContext = useContext(AlertContext);
 
-  if (!context) {
+  if (!dataContext) {
     throw new Error("Context not found");
   }
+  if (!alertContext) {
+    throw new Error("AlertContext not found");
+  }
 
-  const { deleteItem, editItem } = context;
+  const { deleteItem, editItem } = dataContext;
+  const { showAlert } = alertContext;
 
-  const { showAlert } = useContext(AlertContext);
   const [expandBody, setExpandBody] = useState(false);
   const navigate = useNavigate();
 

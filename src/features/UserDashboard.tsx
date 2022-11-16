@@ -1,5 +1,5 @@
 import User from "../modules/user";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import MyProfile from "../components/MyProfile";
 import MyReviews from "../components/MyReviews";
 

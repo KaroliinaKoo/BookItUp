@@ -41,7 +41,7 @@ function FindReview() {
   return (
     <div className="container" onScroll={scrollEvent}>
       <h1>Find Reviews</h1>
-      <ReviewSearch setSearch={setSearchBy} />
+      <ReviewSearch setSearchBy={setSearchBy} />
       <div className="sort-by">
         <label htmlFor="sort">Order by:</label>
         <select

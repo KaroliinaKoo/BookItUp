@@ -1,12 +1,17 @@
 import React from "react";
-
 import AlertContext from "../context/AlertContext";
 import { useContext } from "react";
 import { useEffect } from "react";
 import { FaTimes } from "react-icons/fa";
 
 export default function Alert() {
-  const { alert, hideAlert } = useContext(AlertContext);
+  const context = useContext(AlertContext);
+
+  if (!context) {
+    throw new Error("AlertContext not found");
+  }
+
+  const { alert, hideAlert } = context;
 
   useEffect(() => {
     const timeout = setTimeout(() => {
