@@ -33,7 +33,7 @@ form {
 
         &.form-error {
             background-color: $color-error-light;
-            border: 2px solid $color-error-opaque;
+            border: 1px solid $color-error-opaque;
             width: 90%;
             height: fit-content;
             padding: 0.5em;
@@ -134,6 +134,7 @@ input[type="submit"] {
     box-shadow: none;
     user-select: none;
     font: inherit;
+    gap: 0.5em;
     min-height: 34px;
 
     &:disabled,
@@ -149,6 +150,7 @@ input[type="submit"] {
     display: inline-block;
     color: inherit;
     font-weight: 800;
+    width: auto;
 
     &:hover {
         text-decoration: underline;
@@ -207,7 +209,7 @@ input[type="submit"] {
     margin: 0;
     outline: none;
     cursor: pointer;
-    transform: scale(1.8);
+    transform: scale(1.5);
     line-height: 0;
     color: inherit;
 }
@@ -307,4 +309,65 @@ input[type="submit"] {
     &:hover {
         background-color: $color-secondary;
     }
+}
+
+.volume-info-card {
+    background-color: $color-white;
+    border-radius: 0.5em;
+    width: 90%;
+    height: fit-content;
+    max-width: $element-width-l;
+    display: flex;
+    justify-content: space-between;
+    padding: 1.5em;
+    gap: 1em;
+
+    .volume-info-card-left {}
+
+    .volume-info-card-right {
+        flex: 0 0 clamp(100px, 20%, 150px);
+    }
+
+    img.volume-info-card-cover {
+        height: auto;
+        width: 100%;
+        object-fit: cover;
+        margin-bottom: 0.5em;
+    }
+
+    .volume-info-card-description,
+    .heading-title,
+    .subtitle {
+        text-align: left;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 10;
+        overflow: hidden;
+    }
+
+    .subtitle {
+        color: $color-grey-dark;
+    }
+
+    .volume-info-card-description {
+        font-size: 0.9rem;
+        margin-block: 1em;
+    }
+
+    .volume-info-card-category-container {
+        font-size: calc($font-size-base * 0.75);
+    }
+
+    .detail-container {
+        font-size: calc($font-size-base * 0.75);
+        display: flex;
+        flex-direction: column;
+        gap: 0.2em;
+    }
+
+    .volume-author {
+        color: $color-primary-dark;
+        font-style: italic;
+    }
+
 }

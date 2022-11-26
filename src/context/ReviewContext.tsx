@@ -1,16 +1,46 @@
-import { useState, useEffect } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import { ReviewDataTypes } from "../queries/DataTypes";
-import React from "react";
-import { DataContext, DataContextTypes } from "./DataContext";
 
-// Provider
+export type ReviewContextTypes = {
+  reviewData: ReviewDataTypes[];
+  itemIsLoading: boolean;
+  itemIsEditing: itemIsEditingTypes;
+  deleteItem: (id: string) => void;
+  addItem: (item: ReviewDataTypes) => void;
+  editItem: (item: ReviewDataTypes) => void;
+  updateItem: (id: string, updatedItem: ReviewDataTypes) => void;
+  cancelEdit: () => void;
+};
 
-export const DataProvider = ({ children }: any) => {
-  const [itemData, setItemData] = useState<DataContextTypes["itemData"]>([]);
+type itemIsEditingTypes = {
+  item?: ReviewDataTypes;
+  isEditing: boolean;
+};
+
+/* ------ USING THE CONTEXT INSIDE THE APP -------------------------
+This check is to make sure that the app is not crashing when the context is not available (and to keep linting happy)
+----------------------------------------------------------------
+
+ const context = useContext(ReviewContext);
+
+if (!context) {
+  throw new Error("ReviewContext not found");
+}
+
+const { **CONTEXT DATA** } = context;
+
+*/
+
+export const ReviewContext = createContext<ReviewContextTypes | null>(null);
+
+export const ReviewProvider = ({ children }: any) => {
+  const [reviewData, setReviewData] = useState<
+    ReviewContextTypes["reviewData"]
+  >([]);
   const [itemIsLoading, setItemIsLoading] =
-    useState<DataContextTypes["itemIsLoading"]>(true);
+    useState<ReviewContextTypes["itemIsLoading"]>(true);
   const [itemIsEditing, setItemIsEditing] = useState<
-    DataContextTypes["itemIsEditing"]
+    ReviewContextTypes["itemIsEditing"]
   >({
     item: undefined,
     isEditing: false,
@@ -23,7 +53,7 @@ export const DataProvider = ({ children }: any) => {
         "http://localhost:3001/review?_sort=id&_order=desc"
       );
       const data = await response.json();
-      setItemData(data);
+      setReviewData(data);
       setItemIsLoading(false);
     };
     fetchItem();
@@ -39,7 +69,7 @@ export const DataProvider = ({ children }: any) => {
       body: JSON.stringify(item),
     });
     const data: ReviewDataTypes = await response.json();
-    setItemData([data, ...itemData]);
+    setReviewData([data, ...reviewData]);
   };
 
   // DELETE
@@ -47,7 +77,7 @@ export const DataProvider = ({ children }: any) => {
     await fetch(`http://localhost:3001/review/${id}`, {
       method: "DELETE",
     });
-    setItemData(itemData.filter((item: ReviewDataTypes) => item.id !== id));
+    setReviewData(reviewData.filter((item: ReviewDataTypes) => item.id !== id));
   };
 
   // EDIT
@@ -68,7 +98,9 @@ export const DataProvider = ({ children }: any) => {
       body: JSON.stringify(updatedItem),
     });
     const data = await response.json();
-    setItemData(itemData.map((item) => (item.id === id ? data : item)));
+    setReviewData(
+      reviewData.map((review) => (review.id === id ? data : review))
+    );
     setItemIsEditing({
       item: undefined,
       isEditing: false,
@@ -84,9 +116,9 @@ export const DataProvider = ({ children }: any) => {
   };
 
   return (
-    <DataContext.Provider // pass the functions to the context provider so that they can be accessed by the components that use the context provider
+    <ReviewContext.Provider // pass the functions to the context provider so that they can be accessed by the components that use the context provider
       value={{
-        itemData,
+        reviewData,
         itemIsEditing,
         itemIsLoading,
         deleteItem,
@@ -97,8 +129,8 @@ export const DataProvider = ({ children }: any) => {
       }}
     >
       {children}
-    </DataContext.Provider>
+    </ReviewContext.Provider>
   );
 };
 
-export default DataProvider;
+export default ReviewProvider;

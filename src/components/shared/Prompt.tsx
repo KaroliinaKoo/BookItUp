@@ -1,5 +1,6 @@
 import { FaTimes } from "react-icons/fa";
 import React from "react";
+import FocusTrap from "focus-trap-react";
 
 export type PropTypes = {
   message?: string;
@@ -21,26 +22,29 @@ function Prompt({
   visible,
 }: PropTypes) {
   return (
-    <div className="modal" style={{ display: visible ? "block" : "none" }}>
-      <div className="modal-content">
-        <FaTimes
-          role="button"
-          aria-label="Close"
-          className="close"
-          onClick={onCancel}
-        />
-        <h2>{title ?? "Confirm Action"}</h2>
-        <p>{message ?? "Are you sure?"}</p>
-        <div className="btn-container">
-          <button onClick={onCancel} className="btn-secondary small">
-            {cancelText ?? "Cancel"}
+    <FocusTrap active={visible}>
+      <div className="modal" style={{ display: visible ? "block" : "none" }}>
+        <div className="modal-content">
+          <button
+            aria-label="Close window"
+            className="btn-icon close"
+            onClick={onCancel}
+          >
+            <FaTimes />
           </button>
-          <button onClick={onConfirm} className="btn-primary small">
-            {confirmText ?? "Confirm"}
-          </button>
+          <h2>{title ?? "Confirm Action"}</h2>
+          <p>{message ?? "Are you sure?"}</p>
+          <div className="btn-container">
+            <button onClick={onCancel} className="btn-secondary small">
+              {cancelText ?? "Cancel"}
+            </button>
+            <button onClick={onConfirm} className="btn-primary small">
+              {confirmText ?? "Confirm"}
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </FocusTrap>
   );
 }
 

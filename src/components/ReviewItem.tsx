@@ -1,8 +1,8 @@
 import React from "react";
 import Card from "./shared/Card";
 import { FaTimes, FaEdit, FaUserCircle, FaRegComments } from "react-icons/fa";
-import { useContext, useState } from "react";
-import { DataContext } from "../context/DataContext";
+import { useContext, useState, useEffect } from "react";
+import { ReviewContext } from "../context/ReviewContext";
 import AlertContext from "../context/AlertContext";
 import { useNavigate } from "react-router-dom";
 import Prompt from "./shared/Prompt";
@@ -17,18 +17,19 @@ type PropTypes = {
 function ReviewItem({ item, profileView }: PropTypes) {
   const [showPrompt, setShowPrompt] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [volumeData, setVolumeData] = useState<any>({});
 
-  const dataContext = useContext(DataContext);
+  const reviewContext = useContext(ReviewContext);
   const alertContext = useContext(AlertContext);
 
-  if (!dataContext) {
+  if (!reviewContext) {
     throw new Error("Context not found");
   }
   if (!alertContext) {
     throw new Error("AlertContext not found");
   }
 
-  const { deleteItem, editItem } = dataContext;
+  const { deleteItem, editItem } = reviewContext;
   const { showAlert } = alertContext;
 
   const [expandBody, setExpandBody] = useState(false);
@@ -47,13 +48,25 @@ function ReviewItem({ item, profileView }: PropTypes) {
     showAlert("success", "Item deleted successfully");
   };
 
+  useEffect(() => {
+    if (item) {
+      const fetchVolume = async (id: string) => {
+        const response = await fetch(
+          `https://www.googleapis.com/books/v1/volumes/${id}`
+        );
+        const data = await response.json();
+        setVolumeData(data.volumeInfo);
+        console.log(data);
+      };
+      fetchVolume(item.volumeID);
+    }
+  }, [item]);
+
   return (
     <Card className={profileView ? "profile-view" : ""}>
       <Prompt
         title="Delete Review"
-        message={`Are you sure you want to permanently delete the review:
-        \n"${item.title}"?
-        \nThis action cannot be undone!`}
+        message={`Are you sure you want to permanently delete the review for ${item.volumeID}?`}
         visible={showPrompt}
         onConfirm={() => handleDelete()}
         onCancel={() => setShowPrompt(false)}
@@ -64,8 +77,13 @@ function ReviewItem({ item, profileView }: PropTypes) {
           <span>/10</span>
         </div>
         <div className="review-title">
-          <h2>{item.title}</h2>
-          <span className="author-display">by {item.author}</span>
+          <h2>{volumeData.title ? volumeData.title : "No title"}</h2>
+          <span className="author-display">
+            by{" "}
+            {volumeData.authors
+              ? [...volumeData.authors].join(", ")
+              : "Unknown Author"}
+          </span>
         </div>
       </div>
       {item.body && (

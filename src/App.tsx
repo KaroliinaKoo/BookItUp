@@ -7,12 +7,14 @@ import Header from "./components/Header";
 import UserDashboard from "./features/UserDashboard";
 import Alert from "./components/Alert";
 import { Routes, Route } from "react-router-dom";
-import { DataProvider } from "./context/DataProvider";
+import { ReviewProvider } from "./context/ReviewContext";
 import { AlertProvider } from "./context/AlertContext";
 import User from "./modules/user";
 import { useEffect } from "react";
 import { useJwt } from "react-jwt";
 import React from "react";
+import FindBooks from "./features/FindBooks";
+import VolumeProvider from "./context/VolumeContext";
 
 function App() {
   const token = localStorage.getItem("token") || "";
@@ -36,24 +38,27 @@ function App() {
   };
 
   return (
-    <DataProvider>
+    <ReviewProvider>
       <AlertProvider>
-        <div className="App">
-          <Header user={User.getData()} handleLogout={handleLogout} />
-          <main>
-            <Alert />
-            <Routes>
-              <Route path="/" element={<Main />} />
-              <Route path="/find-reviews" element={<FindReviews />} />
-              <Route path="/add-review" element={<NewReview />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="*" element={<PageNotFound />} />
-              <Route path="/dashboard" element={<UserDashboard />} />
-            </Routes>
-          </main>
-        </div>
+        <VolumeProvider>
+          <div className="App">
+            <Header user={User.getData()} handleLogout={handleLogout} />
+            <main>
+              <Alert />
+              <Routes>
+                <Route path="/" element={<Main />} />
+                <Route path="/find-reviews" element={<FindReviews />} />
+                <Route path="/add-review" element={<NewReview />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="*" element={<PageNotFound />} />
+                <Route path="/dashboard" element={<UserDashboard />} />
+                <Route path="/find-books" element={<FindBooks />} />
+              </Routes>
+            </main>
+          </div>
+        </VolumeProvider>
       </AlertProvider>
-    </DataProvider>
+    </ReviewProvider>
   );
 }
 

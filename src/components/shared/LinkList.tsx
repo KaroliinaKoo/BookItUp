@@ -32,9 +32,9 @@ function LinkList({ openClose, user, handleLogout }: PropTypes) {
       </li>
 
       <li>
-        <NavLink to="/find-reviews" onClick={openClose} className="mobile-btn">
+        <NavLink to="/find-books" onClick={openClose} className="mobile-btn">
           <FaSearch />
-          Find Reviews
+          Find Books
         </NavLink>
       </li>
       <li>

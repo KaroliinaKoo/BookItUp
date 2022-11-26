@@ -1,58 +1,98 @@
 import React, { useEffect, useState, useContext } from "react";
-import Input from "./shared/Input";
 import RatingSelector from "./RatingSelector";
-import { DataContext } from "../context/DataContext";
+import { ReviewContext } from "../context/ReviewContext";
 import AlertContext from "../context/AlertContext";
 import { useNavigate } from "react-router-dom";
 import User from "../modules/user";
-import { authorsList, titlesList } from "../utils/datalists";
 import { ReviewDataTypes } from "../queries/DataTypes";
 import { getUUID } from "../utils/uuid";
+import { getYear } from "../utils/getYear";
+import { truncate } from "../utils/truncate";
+import { FaSearch } from "react-icons/fa";
 
 function ReviewForm() {
-  const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
-  const [author, setAuthor] = useState("");
-  const [rating, setRating] = useState(0);
   const navigate = useNavigate();
 
-  const dataContext = useContext(DataContext);
+  const reviewContext = useContext(ReviewContext);
   const alertContext = useContext(AlertContext);
 
-  if (!dataContext) {
-    throw new Error("DataContext not found");
+  if (!reviewContext) {
+    throw new Error("ReviewContext not found");
   }
   if (!alertContext) {
     throw new Error("AlertContext not found");
   }
 
-  const { addItem, updateItem, itemIsEditing, cancelEdit } = dataContext;
+  const { addItem, updateItem, itemIsEditing, cancelEdit } = reviewContext;
   const { showAlert } = alertContext;
-
-  const titleMinLength = 1;
-  const authorMinLength = 1;
 
   useEffect(() => {
     if (itemIsEditing.isEditing && itemIsEditing.item) {
-      setTitle(itemIsEditing.item.title);
+      setVolumeID(itemIsEditing.item.volumeID);
       setBody(itemIsEditing.item.body);
-      setAuthor(itemIsEditing.item.author);
       setRating(itemIsEditing.item.rating);
     }
   }, [itemIsEditing]);
+
+  const [listIsLoading, setListIsLoading] = useState(false);
+  const [titleQuery, setTitleQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<any>({});
+  const [volumeData, setVolumeData] = useState<any>({});
+  const [volumeID, setVolumeID] = useState("");
+  const [body, setBody] = useState("");
+  const [rating, setRating] = useState(0);
+
+  useEffect(() => {
+    setListIsLoading(true);
+
+    const fetchVolumes = async (params: string) => {
+      const response = await fetch(
+        `https://www.googleapis.com/books/v1/volumes?q=${params}&orderBy=relevance&startIndex=0&maxResults=10&printType=BOOKS`
+      );
+      //&key=${process.env.REACT_APP_GOOGLE_BOOKS_API_KEY}
+      const data = await response.json();
+
+      if (data.totalItems) {
+        setSearchResults({
+          totalItems: data.totalItems,
+          items: data.items.map((item: any) => {
+            return {
+              id: item.id,
+              title: item.volumeInfo.title,
+              author: item.volumeInfo.authors,
+            };
+          }),
+        });
+      }
+      setListIsLoading(false);
+    };
+    if (titleQuery.length > 0) {
+      fetchVolumes(titleQuery);
+    }
+  }, [titleQuery]);
+
+  useEffect(() => {
+    if (volumeID) {
+      const fetchVolume = async (id: string) => {
+        const response = await fetch(
+          `https://www.googleapis.com/books/v1/volumes/${id}`
+        );
+        const data = await response.json();
+        setVolumeData(data.volumeInfo);
+        console.log(data);
+      };
+      fetchVolume(volumeID);
+    }
+  }, [volumeID]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     let currentTime = new Date().toJSON();
 
-    if (
-      author.replace(/\s+/g, "").length >= authorMinLength &&
-      title.replace(/\s+/g, "").length >= titleMinLength
-    ) {
+    if (volumeID && rating) {
       const newReview: ReviewDataTypes = {
-        title,
-        author,
+        volumeID,
         body,
         rating,
         date: currentTime,
@@ -74,12 +114,7 @@ function ReviewForm() {
     }
   };
 
-  const reset = () => {
-    setBody("");
-    setTitle("");
-    setAuthor("");
-    setRating(0);
-  };
+  const reset = () => {};
 
   const handleCancel = () => {
     cancelEdit();
@@ -87,81 +122,145 @@ function ReviewForm() {
     navigate("/dashboard");
   };
 
+  /* let timer: any;
+  const volumeSearchInput = document.querySelector("#volume-search");
+  volumeSearchInput?.addEventListener("keyup", (e) => {
+    const currentInput = e.target as HTMLInputElement;
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      if (currentInput.value.length > 2) {
+        setTitleQuery(currentInput.value);
+      }
+    }, 500);
+  }); */
+
   return (
-    <form className="review-form" onSubmit={handleSubmit} autoComplete="off">
+    <>
       <h1>{itemIsEditing.isEditing ? "Edit Review" : "Add a Review"}</h1>
-      <Input
-        label="Book Title"
-        value={title}
-        name="title"
-        onChange={(e) => setTitle(e.target.value)}
-        minLength={titleMinLength}
-        maxLength={50}
-        placeholder="e.g Harry Potter and the Goblet of Fire"
-        list="titles_list"
-        error={`Title must be at least ${titleMinLength} characters long`}
-        autoFocus
-      />
-
-      <datalist id="titles_list">
-        {titlesList.map((title) => (
-          <option key={title} value={title} />
-        ))}
-      </datalist>
-
-      <Input
-        label="Author"
-        value={author}
-        name="author"
-        onChange={(e) => setAuthor(e.target.value)}
-        minLength={authorMinLength}
-        maxLength={40}
-        placeholder="e.g J.K. Rowling"
-        list="authors_list"
-        error={`Author must be at least ${authorMinLength} characters long`}
-      />
-
-      <datalist id="authors_list">
-        {authorsList.map((author) => (
-          <option key={author} value={author} />
-        ))}
-      </datalist>
-
-      <div className="input-group">
-        <label htmlFor="body">
-          Your Review
-          <span aria-label="Characters left" className="character-count">
-            {2000 - body.length}/2000
-          </span>
-        </label>
-
-        <textarea
-          name="body"
-          placeholder="What did you think about the book?"
-          value={body}
-          onChange={(e) => setBody(e.target.value)}
-          maxLength={2000}
-        />
-      </div>
-
-      <RatingSelector select={(rating) => setRating(rating)} />
-      <div className="btn-container">
-        {itemIsEditing.isEditing && (
-          <button
-            className="btn btn-secondary"
-            type="button"
-            onClick={() => {
-              handleCancel();
+      {!itemIsEditing.isEditing && (
+        <div className="volumes-search">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
             }}
+            autoComplete="off"
           >
-            Cancel
-          </button>
-        )}
-        <button className="btn btn-primary" type="submit">
-          {itemIsEditing.isEditing ? "Update Review" : "Submit Review"}
-        </button>
-      </div>
-    </form>
+            <div className="input-group keyword-search">
+              <label htmlFor="volume-search">
+                <FaSearch />
+                {!titleQuery && <p>Search for a book by title or author</p>}
+              </label>
+              <input
+                type="text"
+                name="volume-search"
+                id="volume-search"
+                value={titleQuery}
+                onChange={(e) => setTitleQuery(e.target.value)}
+              />
+            </div>
+            <div className="input-group keyword-search custom-select">
+              {titleQuery && listIsLoading && <p>Loading...</p>}
+              {!listIsLoading && searchResults.items && (
+                <select
+                  name="volumeID"
+                  id="volumeID"
+                  onChange={(e) => setVolumeID(e.target.value)}
+                >
+                  <option value="">Select a book</option>
+                  {searchResults.items.map((item: any) => (
+                    <option value={item.id}>
+                      {truncate(item.title, 30)}
+                      {item.author && ` by ${item.author[0]}`}
+                    </option>
+                  ))}
+                </select>
+              )}
+            </div>
+          </form>
+        </div>
+      )}
+      {volumeID && (
+        <form
+          className="volume-review "
+          onSubmit={handleSubmit}
+          autoComplete="off"
+        >
+          {volumeID && (
+            <section className="volume-info-card">
+              <div className="volume-info-card-text">
+                <div className="volume-title">
+                  {volumeData.title && (
+                    <h2 className="heading-title">{volumeData.title}</h2>
+                  )}
+                  {volumeData.subtitle && (
+                    <h3 className="subtitle">{volumeData.subtitle}</h3>
+                  )}
+                  {volumeData.authors && [...volumeData.authors].join(", ")}
+                  {volumeData.publishedDate && (
+                    <span className="volume-year">
+                      {" "}
+                      ({getYear(volumeData.publishedDate)})
+                    </span>
+                  )}
+                </div>
+
+                {volumeData.description && (
+                  <div className="volume-info-card-description">
+                    <p>{volumeData.description}</p>
+                  </div>
+                )}
+              </div>
+              {volumeData && volumeData.imageLinks && (
+                <img
+                  className="volume-info-card-cover"
+                  src={
+                    volumeData.imageLinks.medium ||
+                    volumeData.imageLinks.small ||
+                    volumeData.imageLinks.thumbnail ||
+                    ""
+                  }
+                  alt={`Cover of ${volumeData.title}`}
+                />
+              )}
+            </section>
+          )}
+          <section className="volume-review">
+            <div className="input-group">
+              <label htmlFor="body">
+                Your Review (optional)
+                <span aria-label="Characters left" className="character-count">
+                  {2000 - body.length}/2000
+                </span>
+              </label>
+              <textarea
+                name="body"
+                placeholder="What did you think about the book?"
+                value={body}
+                onChange={(e) => setBody(e.target.value)}
+                maxLength={2000}
+              />
+            </div>
+            <RatingSelector select={(rating) => setRating(rating)} />
+            <div className="btn-container">
+              {itemIsEditing.isEditing && (
+                <button
+                  className="btn btn-secondary"
+                  type="button"
+                  onClick={() => {
+                    handleCancel();
+                  }}
+                >
+                  Cancel
+                </button>
+              )}
+              <button className="btn btn-primary" type="submit">
+                {itemIsEditing.isEditing ? "Update Review" : "Submit Review"}
+              </button>
+            </div>
+          </section>
+        </form>
+      )}
+    </>
   );
 }
 

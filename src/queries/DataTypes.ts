@@ -1,6 +1,5 @@
 export type ReviewDataTypes = {
-  title: string;
-  author: string;
+  volumeID: string;
   body: string;
   rating: number;
   date: string;

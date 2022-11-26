@@ -1,5 +1,5 @@
 import User from "../modules/user";
-import { DataContext } from "../context/DataContext";
+import { ReviewContext } from "../context/ReviewContext";
 import { useContext, useState, useEffect } from "react";
 import ReviewItem from "./ReviewItem";
 import { ReviewDataTypes } from "../queries/DataTypes";
@@ -7,21 +7,21 @@ import { NavLink } from "react-router-dom";
 import React from "react";
 
 function MyReviews() {
-  const context = useContext(DataContext);
+  const context = useContext(ReviewContext);
 
   if (!context) {
     throw new Error("Context not found");
   }
-  const { itemData, itemIsLoading } = context;
+  const { reviewData, itemIsLoading } = context;
   const username = User.getName();
   const [myReviews, setMyReviews] = useState<ReviewDataTypes[]>([]);
 
   useEffect(() => {
-    if (itemData) {
-      const reviews = itemData.filter((item) => item.username === username);
+    if (reviewData) {
+      const reviews = reviewData.filter((item) => item.username === username);
       setMyReviews(reviews);
     }
-  }, [itemData, username]);
+  }, [reviewData, username]);
 
   return (
     <>

@@ -1,9 +1,10 @@
 import React from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import LinkList from "./shared/LinkList";
 import { NavLink } from "react-router-dom";
 import { UserDataTypes } from "../queries/DataTypes";
+import FocusTrap from "focus-trap-react";
 
 type PropTypes = {
   user: UserDataTypes | null;
@@ -17,6 +18,9 @@ function Header({ user, handleLogout }: PropTypes) {
   const handleMobileMenu = () => {
     setMenuOpen(!menuOpen);
   };
+
+  /*
+  ------ DEPRECATED: Will use FocusTrap instead ------
 
   useEffect(() => {
     const content = document.querySelectorAll(
@@ -40,7 +44,7 @@ function Header({ user, handleLogout }: PropTypes) {
         btn.setAttribute("tabindex", "0");
       });
     }
-  }, [windowWidth, menuOpen]);
+  }, [windowWidth, menuOpen]); */
 
   return (
     window.addEventListener("resize", () => {
@@ -68,22 +72,24 @@ function Header({ user, handleLogout }: PropTypes) {
               >
                 <FaBars />
               </button>
-              <div className={menuOpen ? "mobile-menu open" : "mobile-menu"}>
-                <div className="btn-container">
-                  <button
-                    aria-label="Close Menu"
-                    className="mobile-btn btn-icon close-menu"
-                    onClick={handleMobileMenu}
-                  >
-                    <FaTimes />
-                  </button>
+              <FocusTrap active={menuOpen}>
+                <div className={menuOpen ? "mobile-menu open" : "mobile-menu"}>
+                  <div className="btn-container">
+                    <button
+                      aria-label="Close Menu"
+                      className="mobile-btn btn-icon close-menu"
+                      onClick={handleMobileMenu}
+                    >
+                      <FaTimes />
+                    </button>
+                  </div>
+                  <LinkList
+                    openClose={handleMobileMenu}
+                    user={user}
+                    handleLogout={handleLogout}
+                  />
                 </div>
-                <LinkList
-                  openClose={handleMobileMenu}
-                  user={user}
-                  handleLogout={handleLogout}
-                />
-              </div>
+              </FocusTrap>
             </>
           )}
         </nav>

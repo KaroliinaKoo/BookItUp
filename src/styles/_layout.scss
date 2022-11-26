@@ -11,7 +11,7 @@ body {
 
   *:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.45);
+    box-shadow: 0 0 0 2px rgba(0, 25, 45, 0.753);
     transition: all 0.2s ease-in-out;
     overflow: hidden;
   }
@@ -320,7 +320,6 @@ main {
 
   &:has(.review-form) {
     padding: 0;
-    background-color: $color-white;
   }
 
   @media screen and (max-width: $breakpoint-xs) {
