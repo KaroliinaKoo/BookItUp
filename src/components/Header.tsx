@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
-import { useState } from "react";
 import LinkList from "./shared/LinkList";
 import { NavLink } from "react-router-dom";
 import { UserDataTypes } from "../queries/DataTypes";

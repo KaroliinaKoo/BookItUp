@@ -183,15 +183,20 @@ form.volume-review {
     }
 }
 
+.recommendations {
+    position: relative;
+    z-index: 2;
+}
 
-.hero-container {
+.main-container {
     width: 100%;
-    height: 100%;
+    height: auto;
     max-width: $element-width-xxl;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
+    overflow-y: auto;
 
     .user-welcome {
         display: flex;
@@ -211,6 +216,7 @@ form.volume-review {
     }
 
     .hero-card {
+        position: relative;
         background-color: $color-secondary-muted;
         background-image: linear-gradient(#a8dadf88, rgba(56, 35, 37, 0.171)), url("https://images.unsplash.com/photo-1560332944-d047e59ac9b2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80");
         background-size: cover;
@@ -222,6 +228,7 @@ form.volume-review {
         align-items: center;
         width: 100%;
         height: 100%;
+        min-height: 500px;
         justify-content: space-around;
         text-align: center;
         transition: all 0.2s ease-in-out;
@@ -284,11 +291,8 @@ form.volume-review {
             bottom: 0;
             right: 0;
             padding-right: 0.4em;
-
-            a {
-                font-size: 0.7rem;
-                color: rgba(0, 0, 0, 0.283);
-            }
+            font-size: 0.7rem;
+            color: rgba(0, 0, 0, 0.283);
         }
     }
 
