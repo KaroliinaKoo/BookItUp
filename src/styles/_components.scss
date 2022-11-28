@@ -396,3 +396,47 @@ input[type="submit"] {
     }
 
 }
+
+.volume-recommendations {
+
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    padding: 0.5em;
+    text-align: center;
+    min-height: 400px;
+
+    .volume-recommendations-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1em;
+    }
+
+    width: 100%;
+
+    .volume-recommendations-container {
+        display: flex;
+        flex-direction: column;
+        padding: 0.5em;
+        max-height: 80vh;
+
+        ul {
+            background-color: $color-white;
+            display: grid;
+            gap: 0.5em;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+
+            li {
+                font-size: 0.7rem;
+
+                .recommendation-card-author {
+                    color: $color-primary-dark;
+                    font-style: italic;
+                }
+            }
+        }
+    }
+
+
+}

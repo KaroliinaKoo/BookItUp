@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 const categories = ["fiction", "history", "cooking"];
 
 const Recommendations = () => {
   const [recommendations, setRecommendations] = useState<any>([]);
+  const [currentCategory, setCurrentCategory] = useState(categories[0]);
 
   useEffect(() => {
     const fetchVolume = async (category: string) => {
@@ -13,61 +15,74 @@ const Recommendations = () => {
       const data = await response.json();
 
       if (data.totalItems) {
-        const volumeData = data.items.map((volume: any) => {
-          return {
-            category: category,
-            volumeInfo: {
-              id: volume.id,
-              title: volume.volumeInfo.title || "Unknown title",
-              author: volume.volumeInfo.authors || "Unknown author",
-              cover:
-                volume.volumeInfo.imageLinks.thumbnail ||
-                "https://via.placeholder.com/150",
-              category: volume.volumeInfo.categories || "",
-            },
-          };
-        });
-
-        setRecommendations((prev: any) => [...prev, ...volumeData]);
-        console.log(recommendations);
+        setRecommendations(
+          data.items.map((volume: any) => {
+            return {
+              category: category,
+              volumeInfo: {
+                id: volume.id,
+                title: volume.volumeInfo.title || "Unknown title",
+                author: volume.volumeInfo.authors || "Unknown author",
+                cover:
+                  volume.volumeInfo.imageLinks.thumbnail ||
+                  "https://via.placeholder.com/150",
+                category: volume.volumeInfo.categories || "",
+              },
+            };
+          })
+        );
       }
     };
 
-    categories.forEach((category) => {
-      fetchVolume(category);
-    });
-  }, []);
+    fetchVolume(currentCategory);
+  }, [currentCategory]);
 
   return (
-    <div className="recommendations">
+    <div className="volume-recommendations">
       <h2>Find your next favorite book</h2>
-      <div className="recommendations-container">
-        {categories.forEach((category) => {
-          return (
-            <ul>
-              <p>{category}</p>
-              <li>
-                {recommendations
-                  .filter((item: any) => item.category === "fiction")
-                  .map((item: any) => (
-                    <div
-                      className="recommendation-card"
-                      key={item.volumeInfo.id}
-                    >
-                      <img
-                        src={item.volumeInfo.cover}
-                        alt={item.volumeInfo.title}
-                      />
-                      <div className="recommendation-card-info">
-                        <h3>{item.volumeInfo.title}</h3>
-                        <p>{item.volumeInfo.author}</p>
-                      </div>
-                    </div>
-                  ))}
+      <div className="volume-recommendations-container">
+        <nav className="volume-recommendations-nav">
+          <button
+            className="btn-icon previous"
+            onClick={() => {
+              const index = categories.indexOf(currentCategory);
+              if (index > 0) {
+                setCurrentCategory(categories[index - 1]);
+              }
+            }}
+            disabled={currentCategory === categories[0]}
+          >
+            <FaChevronLeft />
+          </button>
+          <h3>{currentCategory}</h3>
+          <button
+            className="btn-icon next"
+            onClick={() => {
+              const index = categories.indexOf(currentCategory);
+              if (index < categories.length - 1) {
+                setCurrentCategory(categories[index + 1]);
+              }
+            }}
+            disabled={currentCategory === categories[categories.length - 1]}
+          >
+            <FaChevronRight />
+          </button>
+        </nav>
+        <ul>
+          {recommendations
+            .filter((item: any) => item.category === currentCategory)
+            .map((item: any) => (
+              <li className="recommendation-card" key={item.volumeInfo.id}>
+                <img src={item.volumeInfo.cover} alt={item.volumeInfo.title} />
+                <p className="recommendation-card-title">
+                  {item.volumeInfo.title}
+                </p>
+                <p className="recommendation-card-author">
+                  {item.volumeInfo.author}
+                </p>
               </li>
-            </ul>
-          );
-        })}
+            ))}
+        </ul>
       </div>
     </div>
   );
