@@ -9,6 +9,7 @@ import { getUUID } from "../utils/uuid";
 import { getYear } from "../utils/getYear";
 import { truncate } from "../utils/truncate";
 import { FaSearch } from "react-icons/fa";
+import { sanitizeString } from "../utils/sanitizeString";
 
 function ReviewForm() {
   const navigate = useNavigate();
@@ -57,9 +58,9 @@ function ReviewForm() {
           totalItems: data.totalItems,
           items: data.items.map((item: any) => {
             return {
-              id: item.id,
-              title: item.volumeInfo.title,
-              author: item.volumeInfo.authors,
+              id: item.id || "",
+              title: item.volumeInfo.title || "Unknown title",
+              author: item.volumeInfo.authors || "Unknown author",
             };
           }),
         });
@@ -93,7 +94,7 @@ function ReviewForm() {
     if (volumeID && rating) {
       const newReview: ReviewDataTypes = {
         volumeID,
-        body,
+        body: sanitizeString(body, true),
         rating,
         date: currentTime,
         id: getUUID(),
@@ -114,7 +115,12 @@ function ReviewForm() {
     }
   };
 
-  const reset = () => {};
+  const reset = () => {
+    setTitleQuery("");
+    setVolumeID("");
+    setBody("");
+    setRating(0);
+  };
 
   const handleCancel = () => {
     cancelEdit();
@@ -160,7 +166,7 @@ function ReviewForm() {
             </div>
             <div className="input-group keyword-search custom-select">
               {titleQuery && listIsLoading && <p>Loading...</p>}
-              {!listIsLoading && searchResults.items && (
+              {titleQuery && !listIsLoading && searchResults.items && (
                 <select
                   name="volumeID"
                   id="volumeID"
@@ -169,8 +175,9 @@ function ReviewForm() {
                   <option value="">Select a book</option>
                   {searchResults.items.map((item: any) => (
                     <option value={item.id}>
-                      {truncate(item.title, 30)}
-                      {item.author && ` by ${item.author[0]}`}
+                      {item.title && sanitizeString(truncate(item.title, 30))}
+                      {item.author &&
+                        ` (${sanitizeString(item.author[0]) ?? "Unknown"})`}
                     </option>
                   ))}
                 </select>
@@ -190,23 +197,29 @@ function ReviewForm() {
               <div className="volume-info-card-text">
                 <div className="volume-title">
                   {volumeData.title && (
-                    <h2 className="heading-title">{volumeData.title}</h2>
+                    <h2 className="heading-title">
+                      {volumeData.title ?? "No title"}
+                    </h2>
                   )}
                   {volumeData.subtitle && (
-                    <h3 className="subtitle">{volumeData.subtitle}</h3>
+                    <h3 className="subtitle">
+                      {sanitizeString(volumeData.subtitle) ?? ""}
+                    </h3>
                   )}
-                  {volumeData.authors && [...volumeData.authors].join(", ")}
+                  {volumeData.authors &&
+                    (sanitizeString([...volumeData.authors].join(", ")) ??
+                      "Unknown author")}
                   {volumeData.publishedDate && (
                     <span className="volume-year">
                       {" "}
-                      ({getYear(volumeData.publishedDate)})
+                      {getYear(volumeData.publishedDate) ?? ""}
                     </span>
                   )}
                 </div>
 
                 {volumeData.description && (
                   <div className="volume-info-card-description">
-                    <p>{volumeData.description}</p>
+                    <p>{sanitizeString(volumeData.description)}</p>
                   </div>
                 )}
               </div>
@@ -214,12 +227,14 @@ function ReviewForm() {
                 <img
                   className="volume-info-card-cover"
                   src={
-                    volumeData.imageLinks.medium ||
-                    volumeData.imageLinks.small ||
-                    volumeData.imageLinks.thumbnail ||
+                    volumeData.imageLinks.medium ??
+                    volumeData.imageLinks.small ??
+                    volumeData.imageLinks.thumbnail ??
                     ""
                   }
-                  alt={`Cover of ${volumeData.title}`}
+                  alt={`Cover of ${
+                    sanitizeString(volumeData.title) ?? "the book"
+                  }`}
                 />
               )}
             </section>

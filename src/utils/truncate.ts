@@ -1,4 +1,6 @@
 export const truncate = (str: string, num: number) => {
+  str = str.toString();
+
   if (str.length <= num) {
     return str;
   }

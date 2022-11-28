@@ -36,7 +36,7 @@ export type VolumeTypes = {
   categories: string[];
   pageCount: number;
   language: string;
-  cover: string;
+  imageLinks: Record<string, string>;
 };
 
 /* ------ USING THE CONTEXT INSIDE THE APP -------------------------
@@ -129,9 +129,7 @@ export const VolumeProvider = ({ children }: any) => {
               categories: item.volumeInfo.categories || "",
               pageCount: item.volumeInfo.pageCount || "",
               language: item.volumeInfo.language || "",
-              cover: item.volumeInfo.imageLinks
-                ? item.volumeInfo.imageLinks.thumbnail
-                : "",
+              imageLinks: item.volumeInfo.imageLinks || "",
             };
           }),
         });

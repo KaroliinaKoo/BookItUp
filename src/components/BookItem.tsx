@@ -2,12 +2,14 @@ import React from "react";
 import { VolumeTypes } from "../context/VolumeContext";
 import { langCodeToString } from "../utils/langCodeToString";
 import { getYear } from "../utils/getYear";
+import { sanitizeString } from "../utils/sanitizeString";
 
 type PropTypes = {
   item: VolumeTypes;
+  longDescription?: boolean;
 };
 
-function BookItem({ item }: PropTypes) {
+function BookItem({ item, longDescription }: PropTypes) {
   return (
     <div className="volume-info-card">
       <div className="volume-info-card-left">
@@ -20,18 +22,21 @@ function BookItem({ item }: PropTypes) {
             - {item.authors ? [...item.authors].join(", ") : "No Author"}
           </div>
         </div>
-
         {item.description && (
-          <div className="volume-info-card-description">
-            <p>{item.description}</p>
+          <div
+            className={`volume-info-card-description ${
+              longDescription ? "expanded" : ""
+            }`}
+          >
+            <p>{sanitizeString(item.description)}</p>
           </div>
         )}
       </div>
       <div className="volume-info-card-right">
-        {item.cover ? (
+        {item.imageLinks.thumbnail ? (
           <img
             className="volume-info-card-cover"
-            src={item.cover}
+            src={item.imageLinks.thumbnail}
             alt={`Cover of ${item.title}`}
           />
         ) : (
