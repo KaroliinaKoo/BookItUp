@@ -1,46 +1,67 @@
 import React, { useEffect, useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { truncate } from "../utils/truncate";
+import VolumeDetails from "./VolumeDetails";
 
-const categories = ["fiction", "history", "cooking"];
+const categories = ["fiction", "history", "cooking", "science", "art"];
 
 const Recommendations = () => {
   const [recommendations, setRecommendations] = useState<any>([]);
   const [currentCategory, setCurrentCategory] = useState(categories[0]);
+  const [listIsLoading, setListIsLoading] = useState(true);
+  const [showDetails, setShowDetails] = useState({
+    show: false,
+    volumeData: null,
+  });
 
   useEffect(() => {
-    const fetchVolume = async (category: string) => {
-      const response = await fetch(
-        `https://www.googleapis.com/books/v1/volumes?q=${category}+subject${category}&orderBy=relevance&startIndex=0&maxResults=5&printType=BOOKS`
-      );
-      const data = await response.json();
+    const fetchVolume = async (searchCategory: string) => {
+      setListIsLoading(true);
 
-      if (data.totalItems) {
+      const response = await fetch(
+        `https://www.googleapis.com/books/v1/volumes?q=${searchCategory}+subject:${searchCategory}&filter=ebooks&orderBy=newest&startIndex=0&langRestrict=en&maxResults=8&printType=BOOKS`
+      );
+
+      try {
+        const data = await response.json();
+        console.log(data);
         setRecommendations(
           data.items.map((volume: any) => {
             return {
-              category: category,
+              volumeData: volume.volumeInfo,
+              category: searchCategory,
               volumeInfo: {
                 id: volume.id,
                 title: volume.volumeInfo.title || "Unknown title",
                 author: volume.volumeInfo.authors || "Unknown author",
-                cover:
-                  volume.volumeInfo.imageLinks.thumbnail ||
-                  "https://via.placeholder.com/150",
+                cover: volume.volumeInfo.imageLinks
+                  ? volume.volumeInfo.imageLinks.thumbnail
+                  : "https://via.placeholder.com/150",
                 category: volume.volumeInfo.categories || "",
               },
             };
           })
         );
+        setListIsLoading(false);
+      } catch (error) {
+        console.log(error);
+        setListIsLoading(false);
       }
     };
-
     fetchVolume(currentCategory);
   }, [currentCategory]);
 
   return (
     <div className="volume-recommendations">
-      <h2>Find your next favorite book</h2>
-      <div className="volume-recommendations-container">
+      {showDetails.show && (
+        <VolumeDetails
+          volumeData={showDetails.volumeData}
+          onClose={() => setShowDetails({ show: false, volumeData: null })}
+        />
+      )}
+      <div className="volume-recommendations-header">
+        <h2>Find your next favorite book</h2>
+
         <nav className="volume-recommendations-nav">
           <button
             className="btn-icon previous"
@@ -68,21 +89,39 @@ const Recommendations = () => {
             <FaChevronRight />
           </button>
         </nav>
-        <ul>
-          {recommendations
-            .filter((item: any) => item.category === currentCategory)
-            .map((item: any) => (
-              <li className="recommendation-card" key={item.volumeInfo.id}>
-                <img src={item.volumeInfo.cover} alt={item.volumeInfo.title} />
-                <p className="recommendation-card-title">
-                  {item.volumeInfo.title}
-                </p>
-                <p className="recommendation-card-author">
-                  {item.volumeInfo.author}
-                </p>
-              </li>
-            ))}
-        </ul>
+      </div>
+      <div className="volume-recommendations-container">
+        {listIsLoading ? (
+          <div className="spinner" role="status" aria-label="Loading results" />
+        ) : (
+          <ul>
+            {recommendations
+              .filter((item: any) => item.category === currentCategory)
+              .map((item: any) => (
+                <li className="recommendation-card" key={item.volumeInfo.id}>
+                  <button
+                    onClick={() => {
+                      setShowDetails({
+                        show: true,
+                        volumeData: item.volumeData,
+                      });
+                    }}
+                  >
+                    <img
+                      src={item.volumeInfo.cover}
+                      alt={item.volumeInfo.title}
+                    />
+                  </button>
+                  <p className="recommendation-card-title">
+                    {truncate(item.volumeInfo.title, 30)}
+                  </p>
+                  <p className="recommendation-card-author">
+                    {item.volumeInfo.author[0]}
+                  </p>
+                </li>
+              ))}
+          </ul>
+        )}
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import React from "react";
 import { FaTimes } from "react-icons/fa";
 import BookItem from "./BookItem";
+import FocusTrap from "focus-trap-react";
 
 type PropTypes = {
   volumeData: any;
@@ -8,15 +9,23 @@ type PropTypes = {
 };
 
 const VolumeDetails = ({ volumeData, onClose }: PropTypes) => {
+  document.querySelector("body")?.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      onClose();
+    }
+  });
+
   return (
-    <div className="modal">
-      <div className="modal-content volume-details-modal">
-        <button className="close-btn btn-icon" onClick={onClose}>
-          <FaTimes />
-        </button>
-        <BookItem item={volumeData} longDescription={true} />
+    <FocusTrap active={true}>
+      <div className="modal">
+        <div className="modal-content volume-details-modal">
+          <button className="close-btn btn-icon" onClick={onClose}>
+            <FaTimes />
+          </button>
+          <BookItem item={volumeData} longDescription={true} />
+        </div>
       </div>
-    </div>
+    </FocusTrap>
   );
 };
 

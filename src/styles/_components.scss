@@ -214,6 +214,18 @@ input[type="submit"] {
     transform: scale(1.5);
     line-height: 0;
     color: inherit;
+
+    &:hover {
+        transform: scale(1.8);
+    }
+
+    &:disabled,
+    &:disabled:hover {
+        background-color: transparent;
+        color: $color-grey-medium;
+        cursor: not-allowed;
+        box-shadow: none;
+    }
 }
 
 // SPINNER
@@ -316,9 +328,7 @@ input[type="submit"] {
 .volume-info-card {
     background-color: $color-white;
     border-radius: 0.5em;
-    width: 90%;
-    height: fit-content;
-    max-width: $element-width-l;
+    width: $element-width-l;
     display: flex;
     justify-content: space-between;
     padding: 1.5em;
@@ -328,6 +338,10 @@ input[type="submit"] {
 
     .volume-info-card-right {
         flex: 0 0 clamp(100px, 20%, 150px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 
     img.volume-info-card-cover {
@@ -339,8 +353,10 @@ input[type="submit"] {
 
     .volume-info-card-description,
     .heading-title,
-    .subtitle {
-        text-align: left;
+    .subtitle,
+    .volume-author {
+
+        text-align: start;
         display: -webkit-box;
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 10;
@@ -348,7 +364,7 @@ input[type="submit"] {
 
         &.expanded {
             -webkit-line-clamp: unset;
-            max-height: 40vh;
+            max-height: 60vh;
             overflow-y: auto;
         }
     }
@@ -381,54 +397,88 @@ input[type="submit"] {
 }
 
 .modal-content.volume-details-modal {
-    width: 90vw;
-    height: fit-content;
-    padding: 0.5em;
+    width: 90%;
+    max-width: 1000px;
     margin: 0;
     justify-content: flex-start;
     align-items: center;
-    overflow-y: auto;
 
     button.close-btn {
         position: absolute;
         top: 0;
         right: 0.5em;
     }
-
 }
 
 .volume-recommendations {
-
+    position: relative;
     display: flex;
     flex-direction: column;
-    gap: 1em;
-    padding: 0.5em;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 0;
     text-align: center;
-    min-height: 400px;
+    width: 100%;
+    background-color: $color-white;
 
-    .volume-recommendations-nav {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1em;
+    .spinner {
+        margin-top: auto;
+        margin-bottom: auto;
     }
 
-    width: 100%;
+    .volume-recommendations-header {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin: 1em;
+
+        h2 {
+            color: $color-primary;
+        }
+
+        h3 {
+            color: $color-dark;
+            text-transform: capitalize;
+        }
+
+        .volume-recommendations-nav {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 50%;
+            min-width: 200px;
+            padding-inline: 0.5em;
+        }
+    }
+
 
     .volume-recommendations-container {
         display: flex;
         flex-direction: column;
-        padding: 0.5em;
-        max-height: 80vh;
+        justify-content: flex-start;
+        min-height: 200px;
 
         ul {
-            background-color: $color-white;
+            background-color: $color-primary-muted-light;
             display: grid;
-            gap: 0.5em;
             grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 0.5em;
+            padding: 0.5em;
 
             li {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
                 font-size: 0.7rem;
+
+                img {
+                    width: auto;
+                    height: 200px;
+                    object-fit: scale-down;
+                }
 
                 .recommendation-card-author {
                     color: $color-primary-dark;
