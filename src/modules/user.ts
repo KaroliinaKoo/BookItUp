@@ -1,7 +1,12 @@
 import { UserDataTypes } from "../queries/DataTypes";
 
 const User = (function () {
-  let id: number, username: string, email: string;
+  let id: number,
+    username: string,
+    email: string,
+    settings: {
+      preferredCategories: string[];
+    };
 
   const isAuthorized = () => {
     return getToken() ? true : false;
@@ -27,11 +32,23 @@ const User = (function () {
     return localStorage.getItem("token");
   };
 
+  const getUserSettings = () => {
+    return settings;
+  };
+
   const setData = (data: UserDataTypes) => {
     if (getToken()) {
       username = data.username;
       email = data.email;
       id = data.id;
+    } else {
+      console.log("No token found");
+    }
+  };
+
+  const setUserSettings = (data: UserDataTypes) => {
+    if (getToken()) {
+      settings.preferredCategories = data.settings.preferredCategories;
     } else {
       console.log("No token found");
     }
@@ -51,6 +68,8 @@ const User = (function () {
     setData,
     clearData,
     isAuthorized,
+    getUserSettings,
+    setUserSettings,
   };
 })();
 

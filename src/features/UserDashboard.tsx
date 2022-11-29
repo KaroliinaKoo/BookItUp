@@ -2,6 +2,7 @@ import User from "../modules/user";
 import React, { useState, useEffect } from "react";
 import MyProfile from "../components/MyProfile";
 import MyReviews from "../components/MyReviews";
+import UserSelectCategories from "../components/UserSelectCategories";
 
 function UserDashboard() {
   const [showProfile, setShowProfile] = useState(false);
@@ -29,6 +30,7 @@ function UserDashboard() {
 
   return (
     <div className="user-dashboard container">
+      <UserSelectCategories />
       {userIsAuthenticated() && (
         <>
           <h1>{User.getName()}'s Dashboard</h1>
