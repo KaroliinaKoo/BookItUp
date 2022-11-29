@@ -22,7 +22,7 @@ function Main() {
       )}
       {User?.isAuthorized() && (
         <div className="user-greet-container">
-          <div className="user-welcome">Hi, {User?.getName()}</div>
+          <div className="user-welcome">Hi, {User?.getName()}!</div>
           <Recommendations />
         </div>
       )}

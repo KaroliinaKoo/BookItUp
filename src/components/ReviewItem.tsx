@@ -57,7 +57,6 @@ function ReviewItem({ item, profileView }: PropTypes) {
         );
         const data = await response.json();
         setVolumeData(data.volumeInfo);
-        console.log(data.volumeInfo);
       };
       fetchVolume(item.volumeID);
     }

@@ -24,7 +24,6 @@ const Recommendations = () => {
 
       try {
         const data = await response.json();
-        console.log(data);
         setRecommendations(
           data.items.map((volume: any) => {
             return {
@@ -60,7 +59,7 @@ const Recommendations = () => {
         />
       )}
       <div className="volume-recommendations-header">
-        <h2>Find your next favorite book</h2>
+        <h2>Find your new favorite book</h2>
 
         <nav className="volume-recommendations-nav">
           <button

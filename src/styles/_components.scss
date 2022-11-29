@@ -214,6 +214,7 @@ input[type="submit"] {
     transform: scale(1.5);
     line-height: 0;
     color: inherit;
+    transition: all 0.2s ease-in-out;
 
     &:hover {
         transform: scale(1.8);
@@ -225,6 +226,7 @@ input[type="submit"] {
         color: $color-grey-medium;
         cursor: not-allowed;
         box-shadow: none;
+        transform: scale(1.5);
     }
 }
 
@@ -433,7 +435,6 @@ input[type="submit"] {
         justify-content: center;
         align-items: center;
         width: 100%;
-        margin: 1em;
 
         h2 {
             color: $color-primary;
@@ -448,9 +449,9 @@ input[type="submit"] {
             display: flex;
             justify-content: space-around;
             align-items: center;
-            width: 50%;
-            min-width: 200px;
-            padding-inline: 0.5em;
+            width: 100%;
+            padding-top: 0.5em;
+            background-color: $color-primary-muted-light;
         }
     }
 
@@ -459,10 +460,10 @@ input[type="submit"] {
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
-        min-height: 200px;
+        min-height: 250px;
+        background-color: $color-primary-muted-light;
 
         ul {
-            background-color: $color-primary-muted-light;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
             gap: 0.5em;

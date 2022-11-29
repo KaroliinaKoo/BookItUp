@@ -12,7 +12,4 @@ export type UserDataTypes = {
   email: string;
   id: number;
   password?: string;
-  settings: {
-    preferredCategories: string[];
-  };
 };

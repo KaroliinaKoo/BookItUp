@@ -1,11 +1,11 @@
 import { UserDataTypes } from "../queries/DataTypes";
 
 const User = (function () {
-  let id: number,
-    username: string,
-    email: string,
+  let id: UserDataTypes["id"],
+    username: UserDataTypes["username"],
+    email: UserDataTypes["email"],
     settings: {
-      preferredCategories: string[];
+      categories: string[];
     };
 
   const isAuthorized = () => {
@@ -32,8 +32,8 @@ const User = (function () {
     return localStorage.getItem("token");
   };
 
-  const getUserSettings = () => {
-    return settings;
+  const getUserCategories = () => {
+    return settings.categories;
   };
 
   const setData = (data: UserDataTypes) => {
@@ -46,12 +46,8 @@ const User = (function () {
     }
   };
 
-  const setUserSettings = (data: UserDataTypes) => {
-    if (getToken()) {
-      settings.preferredCategories = data.settings.preferredCategories;
-    } else {
-      console.log("No token found");
-    }
+  const setUserSettings = (data: any) => {
+    settings = data;
   };
 
   const clearData = () => {
@@ -66,10 +62,10 @@ const User = (function () {
     getName,
     getEmail,
     setData,
+    setUserSettings,
     clearData,
     isAuthorized,
-    getUserSettings,
-    setUserSettings,
+    getUserCategories,
   };
 })();
 
