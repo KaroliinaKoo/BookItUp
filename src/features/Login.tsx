@@ -3,13 +3,26 @@ import { useState, useEffect } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import User from "../modules/user";
 import { useNavigate } from "react-router-dom";
+import { subjectHeadingsList } from "../data/subjectHeadingsList";
+
+type FormDataType = {
+  email: string;
+  password: string;
+  username: string;
+  settings: {
+    categories: string[] | null;
+  };
+};
 
 function Login() {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
+  const [formData, setFormData]: [FormDataType, any] = useState({
     email: "",
     password: "",
     username: "",
+    settings: {
+      categories: [],
+    },
   });
 
   const [error, setError] = useState({
@@ -265,37 +278,86 @@ function Login() {
           </div>
 
           {showRegisterPage && (
-            <div className="input-group">
-              <label htmlFor="password_confirmation">Confirm Password</label>
-              <input
-                className={error.password_confirmation && "error"}
-                value={passwordConfirmation}
-                onChange={handleConfirmPassword}
-                type={showPassword ? "text" : "password"}
-                id="password_confirmation"
-                name="password_confirmation"
-                placeholder="Enter your password again"
-                autoComplete="off"
-                maxLength={32}
-                minLength={6}
-                required
-              />
-              <button
-                aria-label="Toggle password visibility"
-                type="button"
-                className="show-password"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? (
-                  <FaEyeSlash aria-label="hide" />
-                ) : (
-                  <FaEye aria-label="show" />
+            <>
+              <div className="input-group">
+                <label htmlFor="password_confirmation">Confirm Password</label>
+                <input
+                  className={error.password_confirmation && "error"}
+                  value={passwordConfirmation}
+                  onChange={handleConfirmPassword}
+                  type={showPassword ? "text" : "password"}
+                  id="password_confirmation"
+                  name="password_confirmation"
+                  placeholder="Enter your password again"
+                  autoComplete="off"
+                  maxLength={32}
+                  minLength={6}
+                  required
+                />
+                <button
+                  aria-label="Toggle password visibility"
+                  type="button"
+                  className="show-password"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <FaEyeSlash aria-label="hide" />
+                  ) : (
+                    <FaEye aria-label="show" />
+                  )}
+                </button>
+                {showRegisterPage && error.password_confirmation && (
+                  <p className="error">{error.password_confirmation}</p>
                 )}
-              </button>
-              {showRegisterPage && error.password_confirmation && (
-                <p className="error">{error.password_confirmation}</p>
-              )}
-            </div>
+              </div>
+              <div className="user-select-categories">
+                <p>Choose the categories you are interested in</p>
+                <div className="user-select-categories__list">
+                  {subjectHeadingsList.map((category) => (
+                    <div
+                      className="input-group radio-input user-select-categories__list__item"
+                      key={category}
+                    >
+                      <input
+                        type="checkbox"
+                        id={category}
+                        name={category}
+                        value={category}
+                        checked={formData.settings.categories?.includes(
+                          category
+                        )}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setFormData({
+                              ...formData,
+                              settings: {
+                                ...formData.settings,
+                                categories: [
+                                  ...formData.settings.categories!,
+                                  e.target.value,
+                                ],
+                              },
+                            });
+                          } else {
+                            setFormData({
+                              ...formData,
+                              settings: {
+                                ...formData.settings,
+                                categories:
+                                  formData.settings.categories!.filter(
+                                    (category) => category !== e.target.value
+                                  ),
+                              },
+                            });
+                          }
+                        }}
+                      />
+                      <label htmlFor={category}>{category}</label>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
           )}
 
           <button type="submit" className="btn btn-primary">

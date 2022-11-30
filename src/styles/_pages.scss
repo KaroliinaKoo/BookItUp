@@ -276,7 +276,7 @@ form.volume-review {
     .user-greet-container {
         display: flex;
         flex-direction: column;
-        gap: 1em;
+        gap: 0;
         align-items: center;
         justify-content: flex-start;
         width: $element-width-xl;
@@ -290,6 +290,7 @@ form.volume-review {
             justify-content: center;
             align-items: center;
             font-size: 1.8rem;
+            padding-block: 2.5vw;
             width: 100%;
             height: 10vh;
             font-weight: 600;
@@ -786,6 +787,19 @@ form.volume-review {
                     height: 1.8em;
                 }
             }
+        }
+    }
+
+    .user-select-categories {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+
+        .user-select-categories__list {
+            width: 100%;
+            overflow-y: auto;
+            max-height: 200px;
         }
     }
 

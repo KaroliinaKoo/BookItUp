@@ -6,7 +6,7 @@ import Recommendations from "../components/Recommendations";
 function Main() {
   return (
     <div className="main-container">
-      {!User?.isAuthorized() && (
+      {!User.isAuthorized() && (
         <div className="hero-card">
           <p>The Best Reads</p> <p>Wherever you are.</p>
           <NavLink to="/login" className="btn-primary btn-cta">
@@ -20,9 +20,9 @@ function Main() {
           </a>
         </div>
       )}
-      {User?.isAuthorized() && (
+      {User.isAuthorized() && (
         <div className="user-greet-container">
-          <div className="user-welcome">Hi, {User?.getName()}!</div>
+          <div className="user-welcome">Hi, {User.getName()}!</div>
           <Recommendations />
         </div>
       )}

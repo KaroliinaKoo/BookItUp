@@ -50,6 +50,21 @@ form {
         font-size: $font-size-base;
         color: $color-dark;
 
+        &.radio-input {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+
+            label {
+                margin: 0;
+                width: auto;
+            }
+
+            input {
+                margin: 0;
+            }
+        }
+
         label {
             display: flex;
             justify-content: space-between;
@@ -421,7 +436,6 @@ input[type="submit"] {
     gap: 0;
     text-align: center;
     width: 100%;
-    background-color: $color-white;
 
     .spinner {
         margin-top: auto;
@@ -437,11 +451,12 @@ input[type="submit"] {
         width: 100%;
 
         h2 {
-            color: $color-primary;
+            color: $color-dark;
+            padding-top: 2.5vw;
         }
 
         h3 {
-            color: $color-dark;
+            color: $color-medium-dark;
             text-transform: capitalize;
         }
 

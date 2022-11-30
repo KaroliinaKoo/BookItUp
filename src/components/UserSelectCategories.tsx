@@ -3,15 +3,15 @@ import User from "../modules/user";
 import { subjectHeadingsList } from "../data/subjectHeadingsList";
 
 const UserSelectCategories = () => {
-  User.setUserSettings({ categories: ["cooking", "nature", "business"] });
+  console.log(User.getSettings());
 
-  console.log(User.getUserCategories());
+  const userSettings = User.getSettings();
   const [selectedUserCategories, setSelectedUserCategories] = useState(
-    User.getUserCategories()
+    userSettings.categories
   );
 
   return (
-    <div className="user-select-categories">
+    <div className="input-group user-select-categories">
       <h2>Choose your categories</h2>
       <p>Choose the categories you are interested in</p>
       <div className="user-select-categories__list">
@@ -43,7 +43,7 @@ const UserSelectCategories = () => {
         ))}
         <button
           onClick={() => {
-            User.setUserSettings({ categories: selectedUserCategories });
+            console.log(selectedUserCategories);
           }}
         >
           Save categories

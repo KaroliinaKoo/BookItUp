@@ -4,16 +4,14 @@ const User = (function () {
   let id: UserDataTypes["id"],
     username: UserDataTypes["username"],
     email: UserDataTypes["email"],
-    settings: {
-      categories: string[];
-    };
+    settings: UserDataTypes["settings"];
 
   const isAuthorized = () => {
     return getToken() ? true : false;
   };
 
   const getData = () => {
-    return { id, username, email };
+    return { id, username, email, settings };
   };
 
   const getID = () => {
@@ -28,12 +26,12 @@ const User = (function () {
     return email;
   };
 
-  const getToken = () => {
-    return localStorage.getItem("token");
+  const getSettings = () => {
+    return settings;
   };
 
-  const getUserCategories = () => {
-    return settings.categories;
+  const getToken = () => {
+    return localStorage.getItem("token");
   };
 
   const setData = (data: UserDataTypes) => {
@@ -41,19 +39,17 @@ const User = (function () {
       username = data.username;
       email = data.email;
       id = data.id;
+      settings = data.settings;
     } else {
       console.log("No token found");
     }
-  };
-
-  const setUserSettings = (data: any) => {
-    settings = data;
   };
 
   const clearData = () => {
     id = 0;
     username = "";
     email = "";
+    settings = { categories: [] };
   };
 
   return {
@@ -62,10 +58,9 @@ const User = (function () {
     getName,
     getEmail,
     setData,
-    setUserSettings,
     clearData,
     isAuthorized,
-    getUserCategories,
+    getSettings,
   };
 })();
 

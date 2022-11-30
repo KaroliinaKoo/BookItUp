@@ -48,7 +48,7 @@ function ReviewForm() {
 
     const fetchVolumes = async (params: string) => {
       const response = await fetch(
-        `https://www.googleapis.com/books/v1/volumes?q=${params}&orderBy=relevance&startIndex=0&maxResults=10&printType=BOOKS`
+        `https://www.googleapis.com/books/v1/volumes?q=${params}&filter=ebooks&orderBy=relevance&startIndex=0&maxResults=10&printType=BOOKS`
       );
       //&key=${process.env.REACT_APP_GOOGLE_BOOKS_API_KEY}
       const data = await response.json();
