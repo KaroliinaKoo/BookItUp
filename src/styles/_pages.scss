@@ -130,6 +130,52 @@
             }
         }
     }
+
+    .user-settings {
+        background-color: $color-white;
+        padding-top: 1em;
+        display: flex;
+        flex-direction: column;
+        width: 90%;
+        max-width: $element-width-m;
+
+        .user-select-categories {
+            h3 {
+                font-size: 1rem;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+            }
+
+            .user-select-categories__list {
+
+                legend {
+                    color: $color-grey-dark;
+                    font-size: 0.9rem;
+                    margin-bottom: 1em;
+                }
+
+                display: flex;
+                flex-direction: column;
+                gap: 1em;
+                padding: 0 1em;
+                height: 25vh;
+                overflow-y: auto;
+
+                .user-select-categories__list__item {
+                    display: flex;
+                    flex-direction: row;
+                    gap: 1em;
+                    align-items: center;
+                    color: $color-dark;
+
+                    label {
+                        text-transform: capitalize;
+                    }
+                }
+            }
+        }
+    }
 }
 
 form.volume-review {
@@ -426,6 +472,7 @@ form.volume-review {
             textarea {
                 flex: 1 1 80%;
                 background-color: $color-secondary-muted-light;
+                max-height: 200px;
             }
         }
     }
@@ -848,6 +895,53 @@ form.volume-review {
             &.btn-primary {
                 max-width: 20em;
                 padding: 1em;
+            }
+        }
+
+        .search-options {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1em;
+            margin-bottom: 1em;
+
+            fieldset {
+                display: flex;
+                justify-content: space-around;
+                width: 100%;
+                padding: 0.5em;
+
+                fieldset.radio-field {
+                    border: none;
+                    justify-content: flex-start;
+                    gap: 1em;
+
+                    legend {
+                        font-weight: 400;
+                    }
+
+                    .radio-input {
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 0.5em;
+                        margin: 0;
+                        width: fit-content;
+                    }
+                }
+
+                .language-input {
+                    max-width: fit-content;
+                    margin: 0;
+                }
+
+                legend {
+                    font-weight: 600;
+                    color: $color-secondary-muted-dark;
+                }
+
+                border: 1px solid $color-secondary-muted-light;
             }
         }
 

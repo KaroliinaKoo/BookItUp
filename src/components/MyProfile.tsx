@@ -24,9 +24,6 @@ function MyProfile() {
 
   useEffect(() => {
     setFormErrorMessage("");
-  }, [error]);
-
-  useEffect(() => {
     setFormIsValid(Object.values(error).every((err) => err === ""));
   }, [error]);
 

@@ -10,6 +10,9 @@ import { getYear } from "../utils/getYear";
 import { truncate } from "../utils/truncate";
 import { FaSearch } from "react-icons/fa";
 import { sanitizeString } from "../utils/sanitizeString";
+import { languages } from "../data/lang";
+
+type SearchBy = "title" | "author";
 
 function ReviewForm() {
   const navigate = useNavigate();
@@ -36,21 +39,24 @@ function ReviewForm() {
   }, [itemIsEditing]);
 
   const [listIsLoading, setListIsLoading] = useState(false);
-  const [titleQuery, setTitleQuery] = useState("");
   const [searchResults, setSearchResults] = useState<any>({});
   const [volumeData, setVolumeData] = useState<any>({});
   const [volumeID, setVolumeID] = useState("");
   const [body, setBody] = useState("");
   const [rating, setRating] = useState(0);
+  const [keywords, setKeywords] = useState("");
+  const [searchBy, setSearchBy] = useState<SearchBy>("title");
+  const [searchByLanguage, setSearchByLanguage] = useState("en");
 
+  // fetches the volume data from the Google Books API
   useEffect(() => {
     setListIsLoading(true);
 
-    const fetchVolumes = async (params: string) => {
-      const response = await fetch(
-        `https://www.googleapis.com/books/v1/volumes?q=${params}&filter=ebooks&orderBy=relevance&startIndex=0&maxResults=10&printType=BOOKS`
-      );
-      //&key=${process.env.REACT_APP_GOOGLE_BOOKS_API_KEY}
+    const query = (params: string) =>
+      `https://www.googleapis.com/books/v1/volumes?q=${params}+in${searchBy}:${params}&langRestrict=${searchByLanguage}&filter=ebooks&orderBy=relevance&startIndex=0&maxResults=20&printType=BOOKS`;
+
+    const fetchVolumes = async (query: string) => {
+      const response = await fetch(query);
       const data = await response.json();
 
       if (data.totalItems) {
@@ -58,7 +64,7 @@ function ReviewForm() {
           totalItems: data.totalItems,
           items: data.items.map((item: any) => {
             return {
-              id: item.id || "",
+              id: item.id,
               title: item.volumeInfo.title || "Unknown title",
               author: item.volumeInfo.authors || "Unknown author",
             };
@@ -67,11 +73,13 @@ function ReviewForm() {
       }
       setListIsLoading(false);
     };
-    if (titleQuery.length > 0) {
-      fetchVolumes(titleQuery);
-    }
-  }, [titleQuery]);
 
+    if (keywords.length) {
+      fetchVolumes(query(keywords));
+    }
+  }, [keywords, searchBy, searchByLanguage]);
+
+  // fetches the volume data from the Google Books API by volumeID
   useEffect(() => {
     if (volumeID) {
       const fetchVolume = async (id: string) => {
@@ -80,7 +88,6 @@ function ReviewForm() {
         );
         const data = await response.json();
         setVolumeData(data.volumeInfo);
-        console.log(data);
       };
       fetchVolume(volumeID);
     }
@@ -116,7 +123,6 @@ function ReviewForm() {
   };
 
   const reset = () => {
-    setTitleQuery("");
     setVolumeID("");
     setBody("");
     setRating(0);
@@ -127,18 +133,6 @@ function ReviewForm() {
     reset();
     navigate("/dashboard");
   };
-
-  /* let timer: any;
-  const volumeSearchInput = document.querySelector("#volume-search");
-  volumeSearchInput?.addEventListener("keyup", (e) => {
-    const currentInput = e.target as HTMLInputElement;
-    clearTimeout(timer);
-    timer = setTimeout(() => {
-      if (currentInput.value.length > 2) {
-        setTitleQuery(currentInput.value);
-      }
-    }, 500);
-  }); */
 
   return (
     <>
@@ -154,34 +148,101 @@ function ReviewForm() {
             <div className="input-group keyword-search">
               <label htmlFor="volume-search">
                 <FaSearch />
-                {!titleQuery && <p>Search for a book by title or author</p>}
+                {!keywords && <p>Enter a keyword or phrase</p>}
               </label>
               <input
                 type="text"
                 name="volume-search"
                 id="volume-search"
-                value={titleQuery}
-                onChange={(e) => setTitleQuery(e.target.value)}
+                value={keywords}
+                onChange={(e) => setKeywords(e.target.value)}
               />
             </div>
             <div className="input-group keyword-search custom-select">
-              {titleQuery && listIsLoading && <p>Loading...</p>}
-              {titleQuery && !listIsLoading && searchResults.items && (
+              {keywords && listIsLoading && <p>Loading...</p>}
+              {keywords && !listIsLoading && searchResults.items && (
                 <select
                   name="volumeID"
                   id="volumeID"
                   onChange={(e) => setVolumeID(e.target.value)}
                 >
                   <option value="">Select a book</option>
-                  {searchResults.items.map((item: any) => (
-                    <option value={item.id}>
-                      {item.title && sanitizeString(truncate(item.title, 30))}
-                      {item.author &&
-                        ` (${sanitizeString(item.author[0]) ?? "Unknown"})`}
-                    </option>
-                  ))}
+                  {searchResults.items
+                    .filter((item: any, index: number) => {
+                      return (
+                        searchResults.items.findIndex(
+                          (item2: any) => item2.id === item.id
+                        ) === index
+                      );
+                    })
+                    .map((item: any) => (
+                      <option key={item.id} value={item.id}>
+                        {item.title && sanitizeString(truncate(item.title, 30))}
+                        {item.author &&
+                          ` (${sanitizeString(item.author[0]) ?? "Unknown"})`}
+                      </option>
+                    ))}
                 </select>
               )}
+            </div>
+            <div className="search-options">
+              <fieldset>
+                <legend>Search Options</legend>
+                <fieldset className="radio-field">
+                  <legend>Search by</legend>
+                  <div
+                    className={`input-group radio-input ${
+                      searchBy === "title" ? "active" : ""
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      id="title"
+                      name="searchBy"
+                      value="title"
+                      checked={searchBy === "title"}
+                      onChange={(e) =>
+                        setSearchBy((e.target.value as SearchBy) || "title")
+                      }
+                    />
+                    <label htmlFor="title">Title</label>
+                  </div>
+                  <div
+                    className={`input-group radio-input ${
+                      searchBy === "author" ? "active" : ""
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      id="author"
+                      name="searchBy"
+                      value="author"
+                      checked={searchBy === "author"}
+                      onChange={(e) =>
+                        setSearchBy((e.target.value as SearchBy) || "title")
+                      }
+                    />
+                    <label htmlFor="author">Author</label>
+                  </div>
+                </fieldset>
+                <div className="input-group language-input">
+                  <label htmlFor="language">Language</label>
+                  <select
+                    name="language"
+                    value={searchByLanguage}
+                    id="language"
+                    onChange={(e) => setSearchByLanguage(e.target.value)}
+                  >
+                    {Object.entries(languages)
+                      .sort((a, b) => a[1].localeCompare(b[1]))
+                      .map(([key, value]) => (
+                        <option key={key} value={key}>
+                          {value}
+                        </option>
+                      ))}
+                  </select>
+                </div>
+              </fieldset>
             </div>
           </form>
         </div>

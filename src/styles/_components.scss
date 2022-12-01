@@ -50,10 +50,15 @@ form {
         font-size: $font-size-base;
         color: $color-dark;
 
+        &.active {
+            font-weight: 600;
+        }
+
         &.radio-input {
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
+            height: 2em;
 
             label {
                 margin: 0;

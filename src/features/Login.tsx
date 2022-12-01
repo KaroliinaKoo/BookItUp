@@ -4,25 +4,15 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import User from "../modules/user";
 import { useNavigate } from "react-router-dom";
 import { subjectHeadingsList } from "../data/subjectHeadingsList";
-
-type FormDataType = {
-  email: string;
-  password: string;
-  username: string;
-  settings: {
-    categories: string[] | null;
-  };
-};
+import { UserDataTypes } from "../queries/DataTypes";
 
 function Login() {
   const navigate = useNavigate();
-  const [formData, setFormData]: [FormDataType, any] = useState({
+  const [formData, setFormData]: [Partial<UserDataTypes>, any] = useState({
     email: "",
     password: "",
     username: "",
-    settings: {
-      categories: [],
-    },
+    categories: [],
   });
 
   const [error, setError] = useState({
@@ -323,31 +313,23 @@ function Login() {
                         id={category}
                         name={category}
                         value={category}
-                        checked={formData.settings.categories?.includes(
-                          category
-                        )}
+                        checked={formData.categories?.includes(category)}
                         onChange={(e) => {
                           if (e.target.checked) {
                             setFormData({
                               ...formData,
-                              settings: {
-                                ...formData.settings,
-                                categories: [
-                                  ...formData.settings.categories!,
-                                  e.target.value,
-                                ],
-                              },
+                              categories: [
+                                ...formData.categories!,
+                                e.target.value,
+                              ],
                             });
                           } else {
                             setFormData({
                               ...formData,
-                              settings: {
-                                ...formData.settings,
-                                categories:
-                                  formData.settings.categories!.filter(
-                                    (category) => category !== e.target.value
-                                  ),
-                              },
+
+                              categories: formData.categories!.filter(
+                                (category) => category !== e.target.value
+                              ),
                             });
                           }
                         }}

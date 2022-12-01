@@ -4,10 +4,16 @@
       "email": "someguy@fakemail.com",
       "password": "$2a$10$G5pNsI8pMheXmSjSec4kP.nTLG2uq8R/DnxdO2BYV6DqeS0kfK4SG",
       "username": "SomeGuy",
-      "settings": {
-        "categories": ["travel", "fiction", "technology"]
-      },
-      "id": 1
+      "id": 1,
+      "categories": [
+        "travel",
+        "fiction",
+        "technology",
+        "cooking",
+        "psychology",
+        "music",
+        "language"
+      ]
     }
   ]
 }

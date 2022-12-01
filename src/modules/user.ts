@@ -1,17 +1,29 @@
 import { UserDataTypes } from "../queries/DataTypes";
 
-const User = (function () {
+type User = {
+  isAuthorized: () => boolean;
+  getData: () => UserDataTypes;
+  getID: () => number;
+  getName: () => string;
+  getEmail: () => string;
+  getCategories: () => UserDataTypes["categories"];
+  setData: (data: UserDataTypes) => void;
+  setCategories: (data: UserDataTypes["categories"]) => void;
+  clearData: () => void;
+};
+
+const User = (function (): User {
   let id: UserDataTypes["id"],
     username: UserDataTypes["username"],
     email: UserDataTypes["email"],
-    settings: UserDataTypes["settings"];
+    categories: UserDataTypes["categories"];
 
   const isAuthorized = () => {
     return getToken() ? true : false;
   };
 
   const getData = () => {
-    return { id, username, email, settings };
+    return { id, username, email, categories };
   };
 
   const getID = () => {
@@ -26,8 +38,8 @@ const User = (function () {
     return email;
   };
 
-  const getSettings = () => {
-    return settings;
+  const getCategories = () => {
+    return categories;
   };
 
   const getToken = () => {
@@ -39,9 +51,17 @@ const User = (function () {
       username = data.username;
       email = data.email;
       id = data.id;
-      settings = data.settings;
+      categories = data.categories;
     } else {
-      console.log("No token found");
+      console.log("No token found. Please login.");
+    }
+  };
+
+  const setCategories = (data: UserDataTypes["categories"]) => {
+    if (getToken()) {
+      categories = data;
+    } else {
+      console.log("No token found. Please login.");
     }
   };
 
@@ -49,18 +69,19 @@ const User = (function () {
     id = 0;
     username = "";
     email = "";
-    settings = { categories: [] };
+    categories = [];
   };
 
   return {
+    isAuthorized,
     getData,
     getID,
     getName,
     getEmail,
     setData,
     clearData,
-    isAuthorized,
-    getSettings,
+    getCategories,
+    setCategories,
   };
 })();
 

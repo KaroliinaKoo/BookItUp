@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { truncate } from "../utils/truncate";
 import VolumeDetails from "./VolumeDetails";
+import User from "../modules/user";
 
 const Recommendations = () => {
   const [categoriesList, setCategoriesList] = useState<any[]>([]);
@@ -17,14 +18,18 @@ const Recommendations = () => {
 
   useEffect(() => {
     try {
+      const categories = User.getCategories();
+      setCategoriesList(categories);
+      setCurrentCategory(categories[0]);
+    } catch (error) {
+      /*
       const getUserData = localStorage.getItem("user");
       if (getUserData) {
-        let userCategories = JSON.parse(getUserData);
-        userCategories = userCategories.settings.categories;
+        const userData = JSON.parse(getUserData);
+        const userCategories = userData.categories;
         setCategoriesList(userCategories);
-        setCurrentCategory(userCategories[0]);
-      }
-    } catch (error) {
+        setCurrentCategory(userCategories[0]); }
+        */
       console.log(error);
     }
   }, []);
