@@ -1,31 +1,42 @@
-import React, { useState, createContext } from "react";
+import { createContext, useEffect } from "react";
+import { sanitizeString } from "../utils/sanitizeString";
+import { langCodeToString } from "../utils/langCodeToString";
+import { getYear } from "../utils/getYear";
+import React, { useState } from "react";
 
-type VolumeContextTypes = {
-  listIsLoading: boolean;
-  handleReset: () => void;
-  handleSearch: () => void;
-  keywords: Record<KeywordsTypes, string>;
-  setKeywords: React.Dispatch<
-    React.SetStateAction<Record<KeywordsTypes, string>>
-  >;
-  startIndex: number;
-  searchResults: SearchResultsTypes;
+export const formatVolumeData: (data: any) => FormattedVolumeType[] = (
+  data: any
+) => {
+  return data.items.map((item: any) => {
+    return {
+      id: item.id,
+      title: item.volumeInfo.title || "Unknown Title",
+      subtitle: item.volumeInfo.subtitle || "",
+      authors: item.volumeInfo.authors
+        ? [...item.volumeInfo.authors].join(", ")
+        : ["Unknown Author"],
+      publisher: item.volumeInfo.publisher || "Unknown Publisher",
+      publishedDate: item.volumeInfo.publishedDate
+        ? getYear(item.volumeInfo.publishedDate)
+        : "Unknown Year",
+      description: item.volumeInfo.description
+        ? sanitizeString(item.volumeInfo.description)
+        : "No description available.",
+      category: item.volumeInfo.categories
+        ? [...item.volumeInfo.categories].join(", ")
+        : "-",
+      pageCount: item.volumeInfo.pageCount || "-",
+      language: item.volumeInfo.language
+        ? langCodeToString(item.volumeInfo.language)
+        : "-",
+      imageLinks: item.volumeInfo.imageLinks
+        ? item.volumeInfo.imageLinks
+        : { placeholder: "https://via.placeholder.com/128x193?text=No+Cover" },
+    };
+  });
 };
 
-export type KeywordsTypes =
-  | "includes"
-  | "title"
-  | "author"
-  | "publisher"
-  | "subject"
-  | "language";
-
-export type SearchResultsTypes = {
-  totalItems: number | null;
-  items: VolumeTypes[] | [];
-};
-
-export type VolumeTypes = {
+export type FormattedVolumeType = {
   id: string;
   title: string;
   subtitle: string;
@@ -33,10 +44,35 @@ export type VolumeTypes = {
   publisher: string;
   publishedDate: string;
   description: string;
-  categories: string[];
+  category: string[];
   pageCount: number;
   language: string;
-  imageLinks: Record<string, string>;
+  imageLinks: { [key: string]: any };
+};
+
+export const formatVolumeQuery = (
+  keywords: string,
+  queryOptions?: QueryOptionsType
+) => {
+  let query = `https://www.googleapis.com/books/v1/volumes?`;
+
+  query += "q=" + keywords ?? "";
+
+  if (queryOptions) {
+    query += queryOptions.title ?? `+intitle:${queryOptions.title}`;
+    query += queryOptions.author ?? `+inauthor:${queryOptions.author}`;
+    query += queryOptions.publisher ?? `+inpublisher:${queryOptions.publisher}`;
+    query += queryOptions.category ?? `+subject:${queryOptions.category}`;
+    query += "&langRestrict=" + queryOptions.language;
+    query += "&maxResults=" + queryOptions.maxResults;
+    query += "&orderBy=" + queryOptions.orderBy;
+    query += "&startIndex=" + queryOptions.startIndex;
+    query += "&projection=" + queryOptions.projection;
+    query += "&filter=ebooks&printType=BOOKS";
+    // query += "&key=" + process.env.REACT_APP_GOOGLE_BOOKS_API_KEY;
+  }
+  console.log(query);
+  return query;
 };
 
 /* ------ USING THE CONTEXT INSIDE THE APP -------------------------
@@ -53,102 +89,103 @@ const { **CONTEXT DATA** } = context;
 
 */
 
-export const VolumeContext = createContext<VolumeContextTypes | null>(null);
-
-// Provider
+export const VolumeContext = createContext<VolumeContextType | null>(null);
 
 export const VolumeProvider = ({ children }: any) => {
-  const [listIsLoading, setListIsLoading] = useState(false);
-  const [keywords, setKeywords] = useState<VolumeContextTypes["keywords"]>({
-    includes: "",
+  const [isLoading, setIsLoading] = useState(false);
+  const [volume, setVolume] = useState<VolumeContextType["volume"]>();
+  const [volumeList, setVolumeList] = useState<VolumeContextType["volumeList"]>(
+    {
+      totalItems: null,
+      items: [],
+    }
+  );
+  const [volumeID, setVolumeID] = useState<string>("");
+  const [keywords, setKeywords] = useState<string>("");
+  const [queryOptions, setQueryOptions] = useState<QueryOptionsType>({
     title: "",
     author: "",
     publisher: "",
-    subject: "",
+    category: "",
     language: "en",
+    maxResults: 40,
+    orderBy: "relevance",
+    startIndex: 0,
+    projection: "full",
   });
-  const startIndex = 0;
-  const [searchResults, setSearchResults] = useState<
-    VolumeContextTypes["searchResults"]
-  >({
-    totalItems: null,
-    items: [],
-  });
+  const [error, setError] = useState<VolumeContextType["error"]>(null);
 
-  const handleReset = () => {
-    setKeywords({
-      includes: "",
-      title: "",
-      author: "",
-      publisher: "",
-      subject: "",
-      language: "en",
-    });
+  useEffect(() => {
+    setVolumeID(volumeID);
 
-    setSearchResults({
-      totalItems: null,
-      items: [],
-    });
-  };
-
-  //FETCH
-
-  const formatQuery = () => {
-    let query = keywords.includes;
-    query += keywords.title ? `+intitle:${keywords.title}` : "";
-    query += keywords.author ? `+inauthor:${keywords.author}` : "";
-    query += keywords.publisher ? `+inpublisher:${keywords.publisher}` : "";
-    query += keywords.subject ? `+subject:${keywords.subject}` : "";
-    query += keywords.language ? `&langRestrict=${keywords.language}` : "en";
-    return query;
-  };
-
-  const handleSearch = () => {
-    setListIsLoading(true);
-    setSearchResults({ totalItems: null, items: [] });
-
-    const fetchVolumes = async (params: string) => {
-      const response = await fetch(
-        `https://www.googleapis.com/books/v1/volumes?q=${params}&filter=ebooks&orderBy=relevance&startIndex=${startIndex}&maxResults=40&printType=BOOKS`
-      );
-      //&key=${process.env.REACT_APP_GOOGLE_BOOKS_API_KEY}
-      const data = await response.json();
-
-      if (data.totalItems) {
-        setSearchResults({
-          totalItems: data.totalItems,
-          items: data.items.map((item: any) => {
-            return {
-              id: item.id,
-              title: item.volumeInfo.title || "",
-              subtitle: item.volumeInfo.subtitle || "",
-              authors: item.volumeInfo.authors || "",
-              publisher: item.volumeInfo.publisher || "",
-              publishedDate: item.volumeInfo.publishedDate || "",
-              description: item.volumeInfo.description || "",
-              categories: item.volumeInfo.categories || "",
-              pageCount: item.volumeInfo.pageCount || "",
-              language: item.volumeInfo.language || "",
-              imageLinks: item.volumeInfo.imageLinks || "",
-            };
-          }),
-        });
+    const fetchVolumeByID = async (volumeID: string) => {
+      setIsLoading(true);
+      try {
+        const response = await fetch(
+          `https://www.googleapis.com/books/v1/volumes/${volumeID}`
+        );
+        const data = await response.json();
+        setVolume(data);
+      } catch (error: any) {
+        console.log(error);
+        setError(error);
       }
-      setListIsLoading(false);
+      console.log(volumeID);
+      setIsLoading(false);
     };
-    fetchVolumes(formatQuery());
-  };
+
+    if (volumeID) {
+      fetchVolumeByID(volumeID);
+    }
+  }, [volumeID]);
+
+  useEffect(() => {
+    setVolumeList({ totalItems: null, items: [] });
+
+    const fetchVolumeList = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch(formatVolumeQuery(keywords, queryOptions));
+        const data = await response.json();
+        if (data.items) {
+          setVolumeList({
+            totalItems: data.totalItems,
+            items: formatVolumeData(data),
+          });
+        }
+      } catch (error: any) {
+        console.log(error);
+        setError(error);
+      }
+
+      console.log(volumeList);
+      setIsLoading(false);
+    };
+
+    if (
+      keywords.length > 2 ||
+      queryOptions.title ||
+      queryOptions.author ||
+      queryOptions.publisher ||
+      queryOptions.category
+    ) {
+      fetchVolumeList();
+    }
+  }, [keywords, queryOptions]);
 
   return (
     <VolumeContext.Provider
       value={{
-        handleSearch,
-        listIsLoading,
+        volume,
+        volumeList,
+        isLoading,
+        volumeID,
+        setVolumeID,
         keywords,
         setKeywords,
-        startIndex,
-        searchResults,
-        handleReset,
+        queryOptions,
+        setQueryOptions,
+        error,
       }}
     >
       {children}
@@ -156,4 +193,30 @@ export const VolumeProvider = ({ children }: any) => {
   );
 };
 
-export default VolumeProvider;
+export type VolumeContextType = {
+  isLoading: boolean;
+  volume: {} | undefined;
+  volumeList: {
+    totalItems: number | null;
+    items: FormattedVolumeType[];
+  };
+  volumeID: string;
+  setVolumeID: (volumeID: string) => void;
+  keywords: string;
+  setKeywords: (keywords: string) => void;
+  queryOptions: QueryOptionsType;
+  setQueryOptions: (options: QueryOptionsType) => void;
+  error: any;
+};
+
+export type QueryOptionsType = {
+  title?: string;
+  author?: string;
+  publisher?: string;
+  category?: string;
+  language?: string;
+  maxResults?: number;
+  orderBy?: string;
+  startIndex?: number;
+  projection?: string;
+};

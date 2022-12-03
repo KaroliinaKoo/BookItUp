@@ -14,7 +14,7 @@ import { useEffect } from "react";
 import { useJwt } from "react-jwt";
 import React from "react";
 import FindBooks from "./features/FindBooks";
-import VolumeProvider from "./context/VolumeContext";
+import { VolumeProvider } from "./context/VolumeContext";
 
 function App() {
   const token = localStorage.getItem("token") || "";

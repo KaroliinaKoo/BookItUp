@@ -5,29 +5,25 @@ import { languages } from "../data/lang";
 import { subjectHeadingsList } from "../data/subjectHeadingsList";
 
 function BookSearch({ searchCount }: any) {
-  const context = useContext(VolumeContext);
+  const [showAdvanced, setShowAdvanced] = useState(false);
 
+  const context = useContext(VolumeContext);
   if (!context) {
     throw new Error("DataContext not found");
   }
-
-  const { keywords, setKeywords, handleReset, handleSearch } = context;
+  const { keywords, setKeywords, queryOptions, setQueryOptions, error } =
+    context;
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError(false);
-    if (
-      !keywords.includes &&
-      !keywords.title &&
-      !keywords.author &&
-      !keywords.publisher
-    ) {
-      setError(true);
-      return;
-    }
+
     searchCount.current = searchCount.current + 1;
     setShowAdvanced(false);
     handleSearch();
+  };
+
+  const handleSearch = () => {
+    setQueryOptions({ ...queryOptions, startIndex: 0 });
   };
 
   const handleChange = (
@@ -35,14 +31,8 @@ function BookSearch({ searchCount }: any) {
       | React.ChangeEvent<HTMLInputElement>
       | React.ChangeEvent<HTMLSelectElement>
   ) => {
-    setKeywords((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
+    setQueryOptions({ ...queryOptions, [e.target.name]: e.target.value });
   };
-
-  const [showAdvanced, setShowAdvanced] = useState(false);
-  const [error, setError] = useState(false);
 
   return (
     <>
@@ -55,12 +45,12 @@ function BookSearch({ searchCount }: any) {
           <div className="input-group keyword-search">
             <label htmlFor="includes">
               <FaSearch />
-              {!keywords.includes && <p>Enter a keyword or a phrase</p>}
+              {!keywords && <p>Enter a keyword or a phrase</p>}
             </label>
             <input
               type="text"
               name="includes"
-              onChange={handleChange}
+              onChange={(e) => setKeywords(e.target.value)}
               className={error ? "error" : ""}
             />
           </div>
@@ -110,9 +100,9 @@ function BookSearch({ searchCount }: any) {
                 />
               </div>
               <div className="input-group">
-                <label htmlFor="subject">Subject</label>
-                <select name="subject" onChange={handleChange}>
-                  <option value="">Select a subject</option>
+                <label htmlFor="category">Category</label>
+                <select name="category" onChange={handleChange}>
+                  <option value="">Select a category</option>
                   {subjectHeadingsList.sort().map((item) => (
                     <option key={item} value={item}>
                       {item.charAt(0).toUpperCase() + item.slice(1)}
@@ -125,7 +115,7 @@ function BookSearch({ searchCount }: any) {
                 <select
                   name="language"
                   onChange={handleChange}
-                  value={keywords.language}
+                  value={queryOptions.language}
                 >
                   {Object.entries(languages)
                     .sort((a, b) => a[1].localeCompare(b[1]))
@@ -140,7 +130,6 @@ function BookSearch({ searchCount }: any) {
                 className="reset btn-link"
                 type="button"
                 onClick={() => {
-                  handleReset();
                   document.forms[0].reset();
                 }}
               >
@@ -150,7 +139,7 @@ function BookSearch({ searchCount }: any) {
           </div>
           {error && (
             <p className="error form-error">
-              You need to enter at least one search term.
+              {error.message || "An error occurred"}
             </p>
           )}
 
