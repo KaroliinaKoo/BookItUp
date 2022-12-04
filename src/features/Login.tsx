@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaExclamationCircle, FaEye, FaEyeSlash } from "react-icons/fa";
 import User from "../modules/user";
 import { useNavigate } from "react-router-dom";
 import { subjectHeadingsList } from "../data/subjectHeadingsList";
@@ -347,7 +347,10 @@ function Login() {
           </button>
         </div>
         {formErrorMessage !== "" && (
-          <p className="error form-error">{formErrorMessage}</p>
+          <p className="error form-error">
+            <FaExclamationCircle />
+            {formErrorMessage}
+          </p>
         )}
       </form>
     </div>

@@ -1,29 +1,35 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { VolumeContext } from "../context/VolumeContext";
-import { FaSearch, FaTimes, FaChevronDown, FaChevronUp } from "react-icons/fa";
+import {
+  FaSearch,
+  FaTimes,
+  FaChevronDown,
+  FaChevronUp,
+  FaExclamationCircle,
+} from "react-icons/fa";
 import { languages } from "../data/lang";
 import { subjectHeadingsList } from "../data/subjectHeadingsList";
 
-function BookSearch({ searchCount }: any) {
+type PropTypes = {
+  searchIsActive: boolean;
+  setSearchIsActive: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+function BookSearch({ searchIsActive, setSearchIsActive }: PropTypes) {
   const [showAdvanced, setShowAdvanced] = useState(false);
 
   const context = useContext(VolumeContext);
   if (!context) {
     throw new Error("DataContext not found");
   }
-  const { keywords, setKeywords, queryOptions, setQueryOptions, error } =
-    context;
+  const { queryOptions, setQueryOptions, error, resetQueryOptions } = context;
+  const [searchTerms, setSearchTerms] = useState({ ...queryOptions });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    searchCount.current = searchCount.current + 1;
-    setShowAdvanced(false);
-    handleSearch();
-  };
-
-  const handleSearch = () => {
-    setQueryOptions({ ...queryOptions, startIndex: 0 });
+    console.log(searchTerms);
+    setSearchIsActive(true);
+    setQueryOptions(searchTerms);
   };
 
   const handleChange = (
@@ -31,8 +37,24 @@ function BookSearch({ searchCount }: any) {
       | React.ChangeEvent<HTMLInputElement>
       | React.ChangeEvent<HTMLSelectElement>
   ) => {
-    setQueryOptions({ ...queryOptions, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setSearchTerms({ ...searchTerms, [name]: value });
   };
+
+  useEffect(() => {
+    const fields = document.querySelectorAll("input, select");
+
+    if (searchIsActive && error && fields) {
+      for (let i = 0; i < fields.length; i++) {
+        fields[i].classList.add("error");
+      }
+    }
+    if (!error && fields) {
+      for (let i = 0; i < fields.length; i++) {
+        fields[i].classList.remove("error");
+      }
+    }
+  }, [searchIsActive, error]);
 
   return (
     <>
@@ -45,14 +67,9 @@ function BookSearch({ searchCount }: any) {
           <div className="input-group keyword-search">
             <label htmlFor="includes">
               <FaSearch />
-              {!keywords && <p>Enter a keyword or a phrase</p>}
+              {!searchTerms.keywords && <p>Enter a keyword or a phrase</p>}
             </label>
-            <input
-              type="text"
-              name="includes"
-              onChange={(e) => setKeywords(e.target.value)}
-              className={error ? "error" : ""}
-            />
+            <input type="text" name="keywords" onChange={handleChange} />
           </div>
           <div className="advanced-search">
             <button
@@ -66,7 +83,7 @@ function BookSearch({ searchCount }: any) {
               ) : (
                 <FaChevronDown aria-label="Show" />
               )}
-              Advanced Search
+              Filter Options
             </button>
             <div
               className="advanced-search-options"
@@ -74,30 +91,15 @@ function BookSearch({ searchCount }: any) {
             >
               <div className="input-group">
                 <label htmlFor="title">Book Title</label>
-                <input
-                  className={error ? "error" : ""}
-                  type="text"
-                  name="title"
-                  onChange={handleChange}
-                />
+                <input type="text" name="title" onChange={handleChange} />
               </div>
               <div className="input-group">
                 <label htmlFor="author">Author</label>
-                <input
-                  type="text"
-                  name="author"
-                  onChange={handleChange}
-                  className={error ? "error" : ""}
-                />
+                <input type="text" name="author" onChange={handleChange} />
               </div>
               <div className="input-group">
                 <label htmlFor="publisher">Publisher</label>
-                <input
-                  type="text"
-                  name="publisher"
-                  onChange={handleChange}
-                  className={error ? "error" : ""}
-                />
+                <input type="text" name="publisher" onChange={handleChange} />
               </div>
               <div className="input-group">
                 <label htmlFor="category">Category</label>
@@ -115,7 +117,7 @@ function BookSearch({ searchCount }: any) {
                 <select
                   name="language"
                   onChange={handleChange}
-                  value={queryOptions.language}
+                  value={searchTerms.language}
                 >
                   {Object.entries(languages)
                     .sort((a, b) => a[1].localeCompare(b[1]))
@@ -131,15 +133,17 @@ function BookSearch({ searchCount }: any) {
                 type="button"
                 onClick={() => {
                   document.forms[0].reset();
+                  resetQueryOptions();
                 }}
               >
                 <FaTimes /> Clear all fields
               </button>
             </div>
           </div>
-          {error && (
+          {searchIsActive && error && (
             <p className="error form-error">
-              {error.message || "An error occurred"}
+              <FaExclamationCircle />
+              {error || error.message || "An error occurred"}
             </p>
           )}
 

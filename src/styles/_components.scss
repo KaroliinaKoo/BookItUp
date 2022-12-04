@@ -21,7 +21,7 @@ form {
     position: relative;
 
     p.error {
-        color: $color-error;
+        color: $color-error-dark;
         position: relative;
         width: 100%;
         max-width: 100%;
@@ -32,13 +32,26 @@ form {
         padding: 0 2px;
 
         &.form-error {
+            display: flex;
+            gap: 1em;
             background-color: $color-error-light;
             border: 1px solid $color-error-opaque;
-            width: 90%;
+            width: 100%;
             height: fit-content;
             padding: 0.5em;
-            text-align: center;
+            text-align: left;
             bottom: 0;
+            margin: 0.5em;
+            border-radius: 5px;
+        }
+
+        svg {
+            height: 1.4em;
+            width: 1.4em;
+            left: 0;
+            margin-top: auto;
+            margin-bottom: auto;
+            color: $color-error-medium-dark;
         }
     }
 
@@ -508,6 +521,4 @@ input[type="submit"] {
             }
         }
     }
-
-
 }

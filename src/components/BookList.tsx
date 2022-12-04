@@ -1,9 +1,13 @@
 import React from "react";
 import { useContext } from "react";
-import { VolumeContext, FormattedVolumeType } from "../context/VolumeContext";
+import { VolumeContext } from "../context/VolumeContext";
+import { VolumeFormattedType } from "../queries/utils/formatVolumeData";
 import BookItem from "../components/BookItem";
 
-const BookList = ({ searchCount }: any) => {
+type PropTypes = {
+  searchIsActive: boolean;
+};
+const BookList = ({ searchIsActive }: PropTypes) => {
   const context = useContext(VolumeContext);
 
   if (!context) {
@@ -12,24 +16,24 @@ const BookList = ({ searchCount }: any) => {
 
   const { isLoading, volumeList } = context;
 
-  if (isLoading) {
+  if (searchIsActive && isLoading) {
     return (
       <div className="spinner" role="status" aria-label="Loading results" />
     );
   }
 
-  if (!isLoading && volumeList.items.length > 0) {
+  if (searchIsActive && !isLoading && volumeList.items.length > 0) {
     return (
       <>
         <div>{volumeList.items.length} results found</div>
 
-        {volumeList.items.map((item: FormattedVolumeType) => (
+        {volumeList.items.map((item: VolumeFormattedType) => (
           <BookItem key={item.id} item={item} />
         ))}
       </>
     );
   }
-  if (searchCount.current > 0 && !isLoading) {
+  if (searchIsActive && !isLoading) {
     return <div>No results</div>;
   }
   return <></>;

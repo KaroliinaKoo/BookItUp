@@ -1,11 +1,11 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import BookList from "../components/BookList";
 import BookSearch from "../components/BookSearch";
 import { FaChevronUp } from "react-icons/fa";
 
 function FindBooks() {
   const [showScroll, setShowScroll] = useState(false);
-  const searchCount = useRef(0);
+  const [searchIsActive, setSearchIsActive] = useState(false);
 
   const scrollEvent = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
     if (e.currentTarget.scrollTop > 500) {
@@ -25,8 +25,11 @@ function FindBooks() {
   return (
     <div className="container" onScroll={scrollEvent}>
       <h1>Find Books</h1>
-      <BookSearch searchCount={searchCount} />
-      <BookList searchCount={searchCount} />
+      <BookSearch
+        searchIsActive={searchIsActive}
+        setSearchIsActive={setSearchIsActive}
+      />
+      <BookList searchIsActive={searchIsActive} />
       {showScroll && (
         <button className="scroll-to-top" onClick={scrollToTop}>
           <FaChevronUp />

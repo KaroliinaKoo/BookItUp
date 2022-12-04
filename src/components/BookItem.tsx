@@ -1,8 +1,8 @@
 import React from "react";
-import { FormattedVolumeType } from "../context/VolumeContext";
+import { VolumeFormattedType } from "../queries/utils/formatVolumeData";
 
 type PropTypes = {
-  item: FormattedVolumeType;
+  item: VolumeFormattedType;
   longDescription?: boolean;
 };
 
