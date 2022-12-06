@@ -7,9 +7,7 @@ const UserSelectCategories = () => {
   const [selectedUserCategories, setSelectedUserCategories] =
     useState(userCategories);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
+  const updateUserData = async () => {
     let param = {
       categories: selectedUserCategories,
     };
@@ -23,15 +21,25 @@ const UserSelectCategories = () => {
     })
       .then((response) => {
         if (response.status === 200) {
+          console.log("Categories updated successfully.");
           return response.json();
         } else {
           throw new Error("Status Error: " + response.status);
         }
       })
       .then((data) => {
-        console.log("Categories updated successfully: " + data.categories);
-        User.setCategories(data.categories);
+        console.log(data);
+        localStorage.setItem("user", JSON.stringify(data));
+      })
+      .catch((error) => {
+        console.log(error);
       });
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    updateUserData();
   };
 
   return (

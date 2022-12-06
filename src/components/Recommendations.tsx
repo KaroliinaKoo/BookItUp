@@ -3,151 +3,176 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { truncate } from "../utils/truncate";
 import VolumeDetails from "./VolumeDetails";
 import User from "../modules/user";
+import { formatVolumeDataList } from "../queries/utils/formatVolumeData";
+import { subjectHeadingsList } from "../data/subjectHeadingsList";
 
 const Recommendations = () => {
   const [categoriesList, setCategoriesList] = useState<any[]>([]);
-  const [currentCategory, setCurrentCategory] = useState<string>(
-    categoriesList[0]
-  );
-  const [recommendations, setRecommendations] = useState<any[]>([]);
+  const [currentCategory, setCurrentCategory] = useState<string>("");
+  const [recommendations, setRecommendations] = useState<any>({});
   const [listIsLoading, setListIsLoading] = useState(true);
-  const [showDetails, setShowDetails] = useState({
-    show: false,
-    volumeData: null,
-  });
+  const [isCurrentVolume, setIsCurrentVolume] = useState(false);
 
-  useEffect(() => {
-    try {
-      const categories = User.getCategories();
-      setCategoriesList(categories);
-      setCurrentCategory(categories[0]);
-    } catch (error) {
-      /*
-      const getUserData = localStorage.getItem("user");
-      if (getUserData) {
-        const userData = JSON.parse(getUserData);
-        const userCategories = userData.categories;
-        setCategoriesList(userCategories);
-        setCurrentCategory(userCategories[0]); }
-        */
-      console.log(error);
+  const getRandomizedCategories = () => {
+    const categories = subjectHeadingsList;
+    const randomizedCategories = [];
+
+    for (let i = 0; i < 5; i++) {
+      const randomIndex = Math.floor(Math.random() * categories.length);
+      randomizedCategories.push(categories[randomIndex]);
+      categories.splice(randomIndex, 1);
     }
-  }, []);
+
+    return randomizedCategories;
+  };
 
   useEffect(() => {
-    const fetchVolume = async (searchCategory: string) => {
-      setListIsLoading(true);
-      const response = await fetch(
-        `https://www.googleapis.com/books/v1/volumes?q=${searchCategory}+subject:${searchCategory}&filter=ebooks&orderBy=newest&startIndex=0&langRestrict=en&maxResults=8&printType=BOOKS`
-      );
+    if (categoriesList.length > 0) {
+      setCurrentCategory(categoriesList[0]);
+    }
+    if (User.getCategories()) {
+      setCategoriesList(User.getCategories());
+    }
+    if (!User.getCategories()) {
+      const randomizedCategories = getRandomizedCategories();
+      setCategoriesList(randomizedCategories);
+    }
+  }, [categoriesList]);
 
-      try {
-        const data = await response.json();
-        setRecommendations(
-          data.items.map((volume: any) => {
-            return {
-              volumeData: volume.volumeInfo,
-              category: searchCategory,
-              volumeInfo: {
-                id: volume.id,
-                title: volume.volumeInfo.title || "Unknown title",
-                author: volume.volumeInfo.authors || "Unknown author",
-                cover: volume.volumeInfo.imageLinks
-                  ? volume.volumeInfo.imageLinks.thumbnail
-                  : "https://via.placeholder.com/150",
-                category: volume.volumeInfo.categories || "",
-              },
-            };
-          })
-        );
+  useEffect(() => {
+    if (currentCategory) {
+      (async (searchCategory: string) => {
+        setListIsLoading(true);
+        try {
+          const response = await fetch(
+            `https://www.googleapis.com/books/v1/volumes?q=${searchCategory}+subject:${searchCategory}&filter=ebooks&orderBy=newest&startIndex=0&langRestrict=en&maxResults=8&printType=BOOKS`
+          );
+          const data = await response.json();
+          const recommendationItem = {
+            [searchCategory]: formatVolumeDataList(data.items),
+          };
+          setRecommendations((prev: any) => ({
+            ...prev,
+            ...recommendationItem,
+          }));
+        } catch (error: any) {
+          console.log(error.message);
+        }
         setListIsLoading(false);
-      } catch (error) {
-        console.log(error);
-        setListIsLoading(false);
-      }
-    };
-    fetchVolume(currentCategory);
+      })(currentCategory);
+    }
   }, [currentCategory]);
 
   return (
-    <div className="volume-recommendations">
-      {showDetails.show && (
+    <>
+      {isCurrentVolume && (
         <VolumeDetails
-          volumeData={showDetails.volumeData}
-          onClose={() => setShowDetails({ show: false, volumeData: null })}
+          volumeData={recommendations[currentCategory].find(
+            (item: any) => item.id === isCurrentVolume
+          )}
+          handleClose={() => setIsCurrentVolume(false)}
         />
       )}
-      <div className="volume-recommendations-header">
-        <h2>Find your new favorite book</h2>
 
-        {categoriesList.length > 1 && (
-          <nav className="volume-recommendations-nav">
-            <button
-              className="btn-icon previous"
-              onClick={() => {
-                const index = categoriesList.indexOf(currentCategory);
-                if (index > 0) {
-                  setCurrentCategory(categoriesList[index - 1]);
+      <div className="volume-recommendations">
+        <div className="volume-recommendations-header">
+          <h2>Find your new favorite book</h2>
+          {recommendations && (
+            <nav className="volume-recommendations-nav">
+              <button
+                className="btn-icon previous"
+                onClick={() => {
+                  const index = categoriesList.indexOf(currentCategory);
+                  if (index > 0) {
+                    setCurrentCategory(categoriesList[index - 1]);
+                  }
+                }}
+                disabled={currentCategory === categoriesList[0]}
+              >
+                <FaChevronLeft />
+              </button>
+              <h3>{currentCategory}</h3>
+              <button
+                className="btn-icon next"
+                onClick={() => {
+                  const index = categoriesList.indexOf(currentCategory);
+                  if (index < categoriesList.length - 1) {
+                    setCurrentCategory(categoriesList[index + 1]);
+                  }
+                }}
+                disabled={
+                  currentCategory === categoriesList[categoriesList.length - 1]
                 }
-              }}
-              disabled={currentCategory === categoriesList[0]}
-            >
-              <FaChevronLeft />
-            </button>
-            <h3>{currentCategory}</h3>
-            <button
-              className="btn-icon next"
-              onClick={() => {
-                const index = categoriesList.indexOf(currentCategory);
-                if (index < categoriesList.length - 1) {
-                  setCurrentCategory(categoriesList[index + 1]);
-                }
-              }}
-              disabled={
-                currentCategory === categoriesList[categoriesList.length - 1]
-              }
-            >
-              <FaChevronRight />
-            </button>
-          </nav>
-        )}
-      </div>
-      <div className="volume-recommendations-container">
-        {listIsLoading ? (
-          <div className="spinner" role="status" aria-label="Loading results" />
-        ) : (
-          <ul>
-            {categoriesList.length > 1 &&
-              recommendations
-                .filter((item: any) => item.category === currentCategory)
-                .map((item: any) => (
-                  <li className="recommendation-card" key={item.volumeInfo.id}>
+              >
+                <FaChevronRight />
+              </button>
+            </nav>
+          )}
+        </div>
+        <div className="volume-recommendations-container">
+          {listIsLoading ? (
+            <div
+              className="spinner"
+              role="status"
+              aria-label="Loading results"
+            />
+          ) : (
+            <ul>
+              {recommendations &&
+                recommendations[currentCategory] &&
+                recommendations[currentCategory].map((volume: any) => (
+                  <li className="recommendation-card" key={volume.id}>
                     <button
-                      onClick={() => {
-                        setShowDetails({
-                          show: true,
-                          volumeData: item.volumeData,
-                        });
-                      }}
+                      name={`volume-cover ${volume.id}`}
+                      onClick={() => setIsCurrentVolume(volume.id)}
                     >
                       <img
-                        src={item.volumeInfo.cover}
-                        alt={item.volumeInfo.title}
+                        src={volume.imageLinks.thumbnail}
+                        alt={volume.title}
                       />
                     </button>
                     <p className="recommendation-card-title">
-                      {truncate(item.volumeInfo.title, 30)}
+                      {truncate(volume.title, 30)}
                     </p>
                     <p className="recommendation-card-author">
-                      {item.volumeInfo.author[0]}
+                      {volume.authors[0]}
                     </p>
                   </li>
                 ))}
-          </ul>
-        )}
+            </ul>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
 export default Recommendations;
+
+/*
+
+  useEffect(() => {
+    if (currentCategory) {
+      (async (searchCategory: string) => {
+        setListIsLoading(true);
+        try {
+          const response = await fetch(
+            `https://www.googleapis.com/books/v1/volumes?q=${searchCategory}+subject:${searchCategory}&filter=ebooks&orderBy=newest&startIndex=0&langRestrict=en&maxResults=8&printType=BOOKS`
+          );
+          const data = await response.json();
+          const recommendationItem = {
+            [searchCategory]: formatVolumeDataList(data.items),
+          };
+          setRecommendations((prev: any) => ({
+            ...prev,
+            ...recommendationItem,
+          }));
+        } catch (error: any) {
+          console.log(error.message);
+        }
+        setListIsLoading(false);
+      })(currentCategory);
+    }
+  }, [currentCategory]);
+
+*/

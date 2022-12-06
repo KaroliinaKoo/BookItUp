@@ -12,7 +12,6 @@ const formatVolumeQuery = (queryOptions: QueryOptionsType) => {
       maxResults,
       orderBy,
       startIndex,
-      projection,
     } = queryOptions;
 
     query += keywords ?? "";
@@ -24,11 +23,9 @@ const formatVolumeQuery = (queryOptions: QueryOptionsType) => {
     query += "&maxResults=" + maxResults;
     query += "&orderBy=" + orderBy;
     query += "&startIndex=" + startIndex;
-    query += "&projection=" + projection;
     query += "&filter=ebooks&printType=BOOKS";
     // query += "&key=" + process.env.REACT_APP_GOOGLE_BOOKS_API_KEY;
   }
-  console.log(query);
   return query;
 };
 
@@ -39,10 +36,9 @@ export type QueryOptionsType = {
   publisher?: string;
   category?: string;
   language?: string;
-  maxResults?: number;
-  orderBy?: string;
-  startIndex?: number;
-  projection?: string;
+  maxResults: number;
+  orderBy: string;
+  startIndex: number;
 };
 
 export default formatVolumeQuery;

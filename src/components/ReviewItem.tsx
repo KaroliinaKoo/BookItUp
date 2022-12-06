@@ -67,9 +67,7 @@ function ReviewItem({ item, profileView }: PropTypes) {
       {showVolumeDetails && (
         <VolumeDetails
           volumeData={volumeData}
-          onClose={() => {
-            setShowVolumeDetails(false);
-          }}
+          handleClose={() => setShowVolumeDetails(false)}
         />
       )}
 

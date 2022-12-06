@@ -6,7 +6,7 @@ import NewReview from "./features/NewReview";
 import Header from "./components/Header";
 import UserDashboard from "./features/UserDashboard";
 import Alert from "./components/Alert";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { ReviewProvider } from "./context/ReviewContext";
 import { AlertProvider } from "./context/AlertContext";
 import User from "./modules/user";
@@ -19,7 +19,6 @@ import { VolumeProvider } from "./context/VolumeContext";
 function App() {
   const token = localStorage.getItem("token") || "";
   const { isExpired } = useJwt(localStorage.getItem("token")!);
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (token && isExpired) {
@@ -34,8 +33,8 @@ function App() {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     User.clearData();
-    navigate("/");
     console.log("user logged out");
+    window.location.href = "/";
   };
 
   return (

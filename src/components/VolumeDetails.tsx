@@ -1,28 +1,34 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FaTimes } from "react-icons/fa";
-import BookItem from "./BookItem";
 import FocusTrap from "focus-trap-react";
+import BookItem from "./BookListItem";
 
 type PropTypes = {
   volumeData: any;
-  onClose: () => void;
+  handleClose: () => void;
 };
 
-const VolumeDetails = ({ volumeData, onClose }: PropTypes) => {
-  document.querySelector("body")?.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-      onClose();
-    }
-  });
+const VolumeDetails = ({ volumeData, handleClose }: PropTypes) => {
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        handleClose();
+      }
+    };
+    window.addEventListener("keydown", handleEscape);
+    return () => {
+      window.removeEventListener("keydown", handleEscape);
+    };
+  }, [handleClose]);
 
   return (
     <FocusTrap active={true}>
       <div className="modal">
         <div className="modal-content volume-details-modal">
-          <button className="close-btn btn-icon" onClick={onClose}>
+          <button className="close-btn btn-icon" onClick={handleClose}>
             <FaTimes />
           </button>
-          <BookItem item={volumeData} longDescription={true} />
+          {volumeData && <BookItem item={volumeData} longDescription={true} />}
         </div>
       </div>
     </FocusTrap>

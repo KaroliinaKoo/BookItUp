@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { VolumeContext } from "../context/VolumeContext";
 import {
   FaSearch,
@@ -22,14 +22,21 @@ function BookSearch({ searchIsActive, setSearchIsActive }: PropTypes) {
   if (!context) {
     throw new Error("DataContext not found");
   }
-  const { queryOptions, setQueryOptions, error, resetQueryOptions } = context;
+  const {
+    error,
+    queryOptions,
+    setQueryOptions,
+    resetQueryOptions,
+    validateQueryOptions,
+  } = context;
   const [searchTerms, setSearchTerms] = useState({ ...queryOptions });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(searchTerms);
-    setSearchIsActive(true);
-    setQueryOptions(searchTerms);
+    if (validateQueryOptions(searchTerms)) {
+      setQueryOptions(searchTerms);
+      setSearchIsActive(true);
+    }
   };
 
   const handleChange = (
@@ -40,21 +47,6 @@ function BookSearch({ searchIsActive, setSearchIsActive }: PropTypes) {
     const { name, value } = e.target;
     setSearchTerms({ ...searchTerms, [name]: value });
   };
-
-  useEffect(() => {
-    const fields = document.querySelectorAll("input, select");
-
-    if (searchIsActive && error && fields) {
-      for (let i = 0; i < fields.length; i++) {
-        fields[i].classList.add("error");
-      }
-    }
-    if (!error && fields) {
-      for (let i = 0; i < fields.length; i++) {
-        fields[i].classList.remove("error");
-      }
-    }
-  }, [searchIsActive, error]);
 
   return (
     <>
@@ -69,7 +61,12 @@ function BookSearch({ searchIsActive, setSearchIsActive }: PropTypes) {
               <FaSearch />
               {!searchTerms.keywords && <p>Enter a keyword or a phrase</p>}
             </label>
-            <input type="text" name="keywords" onChange={handleChange} />
+            <input
+              type="text"
+              name="keywords"
+              onChange={handleChange}
+              className={error ? "error" : ""}
+            />
           </div>
           <div className="advanced-search">
             <button
@@ -91,19 +88,38 @@ function BookSearch({ searchIsActive, setSearchIsActive }: PropTypes) {
             >
               <div className="input-group">
                 <label htmlFor="title">Book Title</label>
-                <input type="text" name="title" onChange={handleChange} />
+                <input
+                  type="text"
+                  name="title"
+                  onChange={handleChange}
+                  className={error ? "error" : ""}
+                />
               </div>
               <div className="input-group">
                 <label htmlFor="author">Author</label>
-                <input type="text" name="author" onChange={handleChange} />
+                <input
+                  type="text"
+                  name="author"
+                  onChange={handleChange}
+                  className={error ? "error" : ""}
+                />
               </div>
               <div className="input-group">
                 <label htmlFor="publisher">Publisher</label>
-                <input type="text" name="publisher" onChange={handleChange} />
+                <input
+                  type="text"
+                  name="publisher"
+                  onChange={handleChange}
+                  className={error ? "error" : ""}
+                />
               </div>
               <div className="input-group">
                 <label htmlFor="category">Category</label>
-                <select name="category" onChange={handleChange}>
+                <select
+                  name="category"
+                  onChange={handleChange}
+                  className={error ? "error" : ""}
+                >
                   <option value="">Select a category</option>
                   {subjectHeadingsList.sort().map((item) => (
                     <option key={item} value={item}>

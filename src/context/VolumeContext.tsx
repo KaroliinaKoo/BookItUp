@@ -1,6 +1,7 @@
 import { createContext, useEffect } from "react";
 import React, { useState } from "react";
-import formatVolumeData, {
+import {
+  formatVolumeDataList,
   VolumeFormattedType,
 } from "../queries/utils/formatVolumeData";
 import formatVolumeQuery, {
@@ -36,108 +37,67 @@ export const VolumeProvider = ({ children }: any) => {
     maxResults: 40,
     orderBy: "relevance",
     startIndex: 0,
-    projection: "full",
   };
 
   const [isLoading, setIsLoading] = useState(false);
-  const [volume, setVolume] = useState<VolumeContextType["volume"]>();
-  const [volumeID, setVolumeID] = useState<string>("");
   const [volumeList, setVolumeList] = useState<VolumeContextType["volumeList"]>(
     {
       totalItems: null,
       items: [],
     }
   );
-
   const [queryOptions, setQueryOptions] = useState(queryInitialOptions);
-  const [error, setError] = useState<VolumeContextType["error"]>(null);
+  const [error, setError] = useState<string>("");
 
   const resetQueryOptions = () => {
     setQueryOptions(queryInitialOptions);
   };
 
   useEffect(() => {
-    setVolumeID("");
     resetQueryOptions();
   }, [location]);
 
-  useEffect(() => {
-    setVolume(undefined);
-    const fetchVolumeByID = async () => {
-      console.log(volumeID);
-      setIsLoading(true);
-      try {
-        const response = await fetch(
-          `https://www.googleapis.com/books/v1/volumes/${volumeID}`
-        );
-        const data = await response.json();
-        setVolume(data);
-      } catch (error: any) {
-        console.log(error);
-        setError(error);
-      }
-      console.log(volumeID);
-      setIsLoading(false);
-    };
-
-    if (volumeID) {
-      fetchVolumeByID();
-      setError(null);
+  const validateQueryOptions = (options: QueryOptionsType) => {
+    const { keywords, title, author, publisher, category } = options;
+    if (!title && !author && !publisher && !category && keywords!.length < 1) {
+      setError("Please enter at least 2 characters, or select a filter.");
+      return false;
     }
-    if (!volumeID) {
-      setError("No volume ID provided");
-    }
-  }, [volumeID, location]);
+    return true;
+  };
 
   useEffect(() => {
-    setVolumeList({ totalItems: null, items: [] });
-
-    const fetchVolumeList = async () => {
-      console.log(queryOptions);
+    if (!validateQueryOptions(queryOptions)) {
+      return;
+    }
+    (async () => {
+      setError("");
+      setVolumeList({ totalItems: null, items: [] });
       setIsLoading(true);
       try {
         const response = await fetch(formatVolumeQuery(queryOptions));
         const data = await response.json();
-        if (data.items) {
-          setVolumeList({
-            totalItems: data.totalItems,
-            items: formatVolumeData(data),
-          });
-        }
+        setVolumeList({
+          totalItems: data.totalItems,
+          items: formatVolumeDataList(data.items),
+        });
       } catch (error: any) {
         console.log(error);
-        setError(error);
       }
-      console.log(volumeList);
       setIsLoading(false);
-    };
-
-    if (
-      (queryOptions.keywords && queryOptions.keywords.length > 1) ||
-      queryOptions.title ||
-      queryOptions.author ||
-      queryOptions.publisher ||
-      queryOptions.category
-    ) {
-      fetchVolumeList();
-      setError(null);
-    } else {
-      setError("Please enter at least 2 characters, or select a filter.");
-    }
-  }, [queryOptions]);
+    })();
+  }, [queryOptions, location]);
 
   return (
     <VolumeContext.Provider
       value={{
-        volume,
         volumeList,
         isLoading,
-        volumeID,
-        setVolumeID,
         queryOptions,
         setQueryOptions,
-        error,
         resetQueryOptions,
+        validateQueryOptions,
+        error,
       }}
     >
       {children}
@@ -146,14 +106,12 @@ export const VolumeProvider = ({ children }: any) => {
 };
 
 export type VolumeContextType = {
+  validateQueryOptions: (options: QueryOptionsType) => boolean;
   isLoading: boolean;
-  volume: {} | undefined;
   volumeList: {
     totalItems: number | null;
     items: VolumeFormattedType[];
   };
-  volumeID: string;
-  setVolumeID: (volumeID: string) => void;
   queryOptions: QueryOptionsType;
   setQueryOptions: (options: QueryOptionsType) => void;
   error: any;

@@ -2,34 +2,42 @@ import { sanitizeString } from "../../utils/sanitizeString";
 import { langCodeToString } from "../../utils/langCodeToString";
 import { getYear } from "../../utils/getYear";
 
-const formatVolumeData: (data: any) => VolumeFormattedType[] = (data: any) => {
-  return data.items.map((item: any) => {
-    return {
-      id: item.id,
-      title: item.volumeInfo.title || "Unknown Title",
-      subtitle: item.volumeInfo.subtitle || "",
-      authors: item.volumeInfo.authors
-        ? [...item.volumeInfo.authors].join(", ")
-        : ["Unknown Author"],
-      publisher: item.volumeInfo.publisher || "Unknown Publisher",
-      publishedDate: item.volumeInfo.publishedDate
-        ? getYear(item.volumeInfo.publishedDate)
-        : "Unknown Year",
-      description: item.volumeInfo.description
-        ? sanitizeString(item.volumeInfo.description)
-        : "No description available.",
-      category: item.volumeInfo.categories
-        ? [...item.volumeInfo.categories].join(", ")
-        : "-",
-      pageCount: item.volumeInfo.pageCount || "-",
-      language: item.volumeInfo.language
-        ? langCodeToString(item.volumeInfo.language)
-        : "-",
-      imageLinks: item.volumeInfo.imageLinks
-        ? item.volumeInfo.imageLinks
-        : { placeholder: "https://via.placeholder.com/128x193?text=No+Cover" },
-    };
+export const formatVolumeDataItem: (volume: any) => VolumeFormattedType = (
+  volume: any
+) => {
+  return {
+    id: volume.id,
+    title: volume.volumeInfo.title || "Unknown Title",
+    subtitle: volume.volumeInfo.subtitle || "",
+    authors: volume.volumeInfo.authors || ["Unknown Author"],
+    publisher: volume.volumeInfo.publisher || "Unknown Publisher",
+    publishedDate: volume.volumeInfo.publishedDate
+      ? getYear(volume.volumeInfo.publishedDate)
+      : "Unknown Year",
+    description: volume.volumeInfo.description
+      ? sanitizeString(volume.volumeInfo.description)
+      : "No description available.",
+    category: volume.volumeInfo.categories || "-",
+    pageCount: volume.volumeInfo.pageCount || "-",
+    language: volume.volumeInfo.language
+      ? langCodeToString(volume.volumeInfo.language)
+      : "-",
+    imageLinks: volume.volumeInfo.imageLinks
+      ? volume.volumeInfo.imageLinks
+      : { placeholder: "https://via.placeholder.com/128x193?text=No+Cover" },
+  };
+};
+
+export const formatVolumeDataList: (data: any) => VolumeFormattedType[] = (
+  data: any
+) => {
+  return data.map((volume: any) => {
+    return formatVolumeDataItem(volume);
   });
+};
+
+export const formatStringArray = (array: string[]) => {
+  return [...array].join(", ");
 };
 
 export type VolumeFormattedType = {
@@ -45,5 +53,3 @@ export type VolumeFormattedType = {
   language: string;
   imageLinks: { [key: string]: any };
 };
-
-export default formatVolumeData;
