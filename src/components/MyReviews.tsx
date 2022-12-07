@@ -1,27 +1,32 @@
-import User from "../modules/user";
-import { ReviewContext } from "../context/ReviewContext";
+import ReviewContext, { ReviewDataTypes } from "../context/ReviewContext";
 import { useContext, useState, useEffect } from "react";
 import ReviewItem from "./ReviewItem";
-import { ReviewDataTypes } from "../queries/DataTypes";
 import { NavLink } from "react-router-dom";
 import React from "react";
+import { UserDataTypes } from "../context/UserContext";
 
-function MyReviews() {
+type Props = {
+  user: UserDataTypes;
+};
+
+function MyReviews({ user }: Props) {
   const context = useContext(ReviewContext);
 
   if (!context) {
     throw new Error("Context not found");
   }
   const { reviewData, itemIsLoading } = context;
-  const username = User.getName();
+
   const [myReviews, setMyReviews] = useState<ReviewDataTypes[]>([]);
 
   useEffect(() => {
     if (reviewData) {
-      const reviews = reviewData.filter((item) => item.username === username);
+      const reviews = reviewData.filter(
+        (item) => item.username === user.username
+      );
       setMyReviews(reviews);
     }
-  }, [reviewData, username]);
+  }, [reviewData]);
 
   return (
     <>

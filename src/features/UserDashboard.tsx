@@ -1,12 +1,20 @@
-import User from "../modules/user";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import MyProfile from "../components/MyProfile";
 import MyReviews from "../components/MyReviews";
 import MySettings from "../components/MySettings";
+import UserContext from "../context/UserContext";
 
 type CurrentPage = "profile" | "reviews" | "settings";
 
 function UserDashboard() {
+  const context = useContext(UserContext);
+
+  if (!context) {
+    throw new Error("UserContext not found");
+  }
+
+  const { user } = context;
+
   const [currentPage, setCurrentPage] = useState<CurrentPage>("reviews");
 
   const userIsAuthenticated = () => {
@@ -27,7 +35,7 @@ function UserDashboard() {
     <div className="user-dashboard container">
       {userIsAuthenticated() && (
         <>
-          <h1>{User.getName()}'s Dashboard</h1>
+          <h1>{user.username}'s Dashboard</h1>
           <div className="user-dashboard nav">
             <button
               className={`btn-secondary small ${
@@ -54,8 +62,8 @@ function UserDashboard() {
               Settings
             </button>
           </div>
-          {currentPage === "profile" && <MyProfile />}
-          {currentPage === "reviews" && <MyReviews />}
+          {currentPage === "profile" && <MyProfile user={user} />}
+          {currentPage === "reviews" && <MyReviews user={user} />}
           {currentPage === "settings" && <MySettings />}
         </>
       )}

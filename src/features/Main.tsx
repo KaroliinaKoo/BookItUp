@@ -1,12 +1,16 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import User from "../modules/user";
 import Recommendations from "../components/Recommendations";
+import { UserDataTypes } from "../context/UserContext";
 
-function Main() {
+type Props = {
+  user: UserDataTypes;
+};
+
+function Main({ user }: Props) {
   return (
     <div className="main-container">
-      {!User.isAuthorized() && (
+      {user.id === 0 ? (
         <div className="hero-card">
           <p>The Best Reads</p> <p>Wherever you are.</p>
           <NavLink to="/login" className="btn-primary btn-cta">
@@ -19,10 +23,9 @@ function Main() {
             Photo by Dan Dumitriu
           </a>
         </div>
-      )}
-      {User.isAuthorized() && (
+      ) : (
         <div className="user-greet-container">
-          <div className="user-welcome">Hi, {User.getName()}!</div>
+          <div className="user-welcome">Hi, {user.username}!</div>
           <Recommendations />
         </div>
       )}

@@ -1,8 +1,7 @@
 import React from "react";
 import { useContext } from "react";
 import ReviewItem from "./ReviewItem";
-import { ReviewContext } from "../context/ReviewContext";
-import { ReviewDataTypes } from "../queries/DataTypes";
+import ReviewContext, { ReviewDataTypes } from "../context/ReviewContext";
 import { SortByTypes } from "../features/FindReviews";
 
 type PropTypes = {

@@ -9,47 +9,49 @@ import Alert from "./components/Alert";
 import { Routes, Route } from "react-router-dom";
 import { ReviewProvider } from "./context/ReviewContext";
 import { AlertProvider } from "./context/AlertContext";
-import User from "./modules/user";
-import { useEffect } from "react";
-import { useJwt } from "react-jwt";
-import React from "react";
+import React, { useContext, useEffect } from "react";
+import UserContext from "./context/UserContext";
 import FindBooks from "./features/FindBooks";
 import { VolumeProvider } from "./context/VolumeContext";
+import { useJwt } from "react-jwt";
 
 function App() {
-  const token = localStorage.getItem("token") || "";
+  const context = useContext(UserContext);
+  if (!context) {
+    throw new Error("UserContext not found");
+  }
+  const { user, setUserData } = context;
+
   const { isExpired } = useJwt(localStorage.getItem("token")!);
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     if (token && isExpired) {
-      console.log("token expired");
-      handleLogout();
-    } else if (token) {
-      User.setData(JSON.parse(localStorage.getItem("user")!));
+      console.log("user token expired");
+      //userLogOut();
+      return;
+    }
+    if (token) {
+      const userData = JSON.parse(localStorage.getItem("user")!);
+      if (userData) {
+        setUserData(userData);
+      }
     }
   }, [isExpired, token]);
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    User.clearData();
-    console.log("user logged out");
-    window.location.href = "/";
-  };
 
   return (
     <ReviewProvider>
       <AlertProvider>
         <VolumeProvider>
           <div className="App">
-            <Header user={User.getData()} handleLogout={handleLogout} />
+            <Header />
             <main>
               <Alert />
               <Routes>
-                <Route path="/" element={<Main />} />
+                <Route path="/" element={<Main user={user} />} />
                 <Route path="*" element={<PageNotFound />} />
                 <Route path="/find-reviews" element={<FindReviews />} />
-                <Route path="/add-review" element={<NewReview />} />
+                <Route path="/add-review" element={<NewReview user={user} />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/dashboard" element={<UserDashboard />} />
                 <Route path="/find-books" element={<FindBooks />} />

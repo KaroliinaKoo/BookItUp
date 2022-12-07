@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useContext, useEffect } from "react";
-import { ReviewContext } from "../context/ReviewContext";
+import ReviewContext from "../context/ReviewContext";
 
 type PropTypes = {
   select: (rating: number) => void;

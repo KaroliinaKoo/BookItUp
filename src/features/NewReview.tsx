@@ -1,20 +1,13 @@
 import ReviewForm from "../components/ReviewForm";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import User from "../modules/user";
 
-function NewReview() {
+function NewReview({ user }: { user: any }) {
   const navigate = useNavigate();
-  const auth = User.isAuthorized();
 
   return (
     <>
-      {auth && (
-        <div className="container">
-          <ReviewForm />
-        </div>
-      )}
-      {!auth && (
+      {user.id === 0 ? (
         <div className="container-card">
           <p>You must be logged in to review a book.</p>
           <button
@@ -25,6 +18,10 @@ function NewReview() {
           >
             Login
           </button>
+        </div>
+      ) : (
+        <div className="container">
+          <ReviewForm />
         </div>
       )}
     </>

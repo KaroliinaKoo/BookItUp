@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import {
   FaHome,
@@ -8,16 +8,19 @@ import {
   FaSignInAlt,
   FaUser,
 } from "react-icons/fa";
-
-import { UserDataTypes } from "../../queries/DataTypes";
+import UserContext from "../../context/UserContext";
 
 type PropTypes = {
   openClose: () => void;
-  user: UserDataTypes | null;
-  handleLogout: () => void;
 };
 
-function LinkList({ openClose, user, handleLogout }: PropTypes) {
+function LinkList({ openClose }: PropTypes) {
+  const context = useContext(UserContext);
+  if (!context) {
+    throw new Error("UserContext not found");
+  }
+  const { user, userLogOut } = context;
+
   const userIsLoggedIn = () => {
     return localStorage.getItem("token");
   };
@@ -61,7 +64,7 @@ function LinkList({ openClose, user, handleLogout }: PropTypes) {
               to="/logout"
               onClick={(e) => {
                 e.preventDefault();
-                handleLogout();
+                userLogOut();
               }}
             >
               <FaSignOutAlt />

@@ -1,9 +1,17 @@
-import React, { useState } from "react";
-import User from "../modules/user";
+import React, { useState, useContext } from "react";
 import { subjectHeadingsList } from "../data/subjectHeadingsList";
+import UserContext from "../context/UserContext";
 
 const UserSelectCategories = () => {
-  const userCategories = User.getCategories();
+  const context = useContext(UserContext);
+
+  if (!context) {
+    throw new Error("UserContext not found");
+  }
+
+  const { user, setUserData } = context;
+
+  const userCategories = user.categories;
   const [selectedUserCategories, setSelectedUserCategories] =
     useState(userCategories);
 
@@ -12,7 +20,7 @@ const UserSelectCategories = () => {
       categories: selectedUserCategories,
     };
 
-    fetch(`http://localhost:3002/users/${User.getID()}`, {
+    fetch(`http://localhost:3002/users/${user.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -30,6 +38,7 @@ const UserSelectCategories = () => {
       .then((data) => {
         console.log(data);
         localStorage.setItem("user", JSON.stringify(data));
+        setUserData(data);
       })
       .catch((error) => {
         console.log(error);

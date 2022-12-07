@@ -1,66 +1,69 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { truncate } from "../utils/truncate";
 import VolumeDetails from "./VolumeDetails";
-import User from "../modules/user";
 import { formatVolumeDataList } from "../queries/utils/formatVolumeData";
 import { subjectHeadingsList } from "../data/subjectHeadingsList";
+import UserContext from "../context/UserContext";
 
 const Recommendations = () => {
+  const context = useContext(UserContext);
+  if (!context) {
+    throw new Error("UserContext not found");
+  }
+  const { user } = context;
+
+  const randomizeCategories = () => {
+    const randomizedCategories = [];
+    const defaultCategories = subjectHeadingsList;
+
+    for (let i = 0; i < 5; i++) {
+      const randomIndex = Math.floor(Math.random() * defaultCategories.length);
+      randomizedCategories.push(defaultCategories[randomIndex]);
+      defaultCategories.splice(randomIndex, 1);
+    }
+    setCategoriesList(randomizedCategories);
+  };
+
   const [categoriesList, setCategoriesList] = useState<any[]>([]);
   const [currentCategory, setCurrentCategory] = useState<string>("");
-  const [recommendations, setRecommendations] = useState<any>({});
+  const [recommendations, setRecommendations] = useState<any>();
   const [listIsLoading, setListIsLoading] = useState(true);
   const [isCurrentVolume, setIsCurrentVolume] = useState(false);
 
-  const getRandomizedCategories = () => {
-    const categories = subjectHeadingsList;
-    const randomizedCategories = [];
-
-    for (let i = 0; i < 5; i++) {
-      const randomIndex = Math.floor(Math.random() * categories.length);
-      randomizedCategories.push(categories[randomIndex]);
-      categories.splice(randomIndex, 1);
-    }
-
-    return randomizedCategories;
-  };
-
   useEffect(() => {
-    if (categoriesList.length > 0) {
+    if (user.categories) {
+      setCategoriesList(user.categories);
       setCurrentCategory(categoriesList[0]);
+      return;
     }
-    if (User.getCategories()) {
-      setCategoriesList(User.getCategories());
-    }
-    if (!User.getCategories()) {
-      const randomizedCategories = getRandomizedCategories();
-      setCategoriesList(randomizedCategories);
-    }
-  }, [categoriesList]);
+    randomizeCategories();
+    setCurrentCategory(categoriesList[0]);
+  }, []);
 
   useEffect(() => {
-    if (currentCategory) {
-      (async (searchCategory: string) => {
-        setListIsLoading(true);
-        try {
-          const response = await fetch(
-            `https://www.googleapis.com/books/v1/volumes?q=${searchCategory}+subject:${searchCategory}&filter=ebooks&orderBy=newest&startIndex=0&langRestrict=en&maxResults=8&printType=BOOKS`
-          );
-          const data = await response.json();
-          const recommendationItem = {
-            [searchCategory]: formatVolumeDataList(data.items),
-          };
-          setRecommendations((prev: any) => ({
-            ...prev,
-            ...recommendationItem,
-          }));
-        } catch (error: any) {
-          console.log(error.message);
-        }
-        setListIsLoading(false);
-      })(currentCategory);
+    if (currentCategory === "") {
+      return;
     }
+    (async (searchCategory: string) => {
+      setListIsLoading(true);
+      try {
+        const response = await fetch(
+          `https://www.googleapis.com/books/v1/volumes?q=${searchCategory}+subject:${searchCategory}&filter=ebooks&orderBy=newest&startIndex=0&langRestrict=en&maxResults=8&printType=BOOKS`
+        );
+        const data = await response.json();
+        const recommendationItem = {
+          [searchCategory]: formatVolumeDataList(data.items),
+        };
+        setRecommendations((prev: any) => ({
+          ...prev,
+          ...recommendationItem,
+        }));
+      } catch (error: any) {
+        console.log(error.message);
+      }
+      setListIsLoading(false);
+    })(currentCategory);
   }, [currentCategory]);
 
   return (
@@ -119,7 +122,6 @@ const Recommendations = () => {
           ) : (
             <ul>
               {recommendations &&
-                recommendations[currentCategory] &&
                 recommendations[currentCategory].map((volume: any) => (
                   <li className="recommendation-card" key={volume.id}>
                     <button
@@ -148,31 +150,3 @@ const Recommendations = () => {
 };
 
 export default Recommendations;
-
-/*
-
-  useEffect(() => {
-    if (currentCategory) {
-      (async (searchCategory: string) => {
-        setListIsLoading(true);
-        try {
-          const response = await fetch(
-            `https://www.googleapis.com/books/v1/volumes?q=${searchCategory}+subject:${searchCategory}&filter=ebooks&orderBy=newest&startIndex=0&langRestrict=en&maxResults=8&printType=BOOKS`
-          );
-          const data = await response.json();
-          const recommendationItem = {
-            [searchCategory]: formatVolumeDataList(data.items),
-          };
-          setRecommendations((prev: any) => ({
-            ...prev,
-            ...recommendationItem,
-          }));
-        } catch (error: any) {
-          console.log(error.message);
-        }
-        setListIsLoading(false);
-      })(currentCategory);
-    }
-  }, [currentCategory]);
-
-*/

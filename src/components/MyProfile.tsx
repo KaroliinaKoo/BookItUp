@@ -1,10 +1,14 @@
 import React from "react";
-import User from "../modules/user";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useEffect } from "react";
+import { UserDataTypes } from "../context/UserContext";
 
-function MyProfile() {
+type Props = {
+  user: UserDataTypes;
+};
+
+function MyProfile({ user }: Props) {
   const [changePassword, setChangePassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [formIsValid, setFormIsValid] = useState(false);
@@ -97,7 +101,7 @@ function MyProfile() {
       password: formData.newPassword,
     };
 
-    fetch(`http://localhost:3002/users/${User.getID()}`, {
+    fetch(`http://localhost:3002/users/${user.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -211,11 +215,11 @@ function MyProfile() {
           <div className="user-info">
             <div>
               <p>Username:</p>
-              <p>{User.getName()}</p>
+              <p>{user.username}</p>
             </div>
             <div>
               <p>E-mail:</p>
-              <p>{User.getEmail()}</p>
+              <p>{user.email}</p>
             </div>
           </div>
           <div className="btn-container">

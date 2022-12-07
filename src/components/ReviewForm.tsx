@@ -1,10 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
 import RatingSelector from "./RatingSelector";
-import { ReviewContext } from "../context/ReviewContext";
+import ReviewContext, { ReviewDataTypes } from "../context/ReviewContext";
 import AlertContext from "../context/AlertContext";
+import UserContext from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
-import User from "../modules/user";
-import { ReviewDataTypes } from "../queries/DataTypes";
 import { getUUID } from "../utils/uuid";
 import { getYear } from "../utils/getYear";
 import { truncate } from "../utils/truncate";
@@ -19,6 +18,7 @@ function ReviewForm() {
 
   const reviewContext = useContext(ReviewContext);
   const alertContext = useContext(AlertContext);
+  const userContext = useContext(UserContext);
 
   if (!reviewContext) {
     throw new Error("ReviewContext not found");
@@ -26,9 +26,13 @@ function ReviewForm() {
   if (!alertContext) {
     throw new Error("AlertContext not found");
   }
+  if (!userContext) {
+    throw new Error("UserContext not found");
+  }
 
   const { addItem, updateItem, itemIsEditing, cancelEdit } = reviewContext;
   const { showAlert } = alertContext;
+  const { user } = userContext;
 
   useEffect(() => {
     if (itemIsEditing.isEditing && itemIsEditing.item) {
@@ -105,7 +109,8 @@ function ReviewForm() {
         rating,
         date: currentTime,
         id: getUUID(),
-        username: User.getName(),
+        userID: user.id,
+        username: user.username,
       };
 
       if (itemIsEditing.isEditing && itemIsEditing.item) {

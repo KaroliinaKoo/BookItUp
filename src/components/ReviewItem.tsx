@@ -2,11 +2,10 @@ import React from "react";
 import Card from "./shared/Card";
 import { FaTimes, FaEdit, FaUserCircle } from "react-icons/fa";
 import { useContext, useState, useEffect } from "react";
-import { ReviewContext } from "../context/ReviewContext";
+import ReviewContext, { ReviewDataTypes } from "../context/ReviewContext";
 import AlertContext from "../context/AlertContext";
 import { useNavigate } from "react-router-dom";
 import Prompt from "./shared/Prompt";
-import { ReviewDataTypes } from "../queries/DataTypes";
 import { truncate } from "../utils/truncate";
 import VolumeDetails from "./VolumeDetails";
 
@@ -138,7 +137,8 @@ function ReviewItem({ item, profileView }: PropTypes) {
           <div className="detail-container">
             {!profileView && (
               <div className="name-display">
-                <FaUserCircle /> {item.username}
+                <FaUserCircle />
+                {item.username}
               </div>
             )}
             <div className="date-display">{formatDate(item.date)}</div>

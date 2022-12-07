@@ -1,12 +1,20 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { FaExclamationCircle, FaEye, FaEyeSlash } from "react-icons/fa";
-import User from "../modules/user";
 import { useNavigate } from "react-router-dom";
 import { subjectHeadingsList } from "../data/subjectHeadingsList";
-import { UserDataTypes } from "../queries/DataTypes";
+import { UserDataTypes } from "../context/UserContext";
+import UserContext from "../context/UserContext";
 
 function Login() {
+  const context = useContext(UserContext);
+
+  if (!context) {
+    throw new Error("UserContext not found");
+  }
+
+  const { setUserData, user } = context;
+
   const navigate = useNavigate();
   const [formData, setFormData]: [Partial<UserDataTypes>, any] = useState({
     email: "",
@@ -29,9 +37,7 @@ function Login() {
   const [formErrorMessage, setFormErrorMessage] = useState("");
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      navigate("/");
-    }
+    user.id !== 0 && navigate("/");
   }, []);
 
   useEffect(() => {
@@ -144,11 +150,12 @@ function Login() {
             throw new Error("Status Error: " + response.status);
           }
         })
-        .then((user) => {
-          user.accessToken && localStorage.setItem("token", user.accessToken);
-          user.accessToken &&
-            localStorage.setItem("user", JSON.stringify(user.user));
-          User.setData(user.user);
+        .then((userData) => {
+          userData.accessToken &&
+            localStorage.setItem("token", userData.accessToken);
+          userData.accessToken &&
+            localStorage.setItem("user", JSON.stringify(userData.user));
+          setUserData(userData.user);
           navigate("/");
           window.location.reload();
         });

@@ -1,5 +1,4 @@
 import React, { createContext, useState, useEffect } from "react";
-import { ReviewDataTypes } from "../queries/DataTypes";
 
 export type ReviewContextTypes = {
   reviewData: ReviewDataTypes[];
@@ -17,6 +16,16 @@ type itemIsEditingTypes = {
   isEditing: boolean;
 };
 
+export type ReviewDataTypes = {
+  volumeID: string;
+  body: string;
+  rating: number;
+  date: string;
+  id: string;
+  userID: number;
+  username: string;
+};
+
 /* ------ USING THE CONTEXT INSIDE THE APP -------------------------
 This check is to make sure that the app is not crashing when the context is not available (and to keep linting happy)
 ----------------------------------------------------------------
@@ -31,7 +40,7 @@ const { **CONTEXT DATA** } = context;
 
 */
 
-export const ReviewContext = createContext<ReviewContextTypes | null>(null);
+const ReviewContext = createContext<ReviewContextTypes | null>(null);
 
 export const ReviewProvider = ({ children }: any) => {
   const [reviewData, setReviewData] = useState<
@@ -133,4 +142,4 @@ export const ReviewProvider = ({ children }: any) => {
   );
 };
 
-export default ReviewProvider;
+export default ReviewContext;

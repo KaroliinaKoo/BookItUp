@@ -2,15 +2,9 @@ import React, { useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import LinkList from "./shared/LinkList";
 import { NavLink } from "react-router-dom";
-import { UserDataTypes } from "../queries/DataTypes";
 import FocusTrap from "focus-trap-react";
 
-type PropTypes = {
-  user: UserDataTypes | null;
-  handleLogout: () => void;
-};
-
-function Header({ user, handleLogout }: PropTypes) {
+function Header() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -55,13 +49,7 @@ function Header({ user, handleLogout }: PropTypes) {
           <p className="logo">BookItUp</p>
         </NavLink>
         <nav>
-          {windowWidth > 768 && (
-            <LinkList
-              user={user}
-              handleLogout={handleLogout}
-              openClose={handleMobileMenu}
-            />
-          )}
+          {windowWidth > 768 && <LinkList openClose={handleMobileMenu} />}
           {windowWidth < 768 && (
             <>
               <button
@@ -82,11 +70,7 @@ function Header({ user, handleLogout }: PropTypes) {
                       <FaTimes />
                     </button>
                   </div>
-                  <LinkList
-                    openClose={handleMobileMenu}
-                    user={user}
-                    handleLogout={handleLogout}
-                  />
+                  <LinkList openClose={handleMobileMenu} />
                 </div>
               </FocusTrap>
             </>
