@@ -3,67 +3,70 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { truncate } from "../utils/truncate";
 import VolumeDetails from "./VolumeDetails";
 import { formatVolumeDataList } from "../queries/utils/formatVolumeData";
-import { subjectHeadingsList } from "../data/subjectHeadingsList";
 import UserContext from "../context/UserContext";
+import { subjectHeadingsList } from "../data/subjectHeadingsList";
+import { useNavigate } from "react-router-dom";
 
 const Recommendations = () => {
+  const navigate = useNavigate();
   const context = useContext(UserContext);
   if (!context) {
     throw new Error("UserContext not found");
   }
   const { user } = context;
 
-  const randomizeCategories = () => {
-    const randomizedCategories = [];
-    const defaultCategories = subjectHeadingsList;
-
-    for (let i = 0; i < 5; i++) {
-      const randomIndex = Math.floor(Math.random() * defaultCategories.length);
-      randomizedCategories.push(defaultCategories[randomIndex]);
-      defaultCategories.splice(randomIndex, 1);
-    }
-    setCategoriesList(randomizedCategories);
-  };
-
   const [categoriesList, setCategoriesList] = useState<any[]>([]);
   const [currentCategory, setCurrentCategory] = useState<string>("");
-  const [recommendations, setRecommendations] = useState<any>();
+  const [recommendations, setRecommendations] = useState<any>({});
   const [listIsLoading, setListIsLoading] = useState(true);
   const [isCurrentVolume, setIsCurrentVolume] = useState(false);
 
+  const getRandomizedCategoriesList = () => {
+    const random: string[] = [];
+    const categories = subjectHeadingsList;
+
+    while (random.length < 3) {
+      const index = Math.floor(Math.random() * categories.length);
+      if (!random.includes(categories[index])) {
+        random.push(categories[index]);
+      }
+      console.log(random);
+    }
+    return random;
+  };
+
   useEffect(() => {
-    if (user.categories) {
-      setCategoriesList(user.categories);
+    if (categoriesList.length > 0) {
       setCurrentCategory(categoriesList[0]);
       return;
     }
-    randomizeCategories();
-    setCurrentCategory(categoriesList[0]);
-  }, []);
+    user.categories.length
+      ? setCategoriesList(user.categories)
+      : setCategoriesList(getRandomizedCategoriesList());
+  }, [categoriesList]);
 
   useEffect(() => {
-    if (currentCategory === "") {
-      return;
+    if (currentCategory) {
+      (async (searchCategory: string) => {
+        setListIsLoading(true);
+        try {
+          const response = await fetch(
+            `https://www.googleapis.com/books/v1/volumes?q=${searchCategory}+subject:${searchCategory}&filter=ebooks&orderBy=newest&startIndex=0&langRestrict=en&maxResults=8&printType=BOOKS&projection=lite`
+          );
+          const data = await response.json();
+          const recommendationItem = {
+            [searchCategory]: formatVolumeDataList(data.items),
+          };
+          setRecommendations((prev: any) => ({
+            ...prev,
+            ...recommendationItem,
+          }));
+        } catch (error: any) {
+          console.log(error.message);
+        }
+        setListIsLoading(false);
+      })(currentCategory);
     }
-    (async (searchCategory: string) => {
-      setListIsLoading(true);
-      try {
-        const response = await fetch(
-          `https://www.googleapis.com/books/v1/volumes?q=${searchCategory}+subject:${searchCategory}&filter=ebooks&orderBy=newest&startIndex=0&langRestrict=en&maxResults=8&printType=BOOKS`
-        );
-        const data = await response.json();
-        const recommendationItem = {
-          [searchCategory]: formatVolumeDataList(data.items),
-        };
-        setRecommendations((prev: any) => ({
-          ...prev,
-          ...recommendationItem,
-        }));
-      } catch (error: any) {
-        console.log(error.message);
-      }
-      setListIsLoading(false);
-    })(currentCategory);
   }, [currentCategory]);
 
   return (
@@ -122,6 +125,7 @@ const Recommendations = () => {
           ) : (
             <ul>
               {recommendations &&
+                recommendations[currentCategory] &&
                 recommendations[currentCategory].map((volume: any) => (
                   <li className="recommendation-card" key={volume.id}>
                     <button
@@ -143,6 +147,17 @@ const Recommendations = () => {
                 ))}
             </ul>
           )}
+        </div>
+        <div className="volume-recommendations-footer">
+          Nothing here piques your interest?
+          <button
+            className="btn-cta btn-primary"
+            onClick={() => {
+              navigate("/dashboard/settings");
+            }}
+          >
+            Let's fix that!
+          </button>
         </div>
       </div>
     </>

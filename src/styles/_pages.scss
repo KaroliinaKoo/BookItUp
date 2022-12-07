@@ -1,32 +1,46 @@
 @use "utilities" as *;
 
 .user-dashboard {
-    gap: 1em;
 
     .user-dashboard.nav {
         display: flex;
         flex-direction: row;
         justify-content: center;
-        background-color: white;
+        gap: 2.5em;
+        background-color: $color-secondary-muted;
         width: 100%;
-        height: fit-content;
+        max-width: $element-width-l;
+        padding-block: 0.2em;
+        border-radius: 0.5em;
 
-        button {
-            font-weight: 600;
-            color: $color-dark;
+        a {
+            color: $color-secondary-dark;
             background-color: inherit;
+            font-weight: 600;
             border: 0.1rem solid transparent;
+            font-size: 0.9rem;
             border-radius: 0;
             padding: 0;
             max-width: 8rem;
             min-height: 1rem;
+            position: relative;
 
-            &.active {
-                color: $color-primary;
-                border-radius: 0;
-                border-bottom: 0.1rem solid $color-primary;
+            &.active::before {
+                content: "";
+                position: absolute;
+                width: 100%;
+                bottom: 0;
+                border-bottom: 0.15em solid $color-secondary-dark;
             }
         }
+    }
+
+    .user-dashboard-content {
+        max-width: $element-width-l;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
     }
 
     .user-profile {
@@ -36,8 +50,7 @@
         display: flex;
         flex-direction: column;
         gap: 1em;
-        width: 90%;
-        max-width: $element-width-m;
+        width: 100%;
 
         p {
             margin-left: 1.5em;
@@ -101,10 +114,12 @@
     .user-reviews {
         width: 100%;
         max-width: $element-width-l;
+        height: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
+        padding: 1em;
 
         .card {
 
@@ -132,14 +147,13 @@
     }
 
     .user-settings {
-        background-color: $color-white;
-        padding-top: 1em;
-        display: flex;
-        flex-direction: column;
-        width: 90%;
-        max-width: $element-width-m;
-
         .user-select-categories {
+            background-color: $color-white;
+            padding-top: 1em;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+
             h3 {
                 font-size: 1rem;
                 margin: 0;
@@ -159,7 +173,7 @@
                 flex-direction: column;
                 gap: 1em;
                 padding: 0 1em;
-                height: 25vh;
+                height: 50%;
                 overflow-y: auto;
 
                 .user-select-categories__list__item {
@@ -296,17 +310,6 @@ form.volume-review {
             font-size: clamp(1.25rem, 3.5vw, 1.8rem);
             top: -22%;
             left: 0;
-        }
-
-        .btn-cta {
-            background-color: $color-primary;
-            width: 100%;
-            max-width: $element-width-s;
-            box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
-
-            &:hover {
-                background-color: $color-primary-light;
-            }
         }
 
         .credit {

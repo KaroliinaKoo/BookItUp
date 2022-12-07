@@ -50,7 +50,7 @@ function LinkList({ openClose }: PropTypes) {
         <>
           <li>
             <NavLink
-              to="/dashboard"
+              to="/dashboard/profile"
               onClick={openClose}
               className="mobile-btn user-info"
             >

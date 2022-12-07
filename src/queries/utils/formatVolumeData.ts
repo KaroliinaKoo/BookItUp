@@ -13,7 +13,7 @@ export const formatVolumeDataItem: (volume: any) => VolumeFormattedType = (
     publisher: volume.volumeInfo.publisher || "Unknown Publisher",
     publishedDate: volume.volumeInfo.publishedDate
       ? getYear(volume.volumeInfo.publishedDate)
-      : "Unknown Year",
+      : "",
     description: volume.volumeInfo.description
       ? sanitizeString(volume.volumeInfo.description)
       : "No description available.",

@@ -1,3 +1,7 @@
+const removeSpaces = (str: string) => {
+  return str.replace(/\s+/g, " ").trim().replace(/ /g, "+");
+};
+
 const formatVolumeQuery = (queryOptions: QueryOptionsType) => {
   let query = `https://www.googleapis.com/books/v1/volumes?q=`;
 
@@ -14,11 +18,11 @@ const formatVolumeQuery = (queryOptions: QueryOptionsType) => {
       startIndex,
     } = queryOptions;
 
-    query += keywords ?? "";
-    query += title ? `+intitle:${title}` : "";
-    query += author ? `+inauthor:${author}` : "";
-    query += publisher ? `+inpublisher:${publisher}` : "";
-    query += category ? `+subject:${category}` : "";
+    query += keywords || title || author || publisher || category;
+    query += title ? `+intitle:${title.replace(/ /g, "+")}` : "";
+    query += author ? `+inauthor:${author.replace(/ /g, "+")}` : "";
+    query += publisher ? `+inpublisher:${publisher.replace(/ /g, "+")}` : "";
+    query += category ? `+subject:${category.replace(/ /g, "+")}` : "";
     query += "&langRestrict=" + language;
     query += "&maxResults=" + maxResults;
     query += "&orderBy=" + orderBy;
@@ -26,6 +30,7 @@ const formatVolumeQuery = (queryOptions: QueryOptionsType) => {
     query += "&filter=ebooks&printType=BOOKS";
     // query += "&key=" + process.env.REACT_APP_GOOGLE_BOOKS_API_KEY;
   }
+  query = removeSpaces(query);
   return query;
 };
 

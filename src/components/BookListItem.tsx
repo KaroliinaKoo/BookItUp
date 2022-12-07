@@ -44,8 +44,7 @@ function BookItem({ item, longDescription }: PropTypes) {
         <div className="detail-container">
           <div className="detail-label">
             Publisher: {item.publisher}
-            {", "}
-            {item.publishedDate}
+            {item.publishedDate && ` (${item.publishedDate})`}
           </div>
 
           <div className="detail-label">Language: {item.language}</div>

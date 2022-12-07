@@ -14,6 +14,9 @@ import UserContext from "./context/UserContext";
 import FindBooks from "./features/FindBooks";
 import { VolumeProvider } from "./context/VolumeContext";
 import { useJwt } from "react-jwt";
+import MySettings from "./components/MySettings";
+import MyProfile from "./components/MyProfile";
+import MyReviews from "./components/MyReviews";
 
 function App() {
   const context = useContext(UserContext);
@@ -53,7 +56,17 @@ function App() {
                 <Route path="/find-reviews" element={<FindReviews />} />
                 <Route path="/add-review" element={<NewReview user={user} />} />
                 <Route path="/login" element={<Login />} />
-                <Route path="/dashboard" element={<UserDashboard />} />
+                <Route path="/dashboard/" element={<UserDashboard />}>
+                  <Route path="/dashboard/settings" element={<MySettings />} />
+                  <Route
+                    path="/dashboard/profile"
+                    element={<MyProfile user={user} />}
+                  />
+                  <Route
+                    path="/dashboard/reviews"
+                    element={<MyReviews user={user} />}
+                  />
+                </Route>
                 <Route path="/find-books" element={<FindBooks />} />
               </Routes>
             </main>
