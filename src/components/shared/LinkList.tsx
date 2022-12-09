@@ -19,7 +19,7 @@ function LinkList({ openClose }: PropTypes) {
   if (!context) {
     throw new Error("UserContext not found");
   }
-  const { user, userLogOut } = context;
+  const { user, clearUserData } = context;
 
   const userIsLoggedIn = () => {
     return localStorage.getItem("token");
@@ -64,7 +64,9 @@ function LinkList({ openClose }: PropTypes) {
               to="/logout"
               onClick={(e) => {
                 e.preventDefault();
-                userLogOut();
+                localStorage.clear();
+                clearUserData();
+                window.location.href = "/";
               }}
             >
               <FaSignOutAlt />

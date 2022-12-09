@@ -151,6 +151,7 @@ function Login() {
           }
         })
         .then((userData) => {
+          console.log(userData);
           userData.accessToken &&
             localStorage.setItem("token", userData.accessToken);
           userData.accessToken &&

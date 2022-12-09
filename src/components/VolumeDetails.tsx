@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { FaTimes } from "react-icons/fa";
 import FocusTrap from "focus-trap-react";
-import BookItem from "./BookListItem";
+import BookItem from "./BookItem";
 
 type PropTypes = {
   volumeData: any;
@@ -28,7 +28,7 @@ const VolumeDetails = ({ volumeData, handleClose }: PropTypes) => {
           <button className="close-btn btn-icon" onClick={handleClose}>
             <FaTimes />
           </button>
-          {volumeData && <BookItem item={volumeData} longDescription={true} />}
+          {volumeData && <BookItem item={volumeData} isListItem={false} />}
         </div>
       </div>
     </FocusTrap>

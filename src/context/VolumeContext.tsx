@@ -49,18 +49,19 @@ export const VolumeProvider = ({ children }: any) => {
   const [queryOptions, setQueryOptions] = useState(queryInitialOptions);
   const [error, setError] = useState<string>("");
 
-  const resetQueryOptions = () => {
+  const resetSearch = () => {
     setQueryOptions(queryInitialOptions);
+    setError("");
+    setVolumeList({ totalItems: null, items: [] });
   };
 
   useEffect(() => {
-    resetQueryOptions();
+    resetSearch();
   }, [location]);
 
   const validateQueryOptions = (options: QueryOptionsType) => {
     const { keywords, title, author, publisher, category } = options;
-    if (!title && !author && !publisher && !category && keywords!.length < 1) {
-      setError("Please enter at least 2 characters, or select a filter.");
+    if (!title && !author && !publisher && !category && keywords!.length < 2) {
       return false;
     }
     return true;
@@ -86,7 +87,7 @@ export const VolumeProvider = ({ children }: any) => {
       }
       setIsLoading(false);
     })();
-  }, [queryOptions, location]);
+  }, [queryOptions]);
 
   return (
     <VolumeContext.Provider
@@ -95,7 +96,7 @@ export const VolumeProvider = ({ children }: any) => {
         isLoading,
         queryOptions,
         setQueryOptions,
-        resetQueryOptions,
+        resetSearch,
         validateQueryOptions,
         error,
       }}
@@ -115,5 +116,5 @@ export type VolumeContextType = {
   queryOptions: QueryOptionsType;
   setQueryOptions: (options: QueryOptionsType) => void;
   error: any;
-  resetQueryOptions: () => void;
+  resetSearch: () => void;
 };

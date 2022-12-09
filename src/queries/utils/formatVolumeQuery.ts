@@ -16,6 +16,7 @@ const formatVolumeQuery = (queryOptions: QueryOptionsType) => {
       maxResults,
       orderBy,
       startIndex,
+      fields,
     } = queryOptions;
 
     query += keywords || title || author || publisher || category;
@@ -29,6 +30,9 @@ const formatVolumeQuery = (queryOptions: QueryOptionsType) => {
     query += "&startIndex=" + startIndex;
     query += "&filter=ebooks&printType=BOOKS";
     // query += "&key=" + process.env.REACT_APP_GOOGLE_BOOKS_API_KEY;
+    query += fields
+      ? "&fields=" + fields
+      : "&fields=items(id,volumeInfo(title,authors,publisher,categories,pageCount,publishedDate,description,imageLinks/*,language))";
   }
   query = removeSpaces(query);
   return query;
@@ -44,6 +48,7 @@ export type QueryOptionsType = {
   maxResults: number;
   orderBy: string;
   startIndex: number;
+  fields?: string;
 };
 
 export default formatVolumeQuery;

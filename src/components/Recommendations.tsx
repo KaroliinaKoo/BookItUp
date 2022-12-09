@@ -51,7 +51,7 @@ const Recommendations = () => {
         setListIsLoading(true);
         try {
           const response = await fetch(
-            `https://www.googleapis.com/books/v1/volumes?q=${searchCategory}+subject:${searchCategory}&filter=ebooks&orderBy=newest&startIndex=0&langRestrict=en&maxResults=8&printType=BOOKS&projection=lite`
+            `https://www.googleapis.com/books/v1/volumes?q=${searchCategory}+subject:${searchCategory}&filter=ebooks&orderBy=newest&startIndex=0&langRestrict=en&maxResults=8&printType=BOOKS&fields=items(id,volumeInfo(title,authors,publisher,categories,pageCount,publishedDate,description,imageLinks/*,language))`
           );
           const data = await response.json();
           const recommendationItem = {
@@ -133,7 +133,7 @@ const Recommendations = () => {
                       onClick={() => setIsCurrentVolume(volume.id)}
                     >
                       <img
-                        src={volume.imageLinks.thumbnail}
+                        src={volume.imageLinks.smallThumbnail}
                         alt={volume.title}
                       />
                     </button>

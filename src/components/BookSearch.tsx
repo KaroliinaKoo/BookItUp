@@ -6,6 +6,7 @@ import {
   FaChevronDown,
   FaChevronUp,
   FaExclamationCircle,
+  FaInfoCircle,
 } from "react-icons/fa";
 import { languages } from "../data/lang";
 import { subjectHeadingsList } from "../data/subjectHeadingsList";
@@ -15,7 +16,7 @@ type PropTypes = {
   setSearchIsActive: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-function BookSearch({ searchIsActive, setSearchIsActive }: PropTypes) {
+function BookSearch({ setSearchIsActive }: PropTypes) {
   const [showAdvanced, setShowAdvanced] = useState(false);
 
   const context = useContext(VolumeContext);
@@ -26,17 +27,19 @@ function BookSearch({ searchIsActive, setSearchIsActive }: PropTypes) {
     error,
     queryOptions,
     setQueryOptions,
-    resetQueryOptions,
+    resetSearch,
     validateQueryOptions,
   } = context;
+
   const [searchTerms, setSearchTerms] = useState({ ...queryOptions });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (validateQueryOptions(searchTerms)) {
-      setQueryOptions(searchTerms);
-      setSearchIsActive(true);
+    if (validateQueryOptions(searchTerms) === false) {
+      return;
     }
+    setSearchIsActive(true);
+    setQueryOptions(searchTerms);
   };
 
   const handleChange = (
@@ -61,12 +64,7 @@ function BookSearch({ searchIsActive, setSearchIsActive }: PropTypes) {
               <FaSearch />
               {!searchTerms.keywords && <p>Enter a keyword or a phrase</p>}
             </label>
-            <input
-              type="text"
-              name="keywords"
-              onChange={handleChange}
-              className={error ? "error" : ""}
-            />
+            <input type="text" name="keywords" onChange={handleChange} />
           </div>
           <div className="advanced-search">
             <button
@@ -88,38 +86,19 @@ function BookSearch({ searchIsActive, setSearchIsActive }: PropTypes) {
             >
               <div className="input-group">
                 <label htmlFor="title">Book Title</label>
-                <input
-                  type="text"
-                  name="title"
-                  onChange={handleChange}
-                  className={error ? "error" : ""}
-                />
+                <input type="text" name="title" onChange={handleChange} />
               </div>
               <div className="input-group">
                 <label htmlFor="author">Author</label>
-                <input
-                  type="text"
-                  name="author"
-                  onChange={handleChange}
-                  className={error ? "error" : ""}
-                />
+                <input type="text" name="author" onChange={handleChange} />
               </div>
               <div className="input-group">
                 <label htmlFor="publisher">Publisher</label>
-                <input
-                  type="text"
-                  name="publisher"
-                  onChange={handleChange}
-                  className={error ? "error" : ""}
-                />
+                <input type="text" name="publisher" onChange={handleChange} />
               </div>
               <div className="input-group">
                 <label htmlFor="category">Category</label>
-                <select
-                  name="category"
-                  onChange={handleChange}
-                  className={error ? "error" : ""}
-                >
+                <select name="category" onChange={handleChange}>
                   <option value="">Select a category</option>
                   {subjectHeadingsList.sort().map((item) => (
                     <option key={item} value={item}>
@@ -149,23 +128,36 @@ function BookSearch({ searchIsActive, setSearchIsActive }: PropTypes) {
                 type="button"
                 onClick={() => {
                   document.forms[0].reset();
-                  resetQueryOptions();
+                  resetSearch();
                 }}
               >
                 <FaTimes /> Clear all fields
               </button>
             </div>
           </div>
-          {searchIsActive && error && (
+          {error && (
             <p className="error form-error">
               <FaExclamationCircle />
               {error || error.message || "An error occurred"}
             </p>
           )}
 
-          <button className="btn btn-primary" type="submit">
-            <FaSearch /> Search
-          </button>
+          {validateQueryOptions(searchTerms) ? (
+            <button
+              className="btn btn-primary"
+              type="submit"
+              style={{
+                display: validateQueryOptions(searchTerms) ? "block" : "none",
+              }}
+            >
+              <FaSearch /> Search
+            </button>
+          ) : (
+            <p className="info form-info">
+              <FaInfoCircle /> Enter a keyword or a phrase longer than 2
+              characters to search for books, or pick a filter.
+            </p>
+          )}
         </form>
       </div>
     </>

@@ -2,7 +2,7 @@ import React from "react";
 import { useContext } from "react";
 import { VolumeContext } from "../context/VolumeContext";
 import { VolumeFormattedType } from "../queries/utils/formatVolumeData";
-import BookItem from "./BookListItem";
+import BookItem from "./BookItem";
 
 type PropTypes = {
   searchIsActive: boolean;

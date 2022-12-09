@@ -26,21 +26,13 @@ const userInitialData: UserDataTypes = {
 export const UserProvider = ({ children }: any) => {
   const [user, setUser] = useState<UserDataTypes>(userInitialData);
 
-  const userLogOut = () => {
-    clearUserData();
-    console.log("user logged out");
-    window.location.href = "/";
-  };
-
   const setUserData = (data: UserDataTypes) => {
     setUser(data);
-    localStorage.setItem("user data set: ", JSON.stringify(data));
+    //localStorage.setItem("user", JSON.stringify(data));
   };
 
   const clearUserData = () => {
     setUser(userInitialData);
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
   };
 
   return (
@@ -48,7 +40,7 @@ export const UserProvider = ({ children }: any) => {
       value={{
         user,
         setUserData,
-        userLogOut,
+        clearUserData,
       }}
     >
       {children}
@@ -61,7 +53,7 @@ export default UserContext;
 export type UserContextType = {
   user: UserDataTypes;
   setUserData: (data: UserDataTypes) => void;
-  userLogOut: () => void;
+  clearUserData: () => void;
 };
 
 export type UserDataTypes = {

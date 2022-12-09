@@ -13,7 +13,6 @@ import React, { useContext, useEffect } from "react";
 import UserContext from "./context/UserContext";
 import FindBooks from "./features/FindBooks";
 import { VolumeProvider } from "./context/VolumeContext";
-import { useJwt } from "react-jwt";
 import MySettings from "./components/MySettings";
 import MyProfile from "./components/MyProfile";
 import MyReviews from "./components/MyReviews";
@@ -24,23 +23,16 @@ function App() {
     throw new Error("UserContext not found");
   }
   const { user, setUserData } = context;
-
-  const { isExpired } = useJwt(localStorage.getItem("token")!);
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    if (token && isExpired) {
-      console.log("user token expired");
-      //userLogOut();
-      return;
-    }
     if (token) {
       const userData = JSON.parse(localStorage.getItem("user")!);
       if (userData) {
         setUserData(userData);
       }
     }
-  }, [isExpired, token]);
+  }, [token]);
 
   return (
     <ReviewProvider>
