@@ -28,7 +28,13 @@ const VolumeDetails = ({ volumeData, handleClose }: PropTypes) => {
           <button className="close-btn btn-icon" onClick={handleClose}>
             <FaTimes />
           </button>
-          {volumeData && <BookItem item={volumeData} isListItem={false} />}
+          {volumeData && (
+            <BookItem
+              volumeData={volumeData}
+              fullDescription={true}
+              isListItem={false}
+            />
+          )}
         </div>
       </div>
     </FocusTrap>

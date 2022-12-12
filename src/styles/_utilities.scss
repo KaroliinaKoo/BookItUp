@@ -1,14 +1,16 @@
 /* UTILITIES */
 
 $color-primary: #e34050;
-$color-primary-light: #f96874;
+$color-primary-medium-light: #f3616f;
+$color-primary-light: #fa808b;
 $color-primary-very-light: #edb8bf;
 $color-primary-medium-dark: #c52537;
 $color-primary-dark: #7c1225;
-$color-secondary: #6bb9b6;
-$color-secondary-light: #95d6d4;
+$color-secondary: #59cfcb;
+$color-secondary-medium-light: #6fe1db;
+$color-secondary-light: #88e4e1;
 $color-secondary-very-light: #d1f6f5;
-$color-secondary-medium-dark: #4e9a98;
+$color-secondary-medium-dark: #378e8b;
 $color-secondary-dark: #255f5d;
 $color-white: #fff;
 $color-grey-light: #f5f5f5;
@@ -21,18 +23,23 @@ $color-dark: #292929;
 $color-error: #f96874;
 $color-error-medium-dark: #c52537;
 $color-error-dark: #4f0404;
-$color-error-light: #ffe0e0;
+$color-error-light: #edd9d9;
 $color-error-opaque: #ff000051;
 $color-success: #2eb176;
 $color-success-medium-dark: #196119;
 $color-success-dark: #063c06;
-$color-success-light: #c4ffdf;
+$color-success-light: #e1f7ea;
 $color-success-opaque: #00ff0051;
 $color-info: #50b7d3;
 $color-info-medium-dark: #1e607a;
 $color-info-dark: #0a1a3d;
-$color-info-light: #d4efef;
+$color-info-light: #d7f7f7;
 $color-info-opaque: #00eeff51;
+$color-warning: #f9c74f;
+$color-warning-medium-dark: #c59e1e;
+$color-warning-dark: #4f300a;
+$color-warning-light: #faf6de;
+$color-warning-opaque: #ffaa0051;
 
 $color-primary-muted: #c3a2a5;
 $color-primary-muted-light: #f3f1f1;
@@ -49,7 +56,15 @@ $padding-base: 1.5em;
 $margin-base: 1.5em;
 
 $font-size-base: 1rem;
-$font-size-heading: calc($font-size-base * 1.8);
+$font-size-xxxs: calc($font-size-base * 0.6);
+$font-size-xxs: calc($font-size-base * 0.75);
+$font-size-xs: calc($font-size-base * 0.8);
+$font-size-s: calc($font-size-base * 0.9);
+$font-size-m: calc($font-size-base * 1.1);
+$font-size-l: calc($font-size-base * 1.25);
+$font-size-xl: calc($font-size-base * 1.4);
+$font-size-xxl: calc($font-size-base * 1.6);
+$font-size-xxxl: calc($font-size-base * 1.8);
 
 $element-width-xs: 200px;
 $element-width-s: clamp(200px, 100%, 320px);
@@ -66,16 +81,14 @@ $breakpoint-lg: 992px;
 $border-soft-dark: 1px solid hsla(0, 0%, 0%, 0.150);
 $border-soft-light: 1px solid hsla(0, 0%, 100%, 0.150);
 
+$drop-shadow-soft: 0 0.2em 0.5em hsla(0, 0%, 0%, 0.150);
+$drop-shadow-sharp: 0 0.1em 0.25em hsla(0, 0%, 0%, 0.350);
+$drop-shadow-extra-sharp: 0 0 0.1em hsla(0, 0%, 0%, 0.450);
+
 // MISC
 
 .hide {
     display: none;
-}
-
-.detail-text {
-    font-size: 0.9rem;
-    opacity: 0.7;
-    font-style: italic;
 }
 
 @media screen and (max-width: $breakpoint-sm) {

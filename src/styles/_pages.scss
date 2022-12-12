@@ -7,18 +7,16 @@
         flex-direction: row;
         justify-content: center;
         gap: 2.5em;
-        background-color: $color-secondary-muted;
+        background-color: $color-secondary-muted-light;
         width: 100%;
-        max-width: $element-width-l;
-        padding-block: 0.2em;
-        border-radius: 0.5em;
+        padding-block: 0.5em;
 
         a {
             color: $color-secondary-dark;
             background-color: inherit;
             font-weight: 600;
             border: 0.1rem solid transparent;
-            font-size: 0.9rem;
+            font-size: $font-size-s;
             border-radius: 0;
             padding: 0;
             max-width: 8rem;
@@ -85,9 +83,7 @@
         button.show-password {
             padding: 0;
             width: fit-content;
-            font-size: 0.9rem;
-            //border: $border-soft-dark;
-            //padding: 0 0.5em;
+            font-size: $font-size-xxs;
             color: $color-secondary-muted-dark;
             display: flex;
             align-items: center;
@@ -126,20 +122,20 @@
             .user-tools {
                 flex: 1 1 50%;
                 display: flex;
-                gap: 1em;
+                gap: 1.5em;
                 padding: 0 0.5em;
 
                 button {
                     display: flex;
                     place-items: center;
-                    padding: 0.5em;
+                    padding: 0.2em;
                     gap: 0.5em;
-                    font-size: 0.9rem;
+                    font-size: $font-size-xxs;
 
                     svg {
                         line-height: 0;
-                        width: 0.7rem;
-                        height: 0.7rem;
+                        width: 0.8rem;
+                        height: 0.8rem;
                     }
                 }
             }
@@ -155,26 +151,26 @@
             width: 100%;
 
             h3 {
-                font-size: 1rem;
+                font-size: $font-size-s;
                 margin: 0;
                 padding: 0;
                 width: 100%;
             }
 
             .user-select-categories__list {
-
-                legend {
-                    color: $color-grey-dark;
-                    font-size: 0.9rem;
-                    margin-bottom: 1em;
-                }
-
                 display: flex;
                 flex-direction: column;
                 gap: 1em;
-                padding: 0 1em;
+                padding-inline: 1em;
+                padding-block-end: 1em;
                 height: 50%;
                 overflow-y: auto;
+
+                legend {
+                    color: $color-grey-dark;
+                    font-size: $font-size-xs;
+                    margin-bottom: 1em;
+                }
 
                 .user-select-categories__list__item {
                     display: flex;
@@ -185,6 +181,7 @@
 
                     label {
                         text-transform: capitalize;
+                        font-size: $font-size-xs;
                     }
                 }
             }
@@ -192,56 +189,28 @@
     }
 }
 
-form.volume-review {
-    height: fit-content;
-    margin-block: auto;
-    width: 100%;
-    border-radius: 0.5em;
+.volume-review {
 
-    section {
-        max-width: $element-width-l;
-        width: 100%;
-        padding: 1.5em;
-        background-color: $color-white;
+    .volume-info,
+    .volume-review-form {
+        width: $element-width-l;
+        border-radius: 0.5em;
 
+        section {
+            width: 100%;
+            background-color: $color-white;
 
-        &.volume-info-card {
-            background-color: $color-secondary-muted-medium-light;
-        }
-
-        .volume-info-card-cover {
-            height: auto;
-            width: clamp(100px, 50%, 200px);
-            object-fit: scale-down;
-        }
-    }
-
-
-    & label:has(:required) {
-        &:before {
-            content: "*";
-            position: absolute;
-            top: -3%;
-            left: -1.8%;
-            color: $color-primary;
-            font-size: 1rem;
-            font-weight: 200;
-
-        }
-    }
-
-    p.rating-heading {
-        &:before {
-            content: "*";
-            position: relative;
-            top: -3%;
-            left: -1.8%;
-            color: $color-primary;
-            font-size: 1rem;
-            font-weight: 200;
+            &.volume-review {
+                padding: 1em;
+                display: flex;
+                flex-direction: column;
+                gap: 1em;
+            }
         }
     }
 }
+
+
 
 .main-container {
     height: 100%;
@@ -286,7 +255,7 @@ form.volume-review {
             font-size: clamp(1.5rem, 6vw, 3.6rem);
             font-weight: 600;
             margin-bottom: 1em;
-            color: $color-primary-light;
+            color: $color-primary-medium-light;
             background-color: #fffffff1;
             padding: 0.4em 10vw;
             transform: rotate(-2deg);
@@ -338,7 +307,7 @@ form.volume-review {
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.8rem;
+            font-size: $font-size-m;
             padding-block: 2.5vw;
             width: 100%;
             height: 10vh;
@@ -388,7 +357,7 @@ form.volume-review {
                 display: flex;
                 place-content: center;
                 place-items: center;
-                font-size: calc($font-size-base * 1.1);
+                font-size: $font-size-m;
                 top: 50%;
                 left: 50%;
                 width: 2.5em;
@@ -407,7 +376,7 @@ form.volume-review {
 
                 @media (hover: hover) {
                     &:hover {
-                        background: $color-primary-light;
+                        background: $color-primary-medium-light;
                         color: $color-white;
                     }
                 }
@@ -433,7 +402,7 @@ form.volume-review {
         width: 100%;
         gap: 0.5em;
         padding: 1em;
-        font-size: 1rem;
+        font-size: $font-size-base;
         font-weight: 600;
         color: $color-secondary-dark;
 
@@ -441,7 +410,7 @@ form.volume-review {
             padding: 0;
             width: fit-content;
             align-self: flex-end;
-            font-size: 0.8rem;
+            font-size: $font-size-s;
             font-weight: 400;
             margin: 0;
             margin-bottom: 0.5em;
@@ -524,7 +493,7 @@ form.volume-review {
 
 .review-stats {
     color: $color-white;
-    font-size: calc($font-size-base * 0.9);
+    font-size: $font-size-s;
     display: flex;
     width: 100%;
     justify-content: space-between;
@@ -570,7 +539,7 @@ form.volume-review {
             flex: 0 0 auto;
 
             span {
-                font-size: 0.8rem;
+                font-size: $font-size-xs;
                 font-weight: 400;
                 line-height: 0;
             }
@@ -593,43 +562,43 @@ form.volume-review {
 
             }
 
-            .author-display {
+            .review-volume-author {
                 text-align: right;
-                font-size: calc($font-size-base * 0.75);
+                font-size: $font-size-xs;
                 color: $color-secondary-muted-dark;
             }
         }
 
-        .body-display {
-            padding: 1.5em;
+        .review-body,
+        .review-volume-author {
+
+            font-size: $font-size-xs;
 
             p {
-                font-size: $font-size-base;
-                max-width: 95%;
+                text-align: left;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 5;
+                overflow: hidden;
             }
+
+            &.expanded {
+                p {
+                    -webkit-line-clamp: unset;
+                }
+            }
+        }
+
+        .review-body {
+            padding: 1.5em;
 
             button {
                 position: relative;
                 padding: 0;
                 margin: 0;
-                font-size: 0.75rem;
+                font-size: $font-size-xxs;
                 font-weight: 600;
                 color: $color-secondary-muted-dark;
-            }
-
-            &.collapsed {
-                p {
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    white-space: nowrap;
-                }
-            }
-
-            &.expanded {
-                p {
-                    white-space: normal;
-                    overflow: visible;
-                }
             }
         }
 
@@ -768,10 +737,10 @@ form.volume-review {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0.5em;
+        padding-block: 0.5em;
         margin: 1em;
         border: $border-soft-dark;
-        font-size: 0.9rem;
+        font-size: $font-size-xs;
         width: 90%;
         padding: 1em;
 
@@ -861,164 +830,121 @@ form.volume-review {
 .volumes-search {
     width: 90%;
     max-width: $element-width-l;
-    border-radius: 5px;
-    background-color: $color-secondary-muted;
+
     display: flex;
     flex-direction: column;
     align-items: center;
 
     form {
-        gap: 0;
-        padding: 0;
-        width: 90%;
+        border-radius: 0.5em;
+        background-color: $color-secondary-muted;
 
-        button {
-            display: flex;
-            width: 100%;
-            align-items: center;
-            justify-content: center;
-
-            &.advanced-search-btn {
-                color: $color-secondary-dark;
-                margin-block: 0.5em;
-                font-size: 0.9rem;
-                font-weight: 400;
-            }
-
-            &.reset {
-                padding: 0;
-                width: fit-content;
-                align-self: flex-end;
-                font-size: 0.8rem;
-                font-weight: 400;
-                margin-top: 0.5em;
-                color: $color-secondary-dark;
-            }
-
-            &.btn-primary {
-                max-width: 20em;
-                padding: 1em;
-            }
-        }
-
-        .search-options {
-            width: 100%;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1em;
-            margin-bottom: 1em;
-
-            fieldset {
-                display: flex;
-                justify-content: space-around;
-                width: 100%;
-                padding: 0.5em;
-
-                fieldset.radio-field {
-                    border: none;
-                    justify-content: flex-start;
-                    gap: 1em;
-
-                    legend {
-                        font-weight: 400;
-                    }
-
-                    .radio-input {
-                        display: flex;
-                        flex-direction: row;
-                        align-items: center;
-                        justify-content: center;
-                        gap: 0.5em;
-                        margin: 0;
-                        width: fit-content;
-                    }
-                }
-
-                .language-input {
-                    max-width: fit-content;
-                    margin: 0;
-                }
-
-                legend {
-                    font-weight: 600;
-                    color: $color-secondary-muted-dark;
-                }
-
-                border: 1px solid $color-secondary-muted-light;
-            }
+        button.reset {
+            width: fit-content;
+            align-self: flex-end;
+            font-size: $font-size-xxs;
+            margin-top: 0.5em;
+            font-weight: 400;
+            color: $color-secondary-dark;
         }
 
         .advanced-search {
             border: 1px solid $color-secondary-muted-light;
             overflow: hidden;
             width: 100%;
-            padding-inline: 1em;
+            padding: 0.5em;
+            border-radius: 0.5em;
+
+            .advanced-search-btn {
+                display: flex;
+                width: 100%;
+                align-items: center;
+                justify-content: center;
+                color: $color-secondary-dark;
+                font-size: $font-size-xxs;
+                font-weight: 400;
+            }
+
+            .current-search-container {
+                margin-top: 0.5em;
+                width: 100%;
+
+                .current-search-items-container {
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: start;
+                    gap: 0.5em;
+                    line-height: 0;
+
+                    .current-search-item {
+                        border-radius: 1.5em;
+                        padding: 0;
+                        padding-inline: 0.6em;
+                        font-size: $font-size-xxs;
+                        display: inline-flex;
+                        justify-content: flex-start;
+                        align-items: center;
+                        color: $color-white;
+                        gap: 0.5em;
+                        background-color: $color-secondary-medium-dark;
+                        width: fit-content;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        line-height: 0;
+
+                        .label-title {
+                            font-size: $font-size-xxxs;
+                            text-transform: uppercase;
+                            color: $color-secondary-very-light;
+                        }
+                    }
+                }
+            }
         }
 
         .input-group {
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-around;
-            gap: 0;
-            margin-top: 0.5em;
-            width: 100%;
-
             label {
-                width: 100%;
-                text-align: left;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
                 color: $color-secondary-muted-dark;
             }
 
             input,
             select,
             textarea {
-                width: 100%;
                 background-color: $color-secondary-muted-light;
             }
 
             &.keyword-search {
                 position: relative;
-                margin-block: 1em;
+                margin: 0;
 
                 input {
-                    padding: 0.6em;
-                    padding-left: 2.5em;
+                    height: 2.8em;
+                    padding-left: 2.8em;
+                    padding-right: 2em;
+                    border-radius: 25em;
                 }
 
                 label {
                     position: absolute;
-                    display: inline;
+                    left: 1em;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 0.5em;
                     pointer-events: none;
-                    top: 30%;
-                    padding-left: 2.5em;
-
-                    p {
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                    }
+                    margin-top: auto;
+                    margin-bottom: auto;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
 
                     svg {
-                        position: absolute;
-                        top: 0;
-                        left: 0.2em;
-                        display: inline;
-                        width: 2em;
-                        height: 1.4rem;
+                        font-size: 1.2rem;
                     }
                 }
 
-                &.custom-select {
-                    margin-top: -1em;
 
-                    select {
-                        background-color: $color-secondary-muted-medium-light;
-                    }
-
-                }
             }
         }
     }

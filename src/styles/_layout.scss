@@ -96,7 +96,7 @@ header {
 
     :nth-child(4) {
       padding-left: calc(0.5em + 2vw);
-      border-left: 2px solid $color-primary-light;
+      border-left: 2px solid $color-primary-medium-light;
     }
 
     .user-info {
@@ -175,7 +175,7 @@ header {
     }
 
     .mobile-menu {
-      background-color: $color-primary-light;
+      background-color: $color-primary-medium-light;
       position: fixed;
       top: 0;
       right: 0;

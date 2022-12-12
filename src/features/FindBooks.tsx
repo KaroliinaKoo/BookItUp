@@ -2,10 +2,22 @@ import React, { useState } from "react";
 import BookList from "../components/BookList";
 import BookSearch from "../components/BookSearch";
 import { FaChevronUp } from "react-icons/fa";
+import useFetchVolumeList from "../hooks/useFetchVolumeList";
 
 function FindBooks() {
+  const {
+    isLoading,
+    volumeList,
+    queryOptions,
+    setQueryOptions,
+    resetSearchResults,
+    message,
+    queryIsValid,
+    fetchVolumes,
+    initialQueryOptions,
+  } = useFetchVolumeList();
+
   const [showScroll, setShowScroll] = useState(false);
-  const [searchIsActive, setSearchIsActive] = useState(false);
 
   const scrollEvent = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
     if (e.currentTarget.scrollTop > 500) {
@@ -26,10 +38,23 @@ function FindBooks() {
     <div className="container" onScroll={scrollEvent}>
       <h1>Find Books</h1>
       <BookSearch
-        searchIsActive={searchIsActive}
-        setSearchIsActive={setSearchIsActive}
+        setQueryOptions={setQueryOptions}
+        resetSearchResults={resetSearchResults}
+        queryOptions={queryOptions}
+        queryIsValid={queryIsValid}
+        initialQueryOptions={initialQueryOptions}
+        fetchVolumes={fetchVolumes}
       />
-      <BookList searchIsActive={searchIsActive} />
+
+      <div className={`message-container ${message.type}`}>
+        {message.text && <p className={`${message.type}`}>{message.text}</p>}
+      </div>
+      {isLoading ? (
+        <div className="spinner" role="status" aria-label="Loading book list" />
+      ) : (
+        <BookList volumeList={volumeList} />
+      )}
+
       {showScroll && (
         <button className="scroll-to-top" onClick={scrollToTop}>
           <FaChevronUp />

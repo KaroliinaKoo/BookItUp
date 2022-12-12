@@ -88,7 +88,7 @@ function ReviewItem({ item, profileView }: PropTypes) {
           </div>
           <div className="review-title">
             <h2>{volumeData.title ? volumeData.title : "No title"}</h2>
-            <span className="author-display">
+            <span className="review-volume-author">
               by{" "}
               {volumeData.authors
                 ? [...volumeData.authors].join(", ")
@@ -104,8 +104,8 @@ function ReviewItem({ item, profileView }: PropTypes) {
         </div>
         {item.body && (
           <div
-            className={`body-display ${
-              item.body.length > 100 && (expandBody ? "expanded" : "collapsed")
+            className={`review-body ${
+              item.body.length > 200 && (expandBody ? "expanded" : "")
             }`}
           >
             <p>{item.body}</p>
@@ -126,7 +126,7 @@ function ReviewItem({ item, profileView }: PropTypes) {
               <button
                 onClick={() => {
                   editItem(item);
-                  navigate("/add-review");
+                  navigate(`/review/${item.volumeID}`);
                 }}
               >
                 <FaEdit className="btn-icon" /> Edit

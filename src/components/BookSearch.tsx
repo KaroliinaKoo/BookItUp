@@ -1,45 +1,49 @@
-import React, { useContext, useState } from "react";
-import { VolumeContext } from "../context/VolumeContext";
-import {
-  FaSearch,
-  FaTimes,
-  FaChevronDown,
-  FaChevronUp,
-  FaExclamationCircle,
-  FaInfoCircle,
-} from "react-icons/fa";
+import React, { useState } from "react";
+import { FaSearch, FaTimes, FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { languages } from "../data/lang";
 import { subjectHeadingsList } from "../data/subjectHeadingsList";
+import { FetchVolumeListType } from "../hooks/useFetchVolumeList";
+import ClearInputBtn from "./shared/ClearInputBtn";
+import { truncate } from "../utils/truncate";
 
-type PropTypes = {
-  searchIsActive: boolean;
-  setSearchIsActive: React.Dispatch<React.SetStateAction<boolean>>;
+type Props = {
+  fetchVolumes: FetchVolumeListType["fetchVolumes"];
+  initialQueryOptions: FetchVolumeListType["initialQueryOptions"];
+  queryIsValid: FetchVolumeListType["queryIsValid"];
+  queryOptions: FetchVolumeListType["queryOptions"];
+  resetSearchResults: FetchVolumeListType["resetSearchResults"];
+  setQueryOptions: FetchVolumeListType["setQueryOptions"];
 };
 
-function BookSearch({ setSearchIsActive }: PropTypes) {
+function BookSearch({
+  fetchVolumes,
+  initialQueryOptions,
+  queryIsValid,
+  queryOptions,
+  resetSearchResults,
+  setQueryOptions,
+}: Props) {
+  const inputOptions = [
+    "keywords",
+    "title",
+    "author",
+    "publisher",
+    "category",
+    "language",
+  ];
   const [showAdvanced, setShowAdvanced] = useState(false);
-
-  const context = useContext(VolumeContext);
-  if (!context) {
-    throw new Error("DataContext not found");
-  }
-  const {
-    error,
-    queryOptions,
-    setQueryOptions,
-    resetSearch,
-    validateQueryOptions,
-  } = context;
-
-  const [searchTerms, setSearchTerms] = useState({ ...queryOptions });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (validateQueryOptions(searchTerms) === false) {
-      return;
-    }
-    setSearchIsActive(true);
-    setQueryOptions(searchTerms);
+    setShowAdvanced(false);
+    fetchVolumes();
+  };
+
+  const handleInputClear = (fieldName: string) => {
+    setQueryOptions((prevOptions) => ({ ...prevOptions, [fieldName]: "" }));
+    document.getElementsByTagName("input")[
+      inputOptions.indexOf(fieldName)
+    ].value = "";
   };
 
   const handleChange = (
@@ -48,53 +52,107 @@ function BookSearch({ setSearchIsActive }: PropTypes) {
       | React.ChangeEvent<HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setSearchTerms({ ...searchTerms, [name]: value });
+    setQueryOptions((prevOptions) => ({ ...prevOptions, [name]: value }));
   };
-
   return (
     <>
       <div className="volumes-search">
         <form
+          autoComplete="off"
           name="volumes-search-form"
           onSubmit={handleSubmit}
-          autoComplete="off"
         >
           <div className="input-group keyword-search">
             <label htmlFor="includes">
               <FaSearch />
-              {!searchTerms.keywords && <p>Enter a keyword or a phrase</p>}
+              {!queryOptions.keywords && <>Enter a keyword or a phrase</>}
             </label>
             <input type="text" name="keywords" onChange={handleChange} />
+            <ClearInputBtn
+              display={!!queryOptions.keywords}
+              fieldName="keywords"
+              handleClick={handleInputClear}
+            />
           </div>
+
           <div className="advanced-search">
             <button
-              className="btn-link advanced-search-btn"
               aria-label="Toggle advanced search options"
-              type="button"
+              className="btn-link advanced-search-btn"
               onClick={() => setShowAdvanced(!showAdvanced)}
+              type="button"
             >
               {showAdvanced ? (
                 <FaChevronUp aria-label="Hide" />
               ) : (
                 <FaChevronDown aria-label="Show" />
               )}
-              Filter Options
+              {showAdvanced ? "Hide" : "Show"} filter options
             </button>
+            {queryIsValid && (
+              <div
+                className="current-search-container"
+                style={{ display: showAdvanced ? "none" : "block" }}
+              >
+                <div className="current-search-items-container">
+                  {Object.entries(queryOptions)
+                    .filter(([key, value]) => {
+                      return inputOptions.includes(key) && value;
+                    })
+                    .map(([key, value]) => (
+                      <ClearInputBtn
+                        key={key}
+                        className="current-search-item"
+                        fieldName={key}
+                        handleClick={handleInputClear}
+                        display={!!value}
+                      >
+                        <span className="label-title">{key}</span>
+                        <span className="label">
+                          {truncate(value.toString(), 20)}
+                        </span>
+                      </ClearInputBtn>
+                    ))}
+                </div>
+              </div>
+            )}
             <div
               className="advanced-search-options"
               style={{ display: showAdvanced ? "block" : "none" }}
             >
               <div className="input-group">
                 <label htmlFor="title">Book Title</label>
-                <input type="text" name="title" onChange={handleChange} />
+                <span className="input-field-group">
+                  <input type="text" name="title" onChange={handleChange} />
+                  <ClearInputBtn
+                    display={!!queryOptions.title}
+                    fieldName="title"
+                    handleClick={handleInputClear}
+                  />
+                </span>
               </div>
               <div className="input-group">
                 <label htmlFor="author">Author</label>
-                <input type="text" name="author" onChange={handleChange} />
+
+                <span className="input-field-group">
+                  <input type="text" name="author" onChange={handleChange} />
+                  <ClearInputBtn
+                    display={!!queryOptions.author}
+                    fieldName="author"
+                    handleClick={handleInputClear}
+                  />
+                </span>
               </div>
               <div className="input-group">
                 <label htmlFor="publisher">Publisher</label>
-                <input type="text" name="publisher" onChange={handleChange} />
+                <span className="input-field-group">
+                  <input type="text" name="publisher" onChange={handleChange} />
+                  <ClearInputBtn
+                    fieldName="publisher"
+                    handleClick={handleInputClear}
+                    display={!!queryOptions.publisher}
+                  />
+                </span>
               </div>
               <div className="input-group">
                 <label htmlFor="category">Category</label>
@@ -112,8 +170,9 @@ function BookSearch({ setSearchIsActive }: PropTypes) {
                 <select
                   name="language"
                   onChange={handleChange}
-                  value={searchTerms.language}
+                  value={queryOptions.language}
                 >
+                  <option value="">Select a language</option>
                   {Object.entries(languages)
                     .sort((a, b) => a[1].localeCompare(b[1]))
                     .map(([key, value]) => (
@@ -127,37 +186,23 @@ function BookSearch({ setSearchIsActive }: PropTypes) {
                 className="reset btn-link"
                 type="button"
                 onClick={() => {
-                  document.forms[0].reset();
-                  resetSearch();
+                  document.forms.namedItem("volumes-search-form")?.reset();
+                  setQueryOptions(initialQueryOptions);
+                  resetSearchResults();
                 }}
               >
                 <FaTimes /> Clear all fields
               </button>
             </div>
           </div>
-          {error && (
-            <p className="error form-error">
-              <FaExclamationCircle />
-              {error || error.message || "An error occurred"}
-            </p>
-          )}
 
-          {validateQueryOptions(searchTerms) ? (
-            <button
-              className="btn btn-primary"
-              type="submit"
-              style={{
-                display: validateQueryOptions(searchTerms) ? "block" : "none",
-              }}
-            >
-              <FaSearch /> Search
-            </button>
-          ) : (
-            <p className="info form-info">
-              <FaInfoCircle /> Enter a keyword or a phrase longer than 2
-              characters to search for books, or pick a filter.
-            </p>
-          )}
+          <button
+            className="btn btn-primary"
+            type="submit"
+            disabled={!queryIsValid}
+          >
+            <FaSearch /> Search
+          </button>
         </form>
       </div>
     </>

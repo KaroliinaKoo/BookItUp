@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import {
   FaHome,
-  FaPlus,
   FaSearch,
   FaSignOutAlt,
   FaSignInAlt,
@@ -38,12 +37,6 @@ function LinkList({ openClose }: PropTypes) {
         <NavLink to="/find-books" onClick={openClose} className="mobile-btn">
           <FaSearch />
           Find Books
-        </NavLink>
-      </li>
-      <li>
-        <NavLink to="/add-review" onClick={openClose} className="mobile-btn">
-          <FaPlus />
-          Add a Review
         </NavLink>
       </li>
       {userIsLoggedIn() ? (

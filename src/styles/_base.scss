@@ -33,15 +33,15 @@ h3 {
 }
 
 h1 {
-    font-size: $font-size-heading;
+    font-size: $font-size-xxl;
 }
 
 h2 {
-    font-size: calc($font-size-heading * 0.8);
+    font-size: $font-size-xl;
 }
 
 h3 {
-    font-size: calc($font-size-heading * 0.6);
+    font-size: $font-size-l;
 }
 
 ol,

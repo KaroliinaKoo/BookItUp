@@ -3,11 +3,16 @@
 .card {
     background-color: $color-white;
     color: $color-dark;
-    padding: $padding-base;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     position: relative;
     width: 100%;
     max-width: $element-width-l;
+    border-radius: 0.5em;
+    display: flex;
+    text-align: left;
+    align-items: flex-start;
+    justify-content: flex-start;
+    position: relative;
+    box-shadow: $drop-shadow-soft;
 }
 
 form {
@@ -15,115 +20,48 @@ form {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    padding: 1.5em;
-    gap: 1em;
+    padding: 0.5em;
+    gap: 0.5em;
     width: 100%;
     position: relative;
 
-    p.error,
-    p.info {
-        position: relative;
-        width: fit-content;
-        text-align: start;
-        font-size: 0.8rem;
-        margin: 0;
-        padding: 0 2px;
-
-        &.form-error,
-        &.form-info {
-            display: flex;
-            gap: 1em;
-            width: 100%;
-            padding: 0.5em;
-            text-align: left;
-            bottom: 0;
-            margin: 0.5em;
-            border-radius: 5px;
-            position: relative;
-        }
-
-        svg {
-            flex: none;
-            height: 1.8em;
-            width: 1.8em;
-            left: 0;
-            margin-top: auto;
-            margin-bottom: auto;
-        }
-    }
-
-    p.error {
-        color: $color-error-dark;
-
-        &.form-error {
-            background-color: $color-error-light;
-            border: 1px solid $color-error-opaque;
-        }
-
-        svg {
-            color: $color-error-medium-dark;
-        }
-    }
-
-    p.info {
-        color: $color-grey-dark;
-
-        &.form-info {
-            background-color: $color-info-light;
-            border: 1px solid $color-info-opaque;
-        }
-
-        svg {
-            color: $color-info-medium-dark;
-        }
-    }
-
     .input-group {
         display: flex;
-        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
         position: relative;
         width: 100%;
-        font-size: $font-size-base;
+        font-size: $font-size-s;
         color: $color-dark;
+        margin-block: 0.5em;
+        gap: 1em;
 
-        &.active {
-            font-weight: 600;
-        }
-
-        &.radio-input {
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            height: 2em;
-
-            label {
-                margin: 0;
-                width: auto;
-            }
+        .input-field-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+            width: 100%;
+            gap: 0.5em;
+            position: relative;
 
             input {
-                margin: 0;
+                padding-right: 2em;
             }
         }
 
         label {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            font-size: $font-size-base;
+            white-space: nowrap;
+            text-align: end;
+            flex: 0 1 25%;
+            font-size: $font-size-s;
             color: $color-dark;
-
-            .character-count {
-                color: $color-grey-dark;
-                font-size: 0.8rem;
-            }
         }
 
         input,
         textarea,
         select {
-            margin-top: 0.25em;
-            font-size: $font-size-base;
+            font-size: $font-size-s;
             color: $color-dark;
             width: 100%;
             border: 1px solid $color-secondary-muted;
@@ -138,13 +76,34 @@ form {
             &::placeholder {
                 font-style: italic;
                 opacity: 0.9;
-                font-size: 0.9rem;
+                font-size: $font-size-xs;
             }
 
             &.error {
                 border: 1px solid $color-error-opaque;
                 box-shadow: 0 0 1px 1px $color-error-opaque;
             }
+        }
+
+        &.vertical {
+            flex-direction: column;
+            gap: 0;
+
+            label {
+                height: auto;
+                width: 100%;
+                margin-bottom: 0.5em;
+                text-align: start;
+                flex: 0 1 auto;
+            }
+        }
+
+        .character-count {
+            position: absolute;
+            right: 0;
+            bottom: -2em;
+            color: $color-grey-dark;
+            font-size: $font-size-xxxs;
         }
 
         @media (max-width: $breakpoint-md) {
@@ -161,7 +120,7 @@ input,
 textarea,
 select {
     padding: 0.3em 0.6em;
-    font-size: inherit;
+    font-size: $font-size-s;
     font-family: inherit;
     border-radius: 0.25em;
     background-color: transparent;
@@ -191,13 +150,13 @@ input[type="submit"] {
     user-select: none;
     font: inherit;
     gap: 0.5em;
-    min-height: 34px;
+    min-height: 24px;
 
     &:disabled,
     &:disabled:hover {
-        background-color: $color-grey-dark;
+        background-color: $color-grey-medium;
         color: $color-grey-light;
-        cursor: not-allowed;
+        cursor: unset;
         box-shadow: none;
     }
 }
@@ -223,32 +182,35 @@ input[type="submit"] {
     transition: all 0.2s ease-in-out;
     text-transform: uppercase;
     border-radius: 25em;
-    padding-inline: calc($padding-base * 0.8);
+    padding-inline: $padding-base;
+    padding-block: calc($padding-base * 0.5);
     color: $color-white;
-    width: clamp(40px, 100%, 260px);
-    min-height: 46px;
-    margin: $margin-base 0;
+    width: clamp(40px, 100%, 220px);
+    min-height: 34px;
     white-space: nowrap;
+    line-height: 0;
 
     &.small {
-        padding-inline: calc($padding-base * 0.5);
+        padding-inline: calc($padding-base * 0.6);
         min-height: 24px;
         max-width: 140px;
         width: fit-content;
         border-radius: 5px;
         font-weight: 400;
-        font-size: 0.8rem;
+        font-size: $font-size-xxxs;
         text-transform: capitalize;
         margin: calc($margin-base * 0.5) 0;
 
     }
 
     &.btn-cta {
+        margin-block: 0.5em;
+        min-height: 44px;
         width: 100%;
         max-width: $element-width-s;
 
         &:hover {
-            background-color: $color-primary-light;
+            background-color: $color-primary-medium-light;
         }
     }
 }
@@ -257,7 +219,7 @@ input[type="submit"] {
     background-color: $color-primary;
 
     &:hover {
-        background-color: $color-primary-light;
+        background-color: $color-primary-medium-light;
     }
 }
 
@@ -272,26 +234,21 @@ input[type="submit"] {
 .btn-icon {
     border: 0;
     background: transparent;
-    padding: 0em;
     margin: 0;
     outline: none;
     cursor: pointer;
-    transform: scale(1.5);
+    height: fit-content;
+    width: fit-content;
+    font-size: 1.6em;
     line-height: 0;
     color: inherit;
-    transition: all 0.2s ease-in-out;
-
-    &:hover {
-        transform: scale(1.8);
-    }
+    transition: all 0.1s ease-in-out;
 
     &:disabled,
     &:disabled:hover {
         background-color: transparent;
         color: $color-grey-medium;
-        cursor: not-allowed;
         box-shadow: none;
-        transform: scale(1.5);
     }
 }
 
@@ -302,14 +259,14 @@ input[type="submit"] {
     display: inline-block;
     margin-left: auto;
     margin-right: auto;
-    width: 40px;
-    height: 40px;
+    width: 1.4em;
+    height: 1.4em;
 
     &::after {
         content: " ";
         display: block;
-        width: 34px;
-        height: 34px;
+        width: 1.4em;
+        height: 1.4em;
         margin: 8px;
         border-radius: 50%;
         border: 4px solid $color-secondary;
@@ -341,7 +298,7 @@ input[type="submit"] {
         width: 100%;
         background-color: $color-grey-dark;
         color: $color-white;
-        font-size: 0.9rem;
+        font-size: $font-size-s;
         box-shadow: 0 0 10px #00000090;
         justify-content: space-between;
         padding: 0 5vw;
@@ -356,17 +313,17 @@ input[type="submit"] {
         justify-content: center;
         padding: 2px 4px;
         line-height: 1;
-        font-size: 0.8rem;
+        font-size: $font-size-xxs;
         color: currentColor;
     }
 
     &.success {
-        color: $color-success;
+        color: $color-success-medium-dark;
         background-color: $color-success-light;
     }
 
     &.error {
-        color: $color-error;
+        color: $color-error-medium-dark;
         background-color: $color-error-light;
     }
 }
@@ -387,47 +344,24 @@ input[type="submit"] {
     background-color: $color-secondary-dark;
     color: $color-white;
     transition: all 0.2s ease-in-out;
+    box-shadow: $drop-shadow-sharp;
 
     &:hover {
         background-color: $color-secondary;
     }
 }
 
-.volume-info-card {
-    background-color: $color-white;
-    border-radius: 0.5em;
-    width: $element-width-l;
-    display: flex;
-    justify-content: space-between;
-    padding: 1.5em;
-    gap: 1em;
-    text-align: left;
-    position: relative;
+.card.volume-info-card {
+    display: grid;
+    grid-template-columns: 4fr minmax(120px, 1fr);
+    grid-template-rows: auto 1fr auto;
+    column-gap: 2em;
+    row-gap: 0;
 
-    .volume-info-card-left {
-        padding-bottom: 1em;
-    }
-
-    .volume-info-card-right {
-        flex: 0 0 clamp(100px, 20%, 150px);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-
-    img.volume-info-card-cover {
-        height: auto;
-        width: 100%;
-        max-width: 100px;
-        object-fit: cover;
-        margin-bottom: 0.5em;
-    }
-
-    .volume-info-card-description,
+    .description,
     .title,
     .subtitle,
-    .volume-author {
+    .author {
 
         text-align: left;
         display: -webkit-box;
@@ -440,48 +374,105 @@ input[type="submit"] {
         }
     }
 
-    .subtitle {
-        color: $color-grey-dark;
+    .info-header {
+        grid-row: 1 / 2;
+        grid-column: 1 / 2;
+        padding-block: 1em;
+        padding-inline: 2em;
+
+        .title {
+            font-size: $font-size-l;
+        }
+
+        .subtitle {
+            color: $color-grey-dark;
+            font-size: $font-size-s;
+        }
+
+        .author {
+            color: $color-primary-dark;
+            font-size: $font-size-xs;
+            font-style: italic;
+            margin-block-start: 0.5em;
+
+            &::before {
+                content: "by: ";
+                margin-inline-end: 0.6em;
+                color: $color-grey-dark;
+                font-size: $font-size-xxxs;
+            }
+        }
     }
 
-    .volume-info-card-description {
-        font-size: 0.8rem;
-        margin-block: 1em;
+    .description {
+        grid-row: 2 / 3;
+        grid-column: 1 / 2;
+        font-size: $font-size-xs;
         background-color: $color-white;
         text-align: left;
-    }
-
-    .volume-info-card-category-container {
-        font-size: calc($font-size-base * 0.75);
+        line-height: 2;
+        padding-left: 2em;
+        padding-bottom: 0.5em;
     }
 
     .detail-container {
-        font-size: calc($font-size-base * 0.75);
+        grid-column: 2 / 3;
+        grid-row: 1 / span 3;
+        background-color: $color-grey-light;
+        font-size: $font-size-xxs;
+        color: $color-dark;
         display: flex;
         flex-direction: column;
-        gap: 0.2em;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 0.5em;
+        padding: 1em;
+        width: 100%;
+        height: 100%;
+
+        img.volume-cover {
+            height: auto;
+            width: 100%;
+            max-width: 100px;
+            object-fit: cover;
+        }
+
+        .detail-info-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+
+        .detail-label {
+            color: $color-grey-dark;
+            font-size: $font-size-xxxs;
+        }
     }
 
-    .volume-author {
-        color: $color-primary-dark;
-        font-style: italic;
+    button.volume-review-btn {
+        margin-block-end: 1.5em;
+        margin-inline-start: 2em;
+
     }
 
     .volume-details-btn {
-        position: absolute;
-        bottom: 0;
+        justify-self: center;
+        align-self: center;
     }
 
 }
 
 .modal-content.volume-details-modal {
     width: auto;
-    max-width: 1000px;
+    width: $element-width-m;
     height: 80%;
     margin: 0;
     padding: 0;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-start;
 
     button.close-btn {
         position: fixed;
@@ -492,14 +483,16 @@ input[type="submit"] {
 
     .volume-info-card {
         width: 99%;
-        position: relative;
         background-color: $color-primary-muted-light;
-        padding: 1.5em;
-        margin: 0.5em;
+        box-shadow: none;
         margin-top: 2.2em;
-        display: flex;
-        flex-direction: column-reverse;
+        display: grid;
         overflow-y: auto;
+
+        .volume-info-card-right {
+            background-color: transparent;
+            flex-direction: row;
+        }
 
         .volume-info-card-left {
             padding: 0;
@@ -509,20 +502,20 @@ input[type="submit"] {
     .volume-info-card-description.expanded {
         background-color: $color-white;
         width: 100%;
+
+        p {
+            text-align: left;
+        }
     }
 
-    h2 {
-        font-size: 1.6rem;
-        text-align: center;
-    }
-
+    .title,
+    .subtitle,
     .volume-author {
         text-align: center;
+        width: 100%;
     }
 
-    p {
-        text-align: left;
-    }
+
 
 }
 
@@ -586,8 +579,8 @@ input[type="submit"] {
             li {
                 display: flex;
                 flex-direction: column;
-                justify-content: space-between;
-                font-size: 0.7rem;
+                justify-content: flex-start;
+                font-size: $font-size-xs;
 
                 img {
                     width: 100px;
@@ -609,5 +602,107 @@ input[type="submit"] {
         flex-direction: column;
         justify-content: center;
         align-items: center;
+    }
+}
+
+.message-container {
+    display: flex;
+    gap: 1em;
+    width: 90%;
+    max-width: $element-width-l;
+    padding: 0.5em;
+    justify-content: center;
+    border-radius: 5px;
+    position: relative;
+
+    &.error {
+        background-color: $color-error-light;
+        border: 1px solid $color-error-opaque;
+    }
+
+    &.info {
+        background-color: $color-info-light;
+        border: 1px solid $color-info-opaque;
+    }
+
+    &.success {
+        background-color: $color-success-light;
+        border: 1px solid $color-success-opaque;
+    }
+
+    &.warning {
+        background-color: $color-warning-light;
+        border: 1px solid $color-warning-opaque;
+    }
+
+    p {
+        position: relative;
+        width: fit-content;
+        text-align: start;
+        font-size: $font-size-xxs;
+        margin: 0;
+        padding: 0 2px;
+
+        svg {
+            flex: none;
+            height: 1.8em;
+            width: 1.8em;
+            left: 0;
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+
+        &.error {
+            color: $color-error-dark;
+
+            svg {
+                color: $color-error-medium-dark;
+            }
+        }
+
+        &.info {
+            color: $color-info-dark;
+
+            svg {
+                color: $color-info-medium-dark;
+            }
+        }
+
+        &.success {
+            color: $color-success-dark;
+
+            svg {
+                color: $color-success-medium-dark;
+            }
+        }
+
+        &.warning {
+            color: $color-warning-dark;
+
+            svg {
+                color: $color-warning-medium-dark;
+            }
+        }
+    }
+}
+
+.clear-input-btn:not(.current-search-item) {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    height: 100%;
+    right: 0;
+    padding: 0;
+    margin-inline: 0.5em;
+    background-color: transparent;
+    border: none;
+    outline: none;
+
+    svg {
+        height: 1.1em;
+        width: 1.1em;
+        color: $color-dark;
     }
 }

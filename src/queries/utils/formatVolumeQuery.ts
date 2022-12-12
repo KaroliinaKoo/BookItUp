@@ -24,31 +24,29 @@ const formatVolumeQuery = (queryOptions: QueryOptionsType) => {
     query += author ? `+inauthor:${author.replace(/ /g, "+")}` : "";
     query += publisher ? `+inpublisher:${publisher.replace(/ /g, "+")}` : "";
     query += category ? `+subject:${category.replace(/ /g, "+")}` : "";
-    query += "&langRestrict=" + language;
+    query += language ? `&langRestrict=${language}` : "";
     query += "&maxResults=" + maxResults;
     query += "&orderBy=" + orderBy;
     query += "&startIndex=" + startIndex;
-    query += "&filter=ebooks&printType=BOOKS";
+    query += "&filter=paid-ebooks&printType=BOOKS";
     // query += "&key=" + process.env.REACT_APP_GOOGLE_BOOKS_API_KEY;
-    query += fields
-      ? "&fields=" + fields
-      : "&fields=items(id,volumeInfo(title,authors,publisher,categories,pageCount,publishedDate,description,imageLinks/*,language))";
+    query += "&fields=" + fields;
   }
   query = removeSpaces(query);
   return query;
 };
 
 export type QueryOptionsType = {
-  keywords?: string;
-  title?: string;
-  author?: string;
-  publisher?: string;
-  category?: string;
-  language?: string;
-  maxResults: number;
-  orderBy: string;
+  keywords: string;
+  title: string;
+  author: string;
+  publisher: string;
+  category: string;
+  language: string;
+  maxResults: 10 | 20 | 30 | 40;
+  orderBy: "relevance" | "newest";
   startIndex: number;
-  fields?: string;
+  fields: string;
 };
 
 export default formatVolumeQuery;

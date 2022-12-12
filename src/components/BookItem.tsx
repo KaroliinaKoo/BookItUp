@@ -1,80 +1,99 @@
 import React, { useState } from "react";
+import { FaPen } from "react-icons/fa";
 import {
   VolumeFormattedType,
   formatStringArray,
 } from "../queries/utils/formatVolumeData";
 import VolumeDetails from "./VolumeDetails";
+import { useNavigate } from "react-router-dom";
 
 type PropTypes = {
-  item: VolumeFormattedType;
-  isListItem?: boolean;
+  volumeData: VolumeFormattedType;
+  fullDescription: boolean;
+  isListItem: boolean;
 };
 
-function BookItem({ item, isListItem = true }: PropTypes) {
+function BookItem({
+  volumeData,
+  fullDescription,
+  isListItem = false,
+}: PropTypes) {
   const [showDetails, setShowDetails] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <>
       {showDetails && (
         <VolumeDetails
-          volumeData={item}
+          volumeData={volumeData}
           handleClose={() => setShowDetails(false)}
         />
       )}
 
-      <div className="volume-info-card">
-        <div className="volume-info-card-left">
-          <div className="volume-header">
-            {item.title && <h2 className="title">{item.title}</h2>}
-            {item.subtitle && <h3 className="subtitle">{item.subtitle}</h3>}
-            {item.authors && (
-              <div className="volume-author">
-                - {formatStringArray(item.authors)}
-              </div>
-            )}
-          </div>
-          {item.description && (
-            <div
-              className={`volume-info-card-description ${
-                isListItem ? "" : "expanded"
-              }`}
-            >
-              <p>{item.description}</p>
+      <div className="card volume-info-card">
+        <div className="info-header">
+          {volumeData.title && <h2 className="title">{volumeData.title}</h2>}
+          {volumeData.subtitle && (
+            <h3 className="subtitle">{volumeData.subtitle}</h3>
+          )}
+          {volumeData.authors && (
+            <div className="author">
+              {formatStringArray(volumeData.authors)}
             </div>
           )}
         </div>
-        <div className="volume-info-card-right">
-          {item.imageLinks && (
+        {volumeData.description && (
+          <div className={`description ${fullDescription ? "expanded" : ""}`}>
+            <p>{volumeData.description}</p>
+          </div>
+        )}
+        <div className="detail-container">
+          {volumeData.imageLinks && (
             <img
-              className="volume-info-card-cover"
-              src={item.imageLinks.thumbnail}
-              alt={`Cover of ${item.title}`}
+              className="volume-cover"
+              src={volumeData.imageLinks.thumbnail}
+              alt={`Cover of ${volumeData.title}`}
             />
           )}
-
-          <div className="detail-container">
-            <div className="detail-label">
-              Publisher: {item.publisher}
-              {item.publishedDate && ` (${item.publishedDate})`}
-            </div>
-
-            <div className="detail-label">Language: {item.language}</div>
-            <div className="detail-label">Pages: {item.pageCount}</div>
-            {item.category && (
-              <div className="detail-label category">
-                Category: {item.category[0]}
-              </div>
-            )}
+          {isListItem && (
+            <button
+              className="volume-details-btn btn btn-secondary small"
+              onClick={() => {
+                setShowDetails(true);
+              }}
+            >
+              View Details
+            </button>
+          )}
+          <div className="detail-info-container">
+            <span className="detail-label">Publisher: </span>
+            {volumeData.publisher}
+            {volumeData.publishedDate && ` (${volumeData.publishedDate})`}
           </div>
+          <div className="detail-info-container">
+            <span className="detail-label">Language: </span>
+            {volumeData.language}
+          </div>
+          <div className="detail-info-container">
+            <span className="detail-label">Pages: </span> {volumeData.pageCount}
+          </div>
+          {volumeData.category && (
+            <div className="detail-info-container">
+              <span className="detail-label">Category: </span>
+              {volumeData.category[0]}
+            </div>
+          )}
         </div>
         {isListItem && (
           <button
-            className="volume-details-btn btn btn-secondary small"
+            className="btn-primary small volume-review-btn"
+            aria-label={`Write a review of ${volumeData.title}`}
             onClick={() => {
-              setShowDetails(true);
+              navigate(`/review/${volumeData.id}`);
             }}
           >
-            Read more
+            <FaPen />
+            Review
           </button>
         )}
       </div>
