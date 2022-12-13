@@ -737,11 +737,9 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding-block: 0.5em;
-        margin: 1em;
         border: $border-soft-dark;
         font-size: $font-size-xs;
-        width: 90%;
+        width: 100%;
         padding: 1em;
 
         .toggle-register {
@@ -750,36 +748,12 @@
         }
     }
 
-    .form-control {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-        gap: 1em;
-
-        .btn-primary {
-            background-color: $color-secondary;
-            color: $color-white;
-
-            &:hover {
-                background-color: $color-secondary-light;
-            }
-        }
-
+    form {
         .input-group {
             width: 100%;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            border-color: $color-secondary-muted;
-            position: relative;
 
             label {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                text-align: left;
-                width: 100%;
+                width: 20%;
                 color: $color-secondary-muted-dark;
             }
 
@@ -793,12 +767,13 @@
             }
 
             .show-password {
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 position: absolute;
-                top: 78%;
                 right: 0;
-                transform: translateY(-50%);
                 width: 2.8em;
-                height: 2.8em;
+                height: 100%;
                 color: $color-secondary-muted-dark;
 
                 svg {
@@ -806,19 +781,6 @@
                     height: 1.8em;
                 }
             }
-        }
-    }
-
-    .user-select-categories {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-
-        .user-select-categories__list {
-            width: 100%;
-            overflow-y: auto;
-            max-height: 200px;
         }
     }
 

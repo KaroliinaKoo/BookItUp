@@ -28,11 +28,19 @@ export const UserProvider = ({ children }: any) => {
 
   const setUserData = (data: UserDataTypes) => {
     setUser(data);
-    //localStorage.setItem("user", JSON.stringify(data));
+    localStorage.setItem("user", JSON.stringify(data));
   };
 
   const clearUserData = () => {
     setUser(userInitialData);
+  };
+
+  const userIsAuthenticated = () => {
+    let token = localStorage.getItem("token");
+    if (token) {
+      return true;
+    }
+    return false;
   };
 
   return (
@@ -41,6 +49,7 @@ export const UserProvider = ({ children }: any) => {
         user,
         setUserData,
         clearUserData,
+        userIsAuthenticated,
       }}
     >
       {children}
@@ -54,6 +63,7 @@ export type UserContextType = {
   user: UserDataTypes;
   setUserData: (data: UserDataTypes) => void;
   clearUserData: () => void;
+  userIsAuthenticated: () => boolean;
 };
 
 export type UserDataTypes = {

@@ -102,7 +102,7 @@ const useFetchVolumeList = () => {
         } else {
           setMessage({
             type: "success",
-            text: `Found ${data.items.length - 1} result(s).`,
+            text: `Found ${data.items.length} result(s).`,
           });
           setVolumeList({
             totalItems: data.totalItems,

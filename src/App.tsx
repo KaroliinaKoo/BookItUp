@@ -1,5 +1,6 @@
 import Main from "./features/Main";
-import Login from "./features/Login";
+import LogIn from "./features/user-auth/LogIn";
+import Register from "./features/user-auth/Register";
 import FindReviews from "./features/FindReviews";
 import PageNotFound from "./features/PageNotFound";
 import Header from "./components/Header";
@@ -15,13 +16,14 @@ import MySettings from "./components/MySettings";
 import MyProfile from "./components/MyProfile";
 import MyReviews from "./components/MyReviews";
 import ReviewForm from "./features/review/ReviewForm";
+import ProtectedRoute from "./utils/components/ProtectedRoute";
 
 function App() {
   const context = useContext(UserContext);
   if (!context) {
     throw new Error("UserContext not found");
   }
-  const { user, setUserData } = context;
+  const { user, setUserData, userIsAuthenticated } = context;
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -45,10 +47,34 @@ function App() {
               <Route path="*" element={<PageNotFound />} />
               <Route path="/find-reviews" element={<FindReviews />} />
               <Route path="/review">
-                <Route path="/review/:volumeID" element={<ReviewForm />} />
+                <Route
+                  path="/review/:volumeID"
+                  element={
+                    <ProtectedRoute
+                      userIsAuth={userIsAuthenticated()}
+                      redirectPath="/auth/login"
+                    >
+                      <ReviewForm />
+                    </ProtectedRoute>
+                  }
+                />
               </Route>
-              <Route path="/login" element={<Login />} />
-              <Route path="/dashboard/" element={<UserDashboard />}>
+              <Route path="/auth" />
+              <Route path="/auth/login" element={<LogIn />} />
+              <Route path="/auth/register" element={<Register />} />
+              <Route />
+
+              <Route
+                path="/dashboard/"
+                element={
+                  <ProtectedRoute
+                    userIsAuth={userIsAuthenticated()}
+                    redirectPath="/auth/login"
+                  >
+                    <UserDashboard />
+                  </ProtectedRoute>
+                }
+              >
                 <Route path="/dashboard/settings" element={<MySettings />} />
                 <Route
                   path="/dashboard/profile"

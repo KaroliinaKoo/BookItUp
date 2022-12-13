@@ -69,7 +69,7 @@ function LinkList({ openClose }: PropTypes) {
         </>
       ) : (
         <li>
-          <NavLink to="/login" onClick={openClose} className="mobile-btn">
+          <NavLink to="/auth/login" onClick={openClose} className="mobile-btn">
             <FaSignInAlt />
             Login
           </NavLink>

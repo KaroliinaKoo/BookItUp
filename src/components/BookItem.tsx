@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { FaPen } from "react-icons/fa";
 import {
   VolumeFormattedType,
@@ -6,6 +6,7 @@ import {
 } from "../queries/utils/formatVolumeData";
 import VolumeDetails from "./VolumeDetails";
 import { useNavigate } from "react-router-dom";
+import UserContext from "../context/UserContext";
 
 type PropTypes = {
   volumeData: VolumeFormattedType;
@@ -20,6 +21,14 @@ function BookItem({
 }: PropTypes) {
   const [showDetails, setShowDetails] = useState(false);
   const navigate = useNavigate();
+
+  const context = useContext(UserContext);
+
+  if (!context) {
+    throw new Error("context not found");
+  }
+
+  const { userIsAuthenticated } = context;
 
   return (
     <>
@@ -84,7 +93,7 @@ function BookItem({
             </div>
           )}
         </div>
-        {isListItem && (
+        {isListItem && !!userIsAuthenticated() && (
           <button
             className="btn-primary small volume-review-btn"
             aria-label={`Write a review of ${volumeData.title}`}

@@ -20,10 +20,34 @@ form {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    padding: 0.5em;
-    gap: 0.5em;
+    padding: 1em;
+    gap: 2em;
     width: 100%;
     position: relative;
+
+    .form-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        gap: 1.5em;
+    }
+
+    .form-body {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 1em;
+    }
+
+    .form-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        width: 100%;
+        gap: 0.5em;
+    }
 
     .input-group {
         display: flex;
@@ -39,8 +63,6 @@ form {
         .input-field-group {
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
-            justify-content: flex-start;
             width: 100%;
             gap: 0.5em;
             position: relative;
@@ -51,11 +73,19 @@ form {
         }
 
         label {
-            white-space: nowrap;
             text-align: end;
             flex: 0 1 25%;
             font-size: $font-size-s;
             color: $color-dark;
+            line-height: 1;
+        }
+
+        .input-error {
+            position: absolute;
+            bottom: -1.6em;
+            right: 0;
+            color: $color-error-medium-dark;
+            font-size: $font-size-xs;
         }
 
         input,
@@ -110,6 +140,20 @@ form {
             width: 100%;
         }
     }
+
+    .form-error {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5em;
+        width: 100%;
+        border-radius: 0.5em;
+        border: 2px solid $color-error-opaque;
+        background-color: $color-error-light;
+        color: $color-error-medium-dark;
+        padding: 1em;
+        font-size: $font-size-xs;
+    }
 }
 
 label {
@@ -150,7 +194,7 @@ input[type="submit"] {
     user-select: none;
     font: inherit;
     gap: 0.5em;
-    min-height: 24px;
+    min-height: 1.6em;
 
     &:disabled,
     &:disabled:hover {
@@ -183,21 +227,19 @@ input[type="submit"] {
     text-transform: uppercase;
     border-radius: 25em;
     padding-inline: $padding-base;
-    padding-block: calc($padding-base * 0.5);
     color: $color-white;
-    width: clamp(40px, 100%, 220px);
-    min-height: 34px;
+    height: 2.4em;
+    width: clamp(40px, 100%, 180px);
+    box-shadow: $drop-shadow-sharp;
     white-space: nowrap;
     line-height: 0;
 
     &.small {
-        padding-inline: calc($padding-base * 0.6);
-        min-height: 24px;
-        max-width: 140px;
+        height: 2em;
         width: fit-content;
         border-radius: 5px;
         font-weight: 400;
-        font-size: $font-size-xxxs;
+        font-size: $font-size-xxs;
         text-transform: capitalize;
         margin: calc($margin-base * 0.5) 0;
 
@@ -227,7 +269,7 @@ input[type="submit"] {
     background-color: $color-secondary;
 
     &:hover {
-        background: $color-secondary-light;
+        background: $color-secondary-medium-light;
     }
 }
 
@@ -325,6 +367,16 @@ input[type="submit"] {
     &.error {
         color: $color-error-medium-dark;
         background-color: $color-error-light;
+    }
+
+    &.warning {
+        color: $color-warning-medium-dark;
+        background-color: $color-warning-light;
+    }
+
+    &.info {
+        color: $color-info-medium-dark;
+        background-color: $color-info-light;
     }
 }
 
