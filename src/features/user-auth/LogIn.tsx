@@ -63,7 +63,7 @@ function LogIn() {
     <div className="container-card login">
       <form onSubmit={handleSubmit}>
         <div className="form-header">
-          <h1>Login</h1>
+          <h1>Log In</h1>
           <div className="toggle-register-container">
             No account?
             <button
@@ -71,7 +71,7 @@ function LogIn() {
               type="button"
               onClick={() => navigate("/auth/register")}
             >
-              Register
+              Sign up
             </button>
           </div>
         </div>

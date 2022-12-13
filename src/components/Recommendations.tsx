@@ -151,7 +151,7 @@ const Recommendations = () => {
         <div className="volume-recommendations-footer">
           Nothing here piques your interest?
           <button
-            className="btn-cta btn-primary"
+            className="btn-primary btn-cta"
             onClick={() => {
               navigate("/dashboard/settings");
             }}
