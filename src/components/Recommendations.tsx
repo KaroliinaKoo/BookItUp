@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { truncate } from "../utils/truncate";
-import VolumeDetails from "./VolumeDetails";
+import VolumeDetails from "./VolumeDetailsModal";
 import { formatVolumeDataList } from "../queries/utils/formatVolumeData";
 import UserContext from "../context/UserContext";
 import { subjectHeadingsList } from "../data/subjectHeadingsList";

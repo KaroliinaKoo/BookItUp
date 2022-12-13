@@ -8,7 +8,7 @@ type PropTypes = {
   handleClose: () => void;
 };
 
-const VolumeDetails = ({ volumeData, handleClose }: PropTypes) => {
+const VolumeDetailsModal = ({ volumeData, handleClose }: PropTypes) => {
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -31,8 +31,9 @@ const VolumeDetails = ({ volumeData, handleClose }: PropTypes) => {
           {volumeData && (
             <BookItem
               volumeData={volumeData}
-              fullDescription={true}
-              isListItem={false}
+              displayDescription={{ display: true, full: true }}
+              displayReviewButton={false}
+              displayDetailsButton={false}
             />
           )}
         </div>
@@ -41,4 +42,4 @@ const VolumeDetails = ({ volumeData, handleClose }: PropTypes) => {
   );
 };
 
-export default VolumeDetails;
+export default VolumeDetailsModal;

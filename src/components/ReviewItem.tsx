@@ -1,13 +1,16 @@
 import React from "react";
 import Card from "./shared/Card";
 import { FaTimes, FaEdit, FaUserCircle } from "react-icons/fa";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import ReviewContext, { ReviewDataTypes } from "../context/ReviewContext";
 import AlertContext from "../context/AlertContext";
 import { useNavigate } from "react-router-dom";
 import Prompt from "./shared/Prompt";
 import { truncate } from "../utils/truncate";
-import VolumeDetails from "./VolumeDetails";
+import VolumeDetails from "./VolumeDetailsModal";
+import useFetchVolumeByID from "../hooks/useFetchVolumeByID";
+import { formatDate } from "../utils/formatDate";
+import BookItem from "./BookItem";
 
 type PropTypes = {
   item: ReviewDataTypes;
@@ -16,7 +19,6 @@ type PropTypes = {
 
 function ReviewItem({ item, profileView }: PropTypes) {
   const [showPrompt, setShowPrompt] = useState(false);
-  const [volumeData, setVolumeData] = useState<any>({});
   const [showVolumeDetails, setShowVolumeDetails] = useState(false);
 
   const reviewContext = useContext(ReviewContext);
@@ -35,31 +37,12 @@ function ReviewItem({ item, profileView }: PropTypes) {
   const [expandBody, setExpandBody] = useState(false);
   const navigate = useNavigate();
 
-  const formatDate: (date: string) => string = (date) => {
-    const d = new Date(date);
-    const month = d.toLocaleString("default", { month: "long" });
-    const day = d.getDate();
-    const year = d.getFullYear();
-    return `${month} ${day}, ${year}`;
-  };
-
   const handleDelete = () => {
     deleteItem(item.id);
     showAlert("success", "Item deleted successfully");
   };
 
-  useEffect(() => {
-    if (item) {
-      const fetchVolume = async (id: string) => {
-        const response = await fetch(
-          `https://www.googleapis.com/books/v1/volumes/${id}`
-        );
-        const data = await response.json();
-        setVolumeData(data.volumeInfo);
-      };
-      fetchVolume(item.volumeID);
-    }
-  }, [item]);
+  const { isLoading, volumeData } = useFetchVolumeByID(item.volumeID);
 
   return (
     <>
@@ -86,21 +69,17 @@ function ReviewItem({ item, profileView }: PropTypes) {
             {item.rating}
             <span>/10</span>
           </div>
-          <div className="review-title">
-            <h2>{volumeData.title ? volumeData.title : "No title"}</h2>
-            <span className="review-volume-author">
-              by{" "}
-              {volumeData.authors
-                ? [...volumeData.authors].join(", ")
-                : "Unknown Author"}
-            </span>
-            <button
-              className="btn-secondary small"
-              onClick={() => setShowVolumeDetails(true)}
-            >
-              View Book Details
-            </button>
-          </div>
+          {isLoading ? (
+            <div>Loading...</div>
+          ) : (
+            <BookItem
+              key={volumeData.id}
+              volumeData={volumeData}
+              displayDescription={{ display: false }}
+              displayDetails={false}
+              displayReviewButton={false}
+            />
+          )}
         </div>
         {item.body && (
           <div

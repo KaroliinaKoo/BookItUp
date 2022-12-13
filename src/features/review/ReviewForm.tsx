@@ -104,8 +104,9 @@ function ReviewForm() {
           ) : (
             <BookItem
               volumeData={volumeData}
-              fullDescription={true}
-              isListItem={false}
+              displayDescription={{ display: true, full: true }}
+              displayDetailsButton={false}
+              displayReviewButton={false}
             />
           )}
         </section>
