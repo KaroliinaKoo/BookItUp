@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
-import LinkList from "./shared/LinkList";
+import LinkList from "../shared/LinkList";
 import { NavLink } from "react-router-dom";
 import FocusTrap from "focus-trap-react";
 

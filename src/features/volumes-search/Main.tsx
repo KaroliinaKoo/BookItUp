@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import BookList from "../components/BookList";
-import BookSearch from "../components/BookSearch";
+import BookList from "../../components/volumes/BookList";
+import BookSearch from "./BookSearch";
 import { FaChevronUp } from "react-icons/fa";
-import useFetchVolumeList from "../hooks/useFetchVolumeList";
+import useFetchVolumeList from "../../hooks/useFetchVolumeList";
 
 function FindBooks() {
   const {

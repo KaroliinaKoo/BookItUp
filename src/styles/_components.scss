@@ -123,7 +123,7 @@ form {
                 height: auto;
                 width: 100%;
                 margin-bottom: 0.5em;
-                text-align: start;
+                text-align: left;
                 flex: 0 1 auto;
             }
         }
@@ -180,6 +180,7 @@ textarea {
 
 .btn-container {
     display: flex;
+    flex-direction: row;
     justify-content: space-evenly;
     width: 100%;
     gap: 1em;
@@ -224,6 +225,7 @@ input[type="submit"] {
     font-size: $font-size-s;
     transition: all 0.2s ease-in-out;
     text-transform: capitalize;
+    font-weight: 600;
     border-radius: 25em;
     padding-inline: $padding-base;
     color: $color-white;
@@ -232,18 +234,31 @@ input[type="submit"] {
     box-shadow: $drop-shadow-sharp;
     white-space: nowrap;
     line-height: 0;
+    margin-block: 0.5em;
 
-    &.small {
-        height: 2em;
-        width: fit-content;
-        border-radius: 5px;
-        font-size: $font-size-xxs;
-        margin: calc($margin-base * 0.5) 0;
-
+    &.small,
+    &.x-small {
+        font-weight: 400;
+        width: auto;
+        border-radius: 25em;
+        box-shadow: $drop-shadow-extra-sharp;
+        padding: 0.5em;
     }
 
+    &.small {
+        min-width: 8em;
+        height: 2.4em;
+        font-size: $font-size-xxs;
+    }
+
+    &.x-small {
+        height: 1.6em;
+        font-size: $font-size-xxxs;
+    }
+
+
     &.btn-cta {
-        margin-block: 0.5em;
+        margin-block: 1em;
         min-height: 44px;
         width: 100%;
         max-width: $element-width-xs;
@@ -255,6 +270,7 @@ input[type="submit"] {
         }
     }
 }
+
 
 .btn-primary {
     background-color: $color-primary;
@@ -278,9 +294,6 @@ input[type="submit"] {
     margin: 0;
     outline: none;
     cursor: pointer;
-    height: fit-content;
-    width: fit-content;
-    font-size: 1.6em;
     line-height: 0;
     color: inherit;
     transition: all 0.1s ease-in-out;
@@ -290,6 +303,11 @@ input[type="submit"] {
         background-color: transparent;
         color: $color-grey-medium;
         box-shadow: none;
+    }
+
+    svg {
+        font-size: 1.5rem;
+        min-width: 1.1em;
     }
 }
 
@@ -392,37 +410,19 @@ input[type="submit"] {
     min-height: 2.6em;
     line-height: 0;
     border-radius: 50%;
-    background-color: $color-secondary-dark;
+    background-color: $color-primary-medium-dark;
     color: $color-white;
     transition: all 0.2s ease-in-out;
     box-shadow: $drop-shadow-sharp;
 
     &:hover {
-        background-color: $color-secondary;
+        background-color: $color-primary-medium-light;
     }
 }
 
-.card.volume-info-card {
+.volume-info {
 
     position: relative;
-
-    &.grid-wide {
-        display: grid;
-        width: 100%;
-        grid-template-areas:
-            "header sidebar-top"
-            "body sidebar-middle"
-            "footer sidebar-bottom";
-        grid-template-columns: 4fr minmax(140px, 1fr);
-        column-gap: 2em;
-        row-gap: 0;
-
-        >div {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-    }
 
     .description,
     .title,
@@ -434,33 +434,32 @@ input[type="submit"] {
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 10;
         overflow: hidden;
+        word-break: break-word;
 
         &.expanded {
             -webkit-line-clamp: unset;
+            overflow-y: auto;
         }
     }
 
-    .volume-header-container {
-
+    .volume-info-title-container {
         position: relative;
-        grid-area: header;
-        padding-block: 1em;
-        padding-inline: 2em;
+
 
         .title {
-            font-size: $font-size-l;
+            padding-top: 1em;
+            font-size: $font-size-m;
         }
 
         .subtitle {
             color: $color-grey-dark;
-            font-size: $font-size-s;
+            font-size: $font-size-xxs;
         }
 
         .author {
             color: $color-primary-dark;
-            font-size: $font-size-xs;
+            font-size: $font-size-xxs;
             font-style: italic;
-            margin-block-start: 0.5em;
 
             &::before {
                 content: "by: ";
@@ -469,60 +468,53 @@ input[type="submit"] {
                 font-size: $font-size-xxxs;
             }
         }
+
+        &::after {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 4px;
+            background-color: $color-grey-light;
+            margin-top: 0.5em;
+        }
     }
 
-    .volume-description-container {
-
+    .volume-info-description-container {
         position: relative;
-        grid-area: body;
         font-size: $font-size-xs;
-        background-color: $color-white;
         text-align: left;
         line-height: 2;
-        padding-left: 2em;
-        padding-bottom: 0.5em;
     }
 
-    .volume-cover-container {
+    .volume-info-cover-container {
         display: flex;
         justify-content: center;
         align-items: center;
         position: relative;
-        grid-area: sidebar-top;
-        height: fit-content;
-        width: 100%;
-        background-color: $color-grey-light;
 
         img.volume-cover {
             height: auto;
             width: 100%;
-            max-width: 100px;
+            min-width: 90px;
+            max-width: 120px;
             object-fit: cover;
-            margin: 0.5em;
+            margin-block: 0.5em;
         }
     }
 
-    .volume-detail-container {
+    .volume-info-detail-container {
         position: relative;
-        grid-area: sidebar-middle;
-        background-color: $color-grey-light;
         font-size: $font-size-xxs;
         color: $color-dark;
         display: flex;
         flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
         gap: 0.5em;
-        padding: 1em;
-        width: 100%;
-        height: 100%;
 
-        .detail-info-container {
-            width: 100%;
+        .detail-container {
             display: flex;
             flex-direction: column;
             text-align: left;
-            justify-content: flex-start;
+            justify-items: flex-start;
             align-items: flex-start;
         }
 
@@ -533,27 +525,146 @@ input[type="submit"] {
     }
 
 
-    button.volume-review-btn {
-        margin-block-end: 1.5em;
-        margin-inline-start: 2em;
+    &.list-card,
+    .review-info-card {
+        display: flex;
+
+        .left,
+        .right {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+            gap: 0.5em;
+        }
+
+        .left {
+            justify-content: flex-start;
+            align-items: flex-start;
+            flex: 1 1 70%;
+            padding-block: 1em;
+            padding-inline: 2em;
+        }
+
+        .right {
+            justify-content: space-between;
+            align-items: center;
+            text-align: left;
+            background-color: $color-grey-light;
+            flex: 1 0 30%;
+            padding-block: 1em;
+            padding-inline: 2em;
+        }
+
+        .btn-container {
+            margin-top: auto;
+            justify-content: flex-start;
+        }
+
+        &.compact {
+
+            flex-direction: column;
+            align-items: center;
+
+            .body-container {
+                flex-direction: column;
+                align-items: center;
+
+                * {
+                    padding-inline: 1em;
+                    padding-block: 0.25em;
+                    text-align: center;
+                }
+            }
+
+            .btn-container {
+                margin-top: 0.5em;
+                background-color: $color-grey-light;
+                justify-content: space-around;
+            }
+        }
     }
 
-    button.volume-details-btn {
-        grid-area: sidebar-bottom;
-        justify-self: center;
-        align-self: center;
+    &.review-header {
+        display: flex;
+        flex-direction: column;
+        background-color: $color-grey-light;
+        height: 100%;
     }
 
+    &.volume-info-modal-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        overflow-y: auto;
+        border-radius: 0.5em;
+
+        .volume-info-title-container {
+
+            width: 100%;
+            max-width: $element-width-s;
+
+            * {
+                text-align: left;
+            }
+        }
+
+        .description {
+            padding: 0;
+            text-align: left;
+            padding-block: 1em;
+            width: 90%;
+            max-width: $element-width-m;
+            margin-inline: auto;
+        }
+
+        .header-container {
+            display: flex;
+            gap: 1em;
+            justify-content: space-evenly;
+            padding: 0.5em;
+            width: 90%;
+            position: relative;
+
+            &::after {
+                position: absolute;
+                content: "";
+                display: block;
+                width: 100%;
+                height: 1px;
+                background-color: $color-grey;
+                bottom: 0;
+            }
+
+            @media screen and (max-width: 560px) {
+                flex-direction: column;
+
+                .volume-info-title-container {
+                    max-width: 100%;
+                }
+
+                .volume-info-detail-container {
+                    width: 100%;
+                }
+
+                .detail-container {
+                    flex-direction: row;
+                    gap: 0.5em;
+                }
+
+            }
+        }
+    }
 }
 
 .modal-content.volume-details-modal {
-    width: auto;
-    width: $element-width-m;
-    height: 80%;
-    margin: 0;
-    padding: 0;
-    justify-content: flex-start;
-    align-items: flex-start;
+    width: $element-width-l;
+    max-width: 98%;
+    max-height: 98%;
+    padding: 0.5em;
+    padding-top: 2em;
+    background-color: $color-grey-light;
 
     button.close-btn {
         position: fixed;
@@ -561,58 +672,21 @@ input[type="submit"] {
         right: 0.5em;
         z-index: 1;
     }
-
-    .volume-info-card {
-        width: 99%;
-        background-color: $color-primary-muted-light;
-        box-shadow: none;
-        margin-top: 2.2em;
-        display: grid;
-        overflow-y: auto;
-
-        .volume-info-card-right {
-            background-color: transparent;
-            flex-direction: row;
-        }
-
-        .volume-info-card-left {
-            padding: 0;
-        }
-    }
-
-    .volume-info-card-description.expanded {
-        background-color: $color-white;
-        width: 100%;
-
-        p {
-            text-align: left;
-        }
-    }
-
-    .title,
-    .subtitle,
-    .volume-author {
-        text-align: center;
-        width: 100%;
-    }
-
-
-
 }
 
 .volume-recommendations {
     position: relative;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr;
     justify-content: flex-start;
-    gap: 0;
+    gap: 0.5em;
     text-align: center;
     width: $element-width-xl;
     padding-block: 1em;
-    margin-top: auto;
-    margin-bottom: auto;
     background-color: $color-primary-muted-light;
     border-radius: 1.5em;
+    height: 100%;
+    overflow: hidden;
 
     .spinner {
         margin-top: auto;
@@ -623,13 +697,13 @@ input[type="submit"] {
         position: relative;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
         width: 100%;
+        padding-inline: 1.5em;
 
         h2 {
             color: $color-dark;
-            padding-top: 2.5vw;
         }
 
         h3 {
@@ -638,6 +712,7 @@ input[type="submit"] {
         }
 
         .volume-recommendations-nav {
+            align-items: center;
             display: grid;
             width: 100%;
             max-width: 300px;
@@ -649,43 +724,90 @@ input[type="submit"] {
     .volume-recommendations-container {
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        height: fit-content;
+        justify-content: flex-start;
+        align-items: stretch;
+        height: 100%;
+        overflow-y: auto;
+        margin-top: auto;
+        margin-bottom: auto;
 
         ul {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-            gap: 0.5em;
-            padding: 0.5em;
+            row-gap: 1.5em;
+            column-gap: 0.5em;
+            padding-inline: 1em;
 
-            li {
+            @media screen and (min-width: $breakpoint-md) {
+                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            }
+
+            @media screen and (max-width: $breakpoint-md) {
+                grid-template-columns: repeat(4, minmax(60px, 1fr));
+                grid-template-rows: repeat(2, auto);
+            }
+
+            @media screen and (max-width: $breakpoint-xs) {
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start;
-                font-size: $font-size-xs;
+                gap: 1em;
+            }
+
+            li.recommendation-card {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+                gap: 0.25em;
 
                 img {
-                    width: 90px;
-                    height: auto;
+                    width: 100%;
+                    max-width: 80px;
+                    height: 120px;
                     object-fit: scale-down;
+                }
+
+                p.recommendation-card-title {
+                    width: 100%;
+                    font-size: $font-size-xs;
+                    color: $color-dark;
+                    max-width: 140px;
+                    display: -webkit-box;
+                    -webkit-box-orient: vertical;
+                    -webkit-line-clamp: 3;
+                    overflow: hidden;
+                    word-break: break-word;
                 }
 
                 .recommendation-card-author {
                     color: $color-primary-dark;
                     font-style: italic;
                     font-size: $font-size-xxs;
+                    display: -webkit-box;
+                    -webkit-box-orient: vertical;
+                    -webkit-line-clamp: 2;
+                    overflow: hidden;
+                    word-break: break-word;
                 }
             }
         }
     }
 
     .volume-recommendations-footer {
-        margin-top: 1em;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-end;
         align-items: center;
         font-size: $font-size-xs;
+
+        &::before {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: $color-white;
+            margin-bottom: 1em;
+        }
     }
 }
 

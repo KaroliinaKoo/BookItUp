@@ -1,21 +1,21 @@
+import React, { useContext, useEffect } from "react";
 import Main from "./features/Main";
-import LogIn from "./features/user-auth/LogIn";
-import Register from "./features/user-auth/Register";
-import FindReviews from "./features/FindReviews";
 import PageNotFound from "./features/PageNotFound";
-import Header from "./components/Header";
-import UserDashboard from "./features/UserDashboard";
-import Alert from "./components/Alert";
+import { Register, LogIn } from "./features/user-auth/";
+import FindReviews from "./features/reviews-search/FindReviews";
+import { Alert, Header } from "./components/layout/index";
+import {
+  UserDashboard,
+  MyProfile,
+  MyReviews,
+  MySettings,
+} from "./features/user-dashboard/";
 import { Routes, Route } from "react-router-dom";
 import { ReviewProvider } from "./context/ReviewContext";
 import { AlertProvider } from "./context/AlertContext";
-import React, { useContext, useEffect } from "react";
 import UserContext from "./context/UserContext";
-import FindBooks from "./features/FindBooks";
-import MySettings from "./components/MySettings";
-import MyProfile from "./components/MyProfile";
-import MyReviews from "./components/MyReviews";
-import ReviewForm from "./features/review/ReviewForm";
+import FindBooks from "./features/volumes-search/Main";
+import ReviewForm from "./features/new-review/ReviewForm";
 import ProtectedRoute from "./utils/components/ProtectedRoute";
 
 function App() {

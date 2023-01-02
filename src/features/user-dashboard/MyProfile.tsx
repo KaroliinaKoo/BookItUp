@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useEffect } from "react";
-import { UserDataTypes } from "../context/UserContext";
+import { UserDataTypes } from "../../context/UserContext";
 
 type Props = {
   user: UserDataTypes;

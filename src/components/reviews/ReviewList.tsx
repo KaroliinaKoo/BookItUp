@@ -1,8 +1,8 @@
 import React from "react";
 import { useContext } from "react";
 import ReviewItem from "./ReviewItem";
-import ReviewContext, { ReviewDataTypes } from "../context/ReviewContext";
-import { SortByTypes } from "../features/FindReviews";
+import ReviewContext, { ReviewDataTypes } from "../../context/ReviewContext";
+import { SortByTypes } from "../../features/reviews-search/FindReviews";
 
 type PropTypes = {
   searchBy: string;
@@ -57,7 +57,7 @@ const ReviewList: React.FC<PropTypes> = ({ searchBy, sortBy }) => {
         // })
 
         .map((review: ReviewDataTypes) => (
-          <ReviewItem key={review.id} item={review} profileView={false} />
+          <ReviewItem key={review.id} item={review} />
         ))
         .sort((a, b) => {
           if (sortBy === "newest") {

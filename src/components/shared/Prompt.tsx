@@ -26,7 +26,7 @@ function Prompt({
       <div className="modal" style={{ display: visible ? "block" : "none" }}>
         <div className="modal-content">
           <button
-            aria-label="Close window"
+            aria-label="Close message"
             className="btn-icon close"
             onClick={onCancel}
           >

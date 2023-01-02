@@ -1,19 +1,25 @@
-import React, { useState, useContext } from "react";
-import { subjectHeadingsList } from "../data/subjectHeadingsList";
-import UserContext from "../context/UserContext";
+import React, { useState, useContext, useLayoutEffect } from "react";
+import { subjectHeadingsList } from "../../data/subjectHeadingsList";
+import UserContext from "../../context/UserContext";
+import AlertContext from "../../context/AlertContext";
 
 const UserSelectCategories = () => {
-  const context = useContext(UserContext);
+  const userContext = useContext(UserContext);
+  const alertContext = useContext(AlertContext);
 
-  if (!context) {
-    throw new Error("UserContext not found");
+  if (!userContext || !alertContext) {
+    throw new Error("context not found");
   }
 
-  const { user, setUserData } = context;
+  const { user, setUserData } = userContext;
+  const { showAlert } = alertContext;
+  const { categories } = user;
 
-  const userCategories = user.categories;
-  const [selectedUserCategories, setSelectedUserCategories] =
-    useState(userCategories);
+  const [selectedUserCategories, setSelectedUserCategories] = useState([""]);
+
+  useLayoutEffect(() => {
+    setSelectedUserCategories(categories);
+  }, [categories]);
 
   const updateUserData = async () => {
     let param = {
@@ -29,25 +35,23 @@ const UserSelectCategories = () => {
     })
       .then((response) => {
         if (response.status === 200) {
-          console.log("Categories updated successfully.");
           return response.json();
         } else {
           throw new Error("Status Error: " + response.status);
         }
       })
       .then((data) => {
-        console.log(data);
         localStorage.setItem("user", JSON.stringify(data));
         setUserData(data);
+        showAlert("success", "Settings saved successfully!");
       })
       .catch((error) => {
-        console.log(error);
+        showAlert("error", error.message || "Something went wrong.");
       });
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     updateUserData();
   };
 
@@ -89,13 +93,7 @@ const UserSelectCategories = () => {
             )
           )}
       </fieldset>
-      <button
-        type="submit"
-        className="btn-primary"
-        onClick={() => {
-          console.log(selectedUserCategories);
-        }}
-      >
+      <button type="submit" className="btn-primary">
         Save Settings
       </button>
     </form>

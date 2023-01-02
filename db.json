@@ -6,10 +6,10 @@
       "username": "SomeGuy",
       "id": 1,
       "categories": [
-        "antiques",
-        "education",
-        "medical",
-        "relationships"
+        "self-help",
+        "psychology",
+        "economics",
+        "pets"
       ]
     }
   ]

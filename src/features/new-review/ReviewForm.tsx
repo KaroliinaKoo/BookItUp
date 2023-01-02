@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useContext } from "react";
-import RatingSelector from "../../components/RatingSelector";
+import RatingSelector from "./RatingSelector";
 import ReviewContext, { ReviewDataTypes } from "../../context/ReviewContext";
 import AlertContext from "../../context/AlertContext";
 import UserContext from "../../context/UserContext";
 import { getUUID } from "../../utils/uuid";
 import { sanitizeString } from "../../utils/sanitizeString";
-import BookItem from "../../components/BookItem";
+import BookItem from "../../components/volumes/BookItem";
 import { useNavigate, useParams } from "react-router-dom";
 import useFetchVolumeByID from "../../hooks/useFetchVolumeByID";
 
@@ -43,36 +43,6 @@ function ReviewForm() {
     }
   }, [itemIsEditing]);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    let currentTime = new Date().toJSON();
-
-    if (volumeID && rating) {
-      const newReview: ReviewDataTypes = {
-        volumeID,
-        body: sanitizeString(reviewBody, true),
-        rating,
-        date: currentTime,
-        id: getUUID(),
-        userID: user.id,
-        username: user.username,
-      };
-
-      if (itemIsEditing.isEditing && itemIsEditing.item) {
-        updateItem(itemIsEditing.item.id, newReview);
-        showAlert("success", "Review updated successfully!");
-      } else {
-        addItem(newReview);
-        showAlert("success", "Review submitted successfully!");
-      }
-      reset();
-      navigate("/dashboard/reviews");
-    } else {
-      showAlert("error", "Please fill out all required fields.");
-    }
-  };
-
   const reset = () => {
     setVolumeID("");
     setReviewBody("");
@@ -85,8 +55,45 @@ function ReviewForm() {
     navigate("/dashboard/reviews");
   };
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    let currentTime = new Date().toJSON();
+
+    if (volumeID && rating) {
+      if (!itemIsEditing.isEditing) {
+        let newReview: ReviewDataTypes = {
+          volumeID,
+          body: sanitizeString(reviewBody, false),
+          rating,
+          date: currentTime,
+          id: getUUID(),
+          userID: user.id,
+          username: user.username,
+        };
+        addItem(newReview);
+        showAlert("success", "Review submitted successfully!");
+      }
+      if (itemIsEditing.isEditing && itemIsEditing.item) {
+        let updatedReview: ReviewDataTypes = {
+          ...itemIsEditing.item,
+          body: sanitizeString(reviewBody, false),
+          rating,
+          updateDate: currentTime,
+        };
+
+        updateItem(itemIsEditing.item.id, updatedReview);
+        showAlert("success", "Review updated successfully!");
+      }
+      reset();
+      navigate("/dashboard/reviews");
+    } else {
+      showAlert("error", "Please fill out all required fields.");
+    }
+  };
+
   return (
-    <div className="container volume-review">
+    <div className="container volume-review-container">
       <h1>{itemIsEditing.isEditing ? "Edit Review" : "Write a Review"}</h1>
 
       <form
@@ -102,18 +109,13 @@ function ReviewForm() {
               aria-label="Loading book information"
             />
           ) : (
-            <BookItem
-              volumeData={volumeData}
-              displayDescription={{ display: true, full: true }}
-              displayDetailsButton={false}
-              displayReviewButton={false}
-            />
+            <BookItem volumeData={volumeData} layout="review-info" />
           )}
         </section>
         <section className="volume-review">
           <div className="input-group vertical">
             <label htmlFor="body">
-              Your Review (optional)
+              Your Review <span>(optional)</span>
               <span aria-label="Characters left" className="character-count">
                 {2000 - reviewBody.length}/2000
               </span>

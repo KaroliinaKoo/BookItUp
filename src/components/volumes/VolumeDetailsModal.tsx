@@ -29,12 +29,7 @@ const VolumeDetailsModal = ({ volumeData, handleClose }: PropTypes) => {
             <FaTimes />
           </button>
           {volumeData && (
-            <BookItem
-              volumeData={volumeData}
-              displayDescription={{ display: true, full: true }}
-              displayReviewButton={false}
-              displayDetailsButton={false}
-            />
+            <BookItem volumeData={volumeData} layout="modal-content" />
           )}
         </div>
       </div>

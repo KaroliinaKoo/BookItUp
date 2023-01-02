@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import Recommendations from "../components/Recommendations";
+import Recommendations from "../components/volumes/Recommendations";
 import { UserDataTypes } from "../context/UserContext";
 
 type Props = {

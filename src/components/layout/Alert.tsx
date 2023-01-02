@@ -1,5 +1,5 @@
 import React from "react";
-import AlertContext from "../context/AlertContext";
+import AlertContext from "../../context/AlertContext";
 import { useContext } from "react";
 import { useEffect } from "react";
 import { FaTimes } from "react-icons/fa";

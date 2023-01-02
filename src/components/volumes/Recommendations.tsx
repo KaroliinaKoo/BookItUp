@@ -1,10 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { truncate } from "../utils/truncate";
 import VolumeDetails from "./VolumeDetailsModal";
-import { formatVolumeDataList } from "../queries/utils/formatVolumeData";
-import UserContext from "../context/UserContext";
-import { subjectHeadingsList } from "../data/subjectHeadingsList";
+import { formatVolumeDataList } from "../../queries/utils/formatVolumeData";
+import UserContext from "../../context/UserContext";
+import { subjectHeadingsList } from "../../data/subjectHeadingsList";
 import { useNavigate } from "react-router-dom";
 
 const Recommendations = () => {
@@ -46,9 +45,9 @@ const Recommendations = () => {
   }, [categoriesList]);
 
   useEffect(() => {
+    setListIsLoading(true);
     if (currentCategory) {
       (async (searchCategory: string) => {
-        setListIsLoading(true);
         try {
           const response = await fetch(
             `https://www.googleapis.com/books/v1/volumes?q=${searchCategory}+subject:${searchCategory}&filter=ebooks&orderBy=newest&startIndex=0&langRestrict=en&maxResults=8&printType=BOOKS&fields=items(id,volumeInfo(title,authors,publisher,categories,pageCount,publishedDate,description,imageLinks/*,language))`
@@ -124,7 +123,8 @@ const Recommendations = () => {
             />
           ) : (
             <ul>
-              {recommendations &&
+              {!listIsLoading &&
+                recommendations &&
                 recommendations[currentCategory] &&
                 recommendations[currentCategory].map((volume: any) => (
                   <li className="recommendation-card" key={volume.id}>
@@ -137,9 +137,7 @@ const Recommendations = () => {
                         alt={volume.title}
                       />
                     </button>
-                    <p className="recommendation-card-title">
-                      {truncate(volume.title, 30)}
-                    </p>
+                    <p className="recommendation-card-title">{volume.title}</p>
                     <p className="recommendation-card-author">
                       {volume.authors[0]}
                     </p>
@@ -151,7 +149,7 @@ const Recommendations = () => {
         <div className="volume-recommendations-footer">
           Nothing here piques your interest?
           <button
-            className="btn-primary btn-cta"
+            className="btn-primary small"
             onClick={() => {
               navigate("/dashboard/settings");
             }}

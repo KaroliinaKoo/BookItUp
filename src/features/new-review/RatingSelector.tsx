@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useContext, useEffect } from "react";
-import ReviewContext from "../context/ReviewContext";
+import ReviewContext from "../../context/ReviewContext";
 
 type PropTypes = {
   select: (rating: number) => void;
@@ -29,8 +29,8 @@ function RatingSelector({ select }: PropTypes) {
   };
 
   return (
-    <section className="rating-container">
-      <p className="rating-heading">Select a Rating:</p>
+    <fieldset className="rating-container">
+      <legend className="rating-heading">Select a Rating:</legend>
       <span className="detail-text">
         How would you rate the book on a scale of 1 to 10?
       </span>
@@ -42,6 +42,7 @@ function RatingSelector({ select }: PropTypes) {
           ) => (
             <li key={index}>
               <button
+                aria-label={`${num}`}
                 className={rating === num ? "selected" : ""}
                 id={`rating-${num}`}
                 value={`${num}`}
@@ -54,7 +55,7 @@ function RatingSelector({ select }: PropTypes) {
           )
         )}
       </ul>
-    </section>
+    </fieldset>
   );
 }
 

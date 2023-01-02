@@ -21,6 +21,7 @@ export type ReviewDataTypes = {
   body: string;
   rating: number;
   date: string;
+  updateDate?: string;
   id: string;
   userID: number;
   username: string;

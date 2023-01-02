@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { FaSearch, FaTimes, FaChevronDown, FaChevronUp } from "react-icons/fa";
-import { languages } from "../data/lang";
-import { subjectHeadingsList } from "../data/subjectHeadingsList";
-import { FetchVolumeListType } from "../hooks/useFetchVolumeList";
-import ClearInputBtn from "./shared/ClearInputBtn";
-import { truncate } from "../utils/truncate";
+import { languages } from "../../data/lang";
+import { subjectHeadingsList } from "../../data/subjectHeadingsList";
+import { FetchVolumeListType } from "../../hooks/useFetchVolumeList";
+import ClearInputBtn from "../../components/shared/ClearInputBtn";
+import { truncate } from "../../utils/truncate";
 
 type Props = {
   fetchVolumes: FetchVolumeListType["fetchVolumes"];
@@ -197,7 +197,7 @@ function BookSearch({
           </div>
 
           <button
-            className="btn btn-primary"
+            className="btn-primary"
             type="submit"
             disabled={!queryIsValid}
           >

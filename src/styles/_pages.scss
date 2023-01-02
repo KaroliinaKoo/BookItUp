@@ -7,16 +7,16 @@
         flex-direction: row;
         justify-content: center;
         gap: 2.5em;
-        background-color: $color-secondary-muted-light;
+        background-color: $color-white;
         width: 100%;
         padding-block: 0.5em;
 
         a {
-            color: $color-secondary-dark;
-            background-color: inherit;
+            color: $color-dark;
             font-weight: 600;
+            background-color: inherit;
             border: 0.1rem solid transparent;
-            font-size: $font-size-s;
+            font-size: $font-size-xs;
             border-radius: 0;
             padding: 0;
             max-width: 8rem;
@@ -28,7 +28,7 @@
                 position: absolute;
                 width: 100%;
                 bottom: 0;
-                border-bottom: 0.15em solid $color-secondary-dark;
+                border-bottom: 0.2em solid $color-primary;
             }
         }
     }
@@ -109,33 +109,32 @@
 
     .user-reviews {
         width: 100%;
-        max-width: $element-width-l;
         height: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: flex-start;
-        padding: 1em;
 
-        .card {
+        .review-item-container {
+            position: relative;
 
             .user-tools {
-                flex: 1 1 50%;
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: 100%;
+                grid-row: 1;
+                grid-column: 2 / span 3;
                 display: flex;
-                gap: 1.5em;
-                padding: 0 0.5em;
+                padding: 0.2em 0.5em;
+                justify-content: flex-end;
+                gap: 0.5em;
 
                 button {
-                    display: flex;
-                    place-items: center;
-                    padding: 0.2em;
-                    gap: 0.5em;
-                    font-size: $font-size-xxs;
-
                     svg {
                         line-height: 0;
-                        width: 0.8rem;
-                        height: 0.8rem;
+                        width: 1rem;
+                        height: 1rem;
                     }
                 }
             }
@@ -189,23 +188,48 @@
     }
 }
 
-.volume-review {
+.volume-review-container {
 
     .volume-info,
     .volume-review-form {
         width: $element-width-l;
-        border-radius: 0.5em;
+        height: auto;
 
-        section {
+        section,
+        fieldset {
             width: 100%;
             background-color: $color-white;
 
-            &.volume-review {
-                padding: 1em;
-                display: flex;
-                flex-direction: column;
-                gap: 1em;
+        }
+
+        .volume-review {
+            padding: 1em;
+            display: flex;
+            flex-direction: column;
+            gap: 1em;
+            border-radius: 0.5em;
+
+            label,
+            legend {
+                font-size: $font-size-s;
+                text-align: left;
+                margin-left: 0.5em;
             }
+
+            span {
+                font-size: $font-size-xs;
+                color: $color-grey-medium-dark;
+                margin-left: 0.5em;
+            }
+        }
+    }
+
+    .volume-info {
+        height: 100%;
+
+        .right,
+        .left {
+            justify-content: flex-start;
         }
     }
 }
@@ -509,222 +533,126 @@
     align-items: center;
     justify-content: flex-start;
     gap: 1em;
-    width: 90%;
+    width: 100%;
     max-width: $element-width-l;
 
-    .card {
-        display: flex;
-        flex-direction: column;
+    .review-item-container {
+        display: grid;
+        grid-template-columns: minmax(120px, 1.5fr) 5fr;
+        grid-template-rows: auto 1fr auto;
         padding: 0;
+        width: 100%;
+        background-color: $color-white;
 
-        .review-header {
-            display: flex;
-            gap: 0.5em;
-            padding: 0.5em;
-        }
-
-        .num-display {
-            width: calc($font-size-base * 2.8);
-            height: calc($font-size-base * 2.8);
-            display: flex;
-            place-content: center;
-            place-items: center;
-            border-radius: 50%;
-            font-size: $font-size-base;
-            font-weight: 600;
-            background: $color-primary;
-            color: $color-white;
-            line-height: 0;
-            margin: 0.2em;
-            flex: 0 0 auto;
-
-            span {
-                font-size: $font-size-xs;
-                font-weight: 400;
-                line-height: 0;
-            }
-        }
-
-        .review-title {
-
+        @media screen and (max-width: $breakpoint-xs) {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
             justify-content: center;
-
-            h2 {
-                margin: 0;
-                font-size: $font-size-base;
-                font-weight: 600;
-                text-transform: uppercase;
-                color: $color-dark;
-                text-align: left;
-
-            }
-
-            .review-volume-author {
-                text-align: right;
-                font-size: $font-size-xs;
-                color: $color-secondary-muted-dark;
-            }
         }
 
-        .review-body,
-        .review-volume-author {
+        .review-header {
+            grid-column: 1 / 2;
+            grid-row: 1 / span 3;
+            display: flex;
+            height: 100%;
+            width: 100%;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            text-align: center;
+            position: relative;
 
-            font-size: $font-size-xs;
+            .volume-info-title-container {
+                margin-inline: 0.5em;
 
-            p {
-                text-align: left;
-                display: -webkit-box;
-                -webkit-box-orient: vertical;
-                -webkit-line-clamp: 5;
-                overflow: hidden;
+                * {
+                    text-align: center;
+                }
             }
 
-            &.expanded {
-                p {
-                    -webkit-line-clamp: unset;
-                }
+            .volume-info-details-btn {
+                margin-bottom: 1em;
             }
         }
 
         .review-body {
-            padding: 1.5em;
 
-            button {
-                position: relative;
-                padding: 0;
-                margin: 0;
-                font-size: $font-size-xxs;
+            width: 100%;
+            height: 100%;
+            grid-column: 2 / 3;
+            grid-row: 2;
+            display: inline-flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            padding: 1.5em;
+            font-size: $font-size-xs;
+            line-height: 2;
+            background-color: $color-white;
+
+            .num-display {
+                width: calc($font-size-base * 2.2);
+                height: calc($font-size-base * 2.2);
+                display: inline-flex;
+                place-content: center;
+                place-items: center;
+                border-radius: 50%;
+                font-size: $font-size-xs;
                 font-weight: 600;
-                color: $color-secondary-muted-dark;
+                background: $color-primary;
+                color: $color-white;
+                line-height: 0;
+                flex: 0 0 calc($font-size-base * 2.2);
+
+                span {
+                    font-size: $font-size-xxs;
+                    font-weight: 400;
+                    line-height: 0;
+                }
+            }
+
+            .review-text {
+                margin-top: 1em;
+
+                .placeholder {
+                    width: 100%;
+                    font-size: $font-size-xxs;
+                    color: $color-secondary-muted-dark;
+                    font-style: italic;
+                }
             }
         }
 
         .review-footer {
+            grid-column: 2 / span 3;
+            grid-row: 3 / 4;
+            white-space: nowrap;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 0.5em;
             width: 100%;
-            padding: 0 0.5em;
-            background-color: $color-primary-muted-light;
+            padding-inline: 0.5em;
+            background-color: $color-white;
+            flex-wrap: wrap;
 
-            .btn-delete,
-            .btn-edit {
-                position: absolute;
-                bottom: 25px;
-                right: 25px;
-                color: $color-secondary-muted-dark;
-            }
-
-            .btn-edit {
-                right: 60px;
-            }
-
-            button.toggle-comment {
+            .name-display {
                 display: flex;
                 align-items: center;
-                justify-content: center;
-                background-color: transparent;
-                border: none;
-                gap: 0.5em;
-                padding: 0;
-                margin: 0 0.25em;
-                color: $color-dark;
-                font-size: 0.8rem;
-
-                svg {
-                    font-size: 1rem;
-                }
-            }
-
-            .detail-container {
-                white-space: nowrap;
-                display: flex;
                 justify-content: flex-end;
-                gap: 0.5em;
+                gap: 0.25em;
+                font-size: $font-size-xxxs;
+            }
 
-                .name-display {
-                    flex: 1 1 50%;
-                    display: flex;
-                    align-items: center;
-                    justify-content: flex-end;
-                    gap: 0.25em;
-                    font-size: calc($font-size-base * 0.75);
+            .date-display {
+                text-align: right;
+                color: $color-secondary-muted-dark;
+                font-size: $font-size-xxxs;
+
+                .update-date {
+                    font-style: italic;
                 }
-
-                .date-display {
-                    flex: 1 1 50%;
-                    min-width: 12em;
-                    text-align: right;
-                    font-size: calc($font-size-base * 0.75);
-                    color: $color-secondary-muted-dark;
-                }
-            }
-
-            @media screen and (max-width: $breakpoint-sm) {
-                flex-direction: column-reverse;
-                align-items: center;
-                gap: 0.5em;
-            }
-        }
-
-        .add-comment {
-            display: flex;
-            width: 100%;
-            background-color: $color-primary-muted-light;
-
-            form {
-                padding: 0 1em;
-                gap: 0.5em;
-
-                .input-group {
-                    width: 100%;
-                    flex-direction: column;
-                    justify-content: flex-start;
-                    align-items: flex-start;
-                    margin-top: 0.5em;
-
-                    label {
-                        font-size: 0.85rem;
-                        color: $color-secondary-muted-dark;
-                    }
-
-                    textarea {
-                        background-color: $color-white;
-                        resize: none;
-                    }
-                }
-            }
-
-            .btn-container {
-                justify-content: flex-start;
-
-                button.submit,
-                button.toggle {
-                    font-size: 0.8rem;
-                    color: $color-white;
-                    max-width: 10em;
-                    margin-top: 0;
-                }
-            }
-
-
-            .new-comment {
-                width: 100%;
-            }
-        }
-
-        @media screen and (max-width: $breakpoint-sm) {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: center;
-
-            .body-display {
-                padding: 0 0.5em;
-                max-width: 100%;
             }
         }
     }

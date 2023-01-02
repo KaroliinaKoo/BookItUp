@@ -1,4 +1,4 @@
-import ReviewList from "../components/ReviewList";
+import { ReviewList } from "../../components/reviews";
 import { useState } from "react";
 import { FaChevronUp } from "react-icons/fa";
 import React from "react";

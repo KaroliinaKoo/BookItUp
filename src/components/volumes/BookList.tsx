@@ -1,7 +1,7 @@
 import React from "react";
-import { VolumeFormattedType } from "../queries/utils/formatVolumeData";
+import { VolumeFormattedType } from "../../queries/utils/formatVolumeData";
 import BookItem from "./BookItem";
-import { FetchVolumeListType } from "../hooks/useFetchVolumeList";
+import { FetchVolumeListType } from "../../hooks/useFetchVolumeList";
 
 type Props = {
   volumeList: FetchVolumeListType["volumeList"];
@@ -12,11 +12,7 @@ const BookList = ({ volumeList }: Props) => {
     return (
       <>
         {volumeList.items.map((item: VolumeFormattedType) => (
-          <BookItem
-            key={item.id}
-            volumeData={item}
-            displayDescription={{ display: true, full: false }}
-          />
+          <BookItem key={item.id} layout="list-card" volumeData={item} />
         ))}
       </>
     );

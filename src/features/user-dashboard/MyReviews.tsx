@@ -1,9 +1,9 @@
-import ReviewContext, { ReviewDataTypes } from "../context/ReviewContext";
+import ReviewContext, { ReviewDataTypes } from "../../context/ReviewContext";
 import { useContext, useState, useEffect } from "react";
-import ReviewItem from "./ReviewItem";
-import { NavLink } from "react-router-dom";
+import { ReviewItem } from "../../components/reviews";
 import React from "react";
-import { UserDataTypes } from "../context/UserContext";
+import { UserDataTypes } from "../../context/UserContext";
+import { ReviewItemUserTools } from "../../components/reviews";
 
 type Props = {
   user: UserDataTypes;
@@ -39,13 +39,13 @@ function MyReviews({ user }: Props) {
 
           {myReviews.length > 0 &&
             myReviews.map((item) => (
-              <ReviewItem key={item.id} item={item} profileView={true} />
+              <div className="review-item-container">
+                <ReviewItem key={item.id} item={item} />
+                <ReviewItemUserTools key={item.id} item={item} />
+              </div>
             ))}
         </div>
       </div>
-      <NavLink to="/add-review" className="btn-primary small">
-        Add a Review
-      </NavLink>
     </>
   );
 }
