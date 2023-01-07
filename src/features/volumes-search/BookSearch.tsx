@@ -39,11 +39,10 @@ function BookSearch({
     fetchVolumes();
   };
 
-  const handleInputClear = (fieldName: string) => {
-    setQueryOptions((prevOptions) => ({ ...prevOptions, [fieldName]: "" }));
-    document.getElementsByTagName("input")[
-      inputOptions.indexOf(fieldName)
-    ].value = "";
+  const handleInputClear = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const { id } = e.currentTarget;
+    setQueryOptions((prevOptions) => ({ ...prevOptions, [id]: "" }));
+    document.getElementsByTagName("input")[inputOptions.indexOf(id)].value = "";
   };
 
   const handleChange = (
@@ -71,7 +70,7 @@ function BookSearch({
             <ClearInputBtn
               display={!!queryOptions.keywords}
               fieldName="keywords"
-              handleClick={handleInputClear}
+              onClick={handleInputClear}
             />
           </div>
 
@@ -104,7 +103,7 @@ function BookSearch({
                         key={key}
                         className="current-search-item"
                         fieldName={key}
-                        handleClick={handleInputClear}
+                        onClick={handleInputClear}
                         display={!!value}
                       >
                         <span className="label-title">{key}</span>
@@ -127,7 +126,7 @@ function BookSearch({
                   <ClearInputBtn
                     display={!!queryOptions.title}
                     fieldName="title"
-                    handleClick={handleInputClear}
+                    onClick={handleInputClear}
                   />
                 </span>
               </div>
@@ -139,7 +138,7 @@ function BookSearch({
                   <ClearInputBtn
                     display={!!queryOptions.author}
                     fieldName="author"
-                    handleClick={handleInputClear}
+                    onClick={handleInputClear}
                   />
                 </span>
               </div>
@@ -149,7 +148,7 @@ function BookSearch({
                   <input type="text" name="publisher" onChange={handleChange} />
                   <ClearInputBtn
                     fieldName="publisher"
-                    handleClick={handleInputClear}
+                    onClick={handleInputClear}
                     display={!!queryOptions.publisher}
                   />
                 </span>

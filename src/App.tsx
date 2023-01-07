@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import Main from "./features/Main";
 import PageNotFound from "./features/PageNotFound";
 import { Register, LogIn } from "./features/user-auth/";
-import FindReviews from "./features/reviews-search/FindReviews";
+import FindReviews from "./features/reviews-search/Main";
 import { Alert, Header } from "./components/layout/index";
 import {
   UserDashboard,
@@ -11,12 +11,11 @@ import {
   MySettings,
 } from "./features/user-dashboard/";
 import { Routes, Route } from "react-router-dom";
-import { ReviewProvider } from "./context/ReviewContext";
 import { AlertProvider } from "./context/AlertContext";
 import UserContext from "./context/UserContext";
 import FindBooks from "./features/volumes-search/Main";
-import ReviewForm from "./features/new-review/ReviewForm";
 import ProtectedRoute from "./utils/components/ProtectedRoute";
+import ReviewForm from "./features/review-form/ReviewForm";
 
 function App() {
   const context = useContext(UserContext);
@@ -36,61 +35,70 @@ function App() {
   }, [token]);
 
   return (
-    <ReviewProvider>
-      <AlertProvider>
-        <div className="App">
-          <Header />
-          <main>
-            <Alert />
-            <Routes>
-              <Route path="/" element={<Main user={user} />} />
-              <Route path="*" element={<PageNotFound />} />
-              <Route path="/find-reviews" element={<FindReviews />} />
-              <Route path="/review">
-                <Route
-                  path="/review/:volumeID"
-                  element={
-                    <ProtectedRoute
-                      userIsAuth={userIsAuthenticated()}
-                      redirectPath="/auth/login"
-                    >
-                      <ReviewForm />
-                    </ProtectedRoute>
-                  }
-                />
-              </Route>
-              <Route path="/auth" />
-              <Route path="/auth/login" element={<LogIn />} />
-              <Route path="/auth/register" element={<Register />} />
-              <Route />
-
+    <AlertProvider>
+      <div className="App">
+        <Header />
+        <main>
+          <Alert />
+          <Routes>
+            <Route path="/" element={<Main user={user} />} />
+            <Route path="*" element={<PageNotFound />} />
+            <Route path="/find-reviews" element={<FindReviews />} />
+            <Route path="/review">
               <Route
-                path="/dashboard/"
+                path=":volumeID"
                 element={
                   <ProtectedRoute
                     userIsAuth={userIsAuthenticated()}
                     redirectPath="/auth/login"
                   >
-                    <UserDashboard />
+                    <ReviewForm />
                   </ProtectedRoute>
                 }
-              >
-                <Route path="/dashboard/settings" element={<MySettings />} />
-                <Route
-                  path="/dashboard/profile"
-                  element={<MyProfile user={user} />}
-                />
-                <Route
-                  path="/dashboard/reviews"
-                  element={<MyReviews user={user} />}
-                />
-              </Route>
-              <Route path="/find-books" element={<FindBooks />} />
-            </Routes>
-          </main>
-        </div>
-      </AlertProvider>
-    </ReviewProvider>
+              />
+              <Route
+                path=":volumeID/:reviewID/edit"
+                element={
+                  <ProtectedRoute
+                    userIsAuth={userIsAuthenticated()}
+                    redirectPath="/auth/login"
+                  >
+                    <ReviewForm />
+                  </ProtectedRoute>
+                }
+              />
+            </Route>
+            <Route path="/auth" />
+            <Route path="/auth/login" element={<LogIn />} />
+            <Route path="/auth/register" element={<Register />} />
+            <Route />
+
+            <Route
+              path="/dashboard/"
+              element={
+                <ProtectedRoute
+                  userIsAuth={userIsAuthenticated()}
+                  redirectPath="/auth/login"
+                >
+                  <UserDashboard />
+                </ProtectedRoute>
+              }
+            >
+              <Route path="/dashboard/settings" element={<MySettings />} />
+              <Route
+                path="/dashboard/profile"
+                element={<MyProfile user={user} />}
+              />
+              <Route
+                path="/dashboard/reviews"
+                element={<MyReviews user={user} />}
+              />
+            </Route>
+            <Route path="/find-books" element={<FindBooks />} />
+          </Routes>
+        </main>
+      </div>
+    </AlertProvider>
   );
 }
 

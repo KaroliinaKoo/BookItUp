@@ -234,7 +234,7 @@ input[type="submit"] {
     box-shadow: $drop-shadow-sharp;
     white-space: nowrap;
     line-height: 0;
-    margin-block: 0.5em;
+    margin-block: 1em;
 
     &.small,
     &.x-small {
@@ -443,8 +443,8 @@ input[type="submit"] {
     }
 
     .volume-info-title-container {
+        margin-top: 1em;
         position: relative;
-
 
         .title {
             padding-top: 1em;
@@ -498,7 +498,7 @@ input[type="submit"] {
             min-width: 90px;
             max-width: 120px;
             object-fit: cover;
-            margin-block: 0.5em;
+            margin: 0.5em;
         }
     }
 
@@ -622,7 +622,6 @@ input[type="submit"] {
         .header-container {
             display: flex;
             gap: 1em;
-            justify-content: space-evenly;
             padding: 0.5em;
             width: 90%;
             position: relative;
@@ -735,7 +734,7 @@ input[type="submit"] {
             display: grid;
             row-gap: 1.5em;
             column-gap: 0.5em;
-            padding-inline: 1em;
+            margin-inline: 1em;
 
             @media screen and (min-width: $breakpoint-md) {
                 grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
@@ -762,7 +761,7 @@ input[type="submit"] {
 
                 img {
                     width: 100%;
-                    max-width: 80px;
+                    max-width: 110px;
                     height: 120px;
                     object-fit: scale-down;
                 }
@@ -771,7 +770,6 @@ input[type="submit"] {
                     width: 100%;
                     font-size: $font-size-xs;
                     color: $color-dark;
-                    max-width: 140px;
                     display: -webkit-box;
                     -webkit-box-orient: vertical;
                     -webkit-line-clamp: 3;
@@ -780,6 +778,7 @@ input[type="submit"] {
                 }
 
                 .recommendation-card-author {
+                    width: 100%;
                     color: $color-primary-dark;
                     font-style: italic;
                     font-size: $font-size-xxs;

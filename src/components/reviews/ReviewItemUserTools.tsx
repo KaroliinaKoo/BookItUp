@@ -1,42 +1,30 @@
 import React, { useContext, useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import AlertContext from "../../context/AlertContext";
-import { useNavigate } from "react-router-dom";
 import Prompt from "../shared/Prompt";
-
-import ReviewContext, { ReviewDataTypes } from "../../context/ReviewContext";
+import useReviewUtils, { ReviewDataTypes } from "../../hooks/useReviewUtils";
+import { useNavigate } from "react-router-dom";
 
 type PropTypes = {
-  item: ReviewDataTypes;
+  reviewData: ReviewDataTypes;
 };
 
-function ReviewItemUserTools({ item }: PropTypes) {
-  const alertContext = useContext(AlertContext);
+function ReviewItemUserTools({ reviewData }: PropTypes) {
   const navigate = useNavigate();
-
-  const reviewContext = useContext(ReviewContext);
+  const alertContext = useContext(AlertContext);
 
   const [showPrompt, setShowPrompt] = useState(false);
+
+  const { deleteReview } = useReviewUtils();
 
   if (!alertContext) {
     throw new Error("AlertContext not found");
   }
-
-  if (!reviewContext) {
-    throw new Error("Context not found");
-  }
-
-  const { deleteItem, editItem } = reviewContext;
   const { showAlert } = alertContext;
 
   const handleDelete = () => {
-    deleteItem(item.id);
+    deleteReview(reviewData.id);
     showAlert("success", "Item deleted successfully");
-  };
-
-  const handleEdit = (item: ReviewDataTypes) => {
-    editItem(item);
-    navigate(`/review/${item.volumeID}`);
   };
 
   return (
@@ -51,8 +39,7 @@ function ReviewItemUserTools({ item }: PropTypes) {
       <button
         className="btn-icon"
         onClick={() => {
-          handleEdit(item);
-          navigate(`/review/${item.volumeID}`);
+          navigate(`/review/${reviewData.volumeID}/${reviewData.id}/edit`);
         }}
       >
         <FaEdit />

@@ -31,6 +31,14 @@ export const UserProvider = ({ children }: any) => {
     localStorage.setItem("user", JSON.stringify(data));
   };
 
+  const getUserData = () => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      return JSON.parse(user);
+    }
+    return userInitialData;
+  };
+
   const clearUserData = () => {
     setUser(userInitialData);
   };
@@ -48,6 +56,7 @@ export const UserProvider = ({ children }: any) => {
       value={{
         user,
         setUserData,
+        getUserData,
         clearUserData,
         userIsAuthenticated,
       }}
@@ -62,6 +71,7 @@ export default UserContext;
 export type UserContextType = {
   user: UserDataTypes;
   setUserData: (data: UserDataTypes) => void;
+  getUserData: () => UserDataTypes;
   clearUserData: () => void;
   userIsAuthenticated: () => boolean;
 };

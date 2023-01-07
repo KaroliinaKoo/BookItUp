@@ -1,11 +1,11 @@
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { formatVolumeDataItem } from "../queries/utils/formatVolumeData";
 
 const useFetchVolumeByID = (volumeID: string) => {
   const [volumeData, setVolumeData] = useState<any>({});
   const [isLoading, setIsLoading] = useState(false);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     (async () => {
       setIsLoading(true);
       try {

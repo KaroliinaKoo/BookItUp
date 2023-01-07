@@ -6,6 +6,7 @@ import {
   FaSignOutAlt,
   FaSignInAlt,
   FaUser,
+  FaBook,
 } from "react-icons/fa";
 import UserContext from "../../context/UserContext";
 
@@ -35,8 +36,14 @@ function LinkList({ openClose }: PropTypes) {
 
       <li>
         <NavLink to="/find-books" onClick={openClose} className="mobile-btn">
+          <FaBook />
+          Book Search
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/find-reviews" onClick={openClose} className="mobile-btn">
           <FaSearch />
-          Find Books
+          Find Reviews
         </NavLink>
       </li>
       {userIsLoggedIn() ? (

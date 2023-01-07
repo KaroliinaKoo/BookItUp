@@ -3,15 +3,13 @@ import { FaTimes } from "react-icons/fa";
 
 export type Props = {
   fieldName: string;
-  handleClick: (fieldName: string) => void;
   display: boolean;
   children?: any;
   className?: string;
-};
+} & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 const ClearInputBtn = ({
   fieldName,
-  handleClick,
   display,
   children,
   className,
@@ -24,7 +22,6 @@ const ClearInputBtn = ({
       aria-label={`Clear form field: ${fieldName}`}
       id={fieldName}
       type="button"
-      onClick={(e) => handleClick(e.currentTarget.id)}
       className={`${className ? className : ""} clear-input-btn`}
       {...rest}
     >

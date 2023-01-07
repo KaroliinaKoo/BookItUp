@@ -28,11 +28,11 @@ function BookItem({ layout, volumeData }: PropTypes) {
 
   const { userIsAuthenticated } = context;
 
-  const VolumeTitle = () => {
+  const VolumeTitle = ({ short }: { short?: boolean }) => {
     return (
       <div className="volume-info-title-container">
         {volumeData.title && <h2 className="title">{volumeData.title}</h2>}
-        {volumeData.subtitle && (
+        {!short && volumeData.subtitle && (
           <h3 className="subtitle">{volumeData.subtitle}</h3>
         )}
         {volumeData.authors && (
@@ -140,9 +140,15 @@ function BookItem({ layout, volumeData }: PropTypes) {
       )}
       {layout === "review-header" && (
         <div className={`volume-info review-header`}>
-          <VolumeTitle />
-          <VolumeCover />
-          <VolumeDetailsBtn />
+          <VolumeTitle short />
+          <button
+            aria-label="Book details"
+            onClick={() => {
+              setShowDetails(true);
+            }}
+          >
+            <VolumeCover />
+          </button>
         </div>
       )}
       {layout === "list-card" && (
@@ -182,14 +188,14 @@ function BookItem({ layout, volumeData }: PropTypes) {
               <VolumeCover />
               <div className="body-container">
                 <VolumeTitle />
-                <VolumeDescription displayFullDescription />
+                <VolumeDescription />
               </div>
             </div>
           ) : (
             <div className={`card volume-info review-info-card`}>
               <div className="left">
                 <VolumeTitle />
-                <VolumeDescription displayFullDescription />
+                <VolumeDescription />
               </div>
               <div className="right">
                 <VolumeCover /> <VolumeDetails />

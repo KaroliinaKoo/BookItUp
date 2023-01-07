@@ -2,16 +2,18 @@ import { ReviewList } from "../../components/reviews";
 import { useState } from "react";
 import { FaChevronUp } from "react-icons/fa";
 import React from "react";
-
-export type Types = {
-  sortBy: "newest" | "oldest" | "highest" | "lowest";
-};
-export type SortByTypes = Types["sortBy"];
+import ReviewSearch from "./ReviewsSearch";
+import useFetchReviewList from "../../hooks/useFetchReviewList";
 
 function FindReview() {
-  const [searchBy, setSearchBy] = useState("");
+  const {
+    queryOptions,
+    setQueryOptions,
+    isLoading,
+    reviewListData,
+    fetchReviewsByQuery,
+  } = useFetchReviewList();
 
-  const [sortBy, setSortBy] = useState("newest" as SortByTypes);
   const [showScroll, setShowScroll] = useState(false);
 
   const scrollEvent = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
@@ -29,26 +31,20 @@ function FindReview() {
     });
   };
 
-  console.log(setSearchBy);
-
   return (
     <div className="container" onScroll={scrollEvent}>
       <h1>Find Reviews</h1>
-      <div className="sort-by">
-        <label htmlFor="sort">Order by:</label>
-        <select
-          name="sort"
-          id="sort"
-          value={sortBy}
-          onChange={(e) => setSortBy(e.target.value as SortByTypes)}
-        >
-          <option value="newest">Newest</option>
-          <option value="oldest">Oldest</option>
-          <option value="highest">Highest Rating</option>
-          <option value="lowest">Lowest Rating</option>
-        </select>
-      </div>
-      <ReviewList searchBy={searchBy} sortBy={sortBy} />
+      <ReviewSearch
+        queryOptions={queryOptions}
+        setQueryOptions={setQueryOptions}
+        fetchReviewsByQuery={fetchReviewsByQuery}
+      />
+      {reviewListData.length === 0 && <span>No results found</span>}
+      {isLoading ? (
+        <div className="spinner" role="status" />
+      ) : (
+        <ReviewList reviewList={reviewListData} />
+      )}
       {showScroll && (
         <button className="scroll-to-top" onClick={scrollToTop}>
           <FaChevronUp />

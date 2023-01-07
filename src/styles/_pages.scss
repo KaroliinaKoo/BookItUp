@@ -115,7 +115,7 @@
         align-items: center;
         justify-content: flex-start;
 
-        .review-item-container {
+        .review-item {
             position: relative;
 
             .user-tools {
@@ -123,12 +123,10 @@
                 top: 0;
                 right: 0;
                 width: 100%;
-                grid-row: 1;
-                grid-column: 2 / span 3;
                 display: flex;
-                padding: 0.2em 0.5em;
                 justify-content: flex-end;
-                gap: 0.5em;
+                gap: 0.25em;
+
 
                 button {
                     svg {
@@ -409,128 +407,9 @@
     }
 }
 
-.review-search {
-
-    width: 90%;
-    max-width: $element-width-l;
-    border-radius: 5px;
-    background-color: $color-secondary-muted;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        gap: 0.5em;
-        padding: 1em;
-        font-size: $font-size-base;
-        font-weight: 600;
-        color: $color-secondary-dark;
-
-        &.reset {
-            padding: 0;
-            width: fit-content;
-            align-self: flex-end;
-            font-size: $font-size-s;
-            font-weight: 400;
-            margin: 0;
-            margin-bottom: 0.5em;
-        }
-    }
-
-    form {
-
-        padding: 0 1em;
-        width: 90%;
-
-        .input-group {
-            width: 100%;
-            flex-direction: row;
-            justify-content: space-around;
-            align-items: center;
-            margin-top: 0.5em;
-            gap: 1em;
-
-            label {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                text-align: end;
-                flex: 1 1 10%;
-                color: $color-secondary-muted-dark;
-            }
-
-            input,
-            select,
-            textarea {
-                flex: 1 1 80%;
-                background-color: $color-secondary-muted-light;
-                max-height: 200px;
-            }
-        }
-    }
-
-    @media screen and (max-width: $breakpoint-md) {
-
-        form {
-            .input-group {
-                flex-direction: column;
-                align-items: center;
-                gap: 0;
-                margin-top: 0;
-
-                label {
-                    width: 100%;
-                    text-align: left;
-                }
-
-                input {
-                    width: 100%;
-                }
-            }
-        }
-    }
-
-}
-
-.sort-by {
-    display: flex;
-    width: 90%;
-    max-width: $element-width-l;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.5em 1em;
-    color: $color-white;
-    background-color: $color-secondary-muted-dark;
-    border-radius: 5px;
-    margin: 0.5em 0;
-    gap: 1em;
-    font-size: 0.9rem;
-
-    select {
-        background-color: $color-secondary-muted-light;
-    }
-}
-
-.review-stats {
-    color: $color-white;
-    font-size: $font-size-s;
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-    background-color: $color-secondary-muted-dark;
-    padding: calc($padding-base * 0.5) $padding-base;
-    border-radius: 10px;
-}
-
 .review-list {
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: flex-start;
     gap: 1em;
     width: 100%;
@@ -564,8 +443,6 @@
             position: relative;
 
             .volume-info-title-container {
-                margin-inline: 0.5em;
-
                 * {
                     text-align: center;
                 }
@@ -719,16 +596,19 @@
     }
 }
 
-.volumes-search {
+.volumes-search,
+.reviews-search {
     width: 90%;
     max-width: $element-width-l;
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-block: 1em;
 
     form {
         border-radius: 0.5em;
         background-color: $color-secondary-muted;
+        gap: 0;
 
         button.reset {
             width: fit-content;
@@ -742,8 +622,8 @@
         .advanced-search {
             border: 1px solid $color-secondary-muted-light;
             overflow: hidden;
-            width: 100%;
-            padding: 0.5em;
+            width: $element-width-m;
+            padding: 1em;
             border-radius: 0.5em;
 
             .advanced-search-btn {
@@ -795,6 +675,9 @@
         }
 
         .input-group {
+
+            width: $element-width-m;
+
             label {
                 color: $color-secondary-muted-dark;
             }
@@ -807,7 +690,7 @@
 
             &.keyword-search {
                 position: relative;
-                margin: 0;
+                margin-block-end: 1.5em;
 
                 input {
                     height: 2.8em;

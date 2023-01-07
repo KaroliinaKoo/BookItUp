@@ -1,82 +1,17 @@
 import React from "react";
-import { useContext } from "react";
 import ReviewItem from "./ReviewItem";
-import ReviewContext, { ReviewDataTypes } from "../../context/ReviewContext";
-import { SortByTypes } from "../../features/reviews-search/FindReviews";
+import { ReviewDataTypes } from "../../hooks/useReviewUtils";
 
 type PropTypes = {
-  searchBy: string;
-  sortBy: SortByTypes;
+  reviewList: ReviewDataTypes[];
 };
 
-/**
- * @TODO - figure out why reviewData.filter is not working
- *
- **/
-
-const ReviewList: React.FC<PropTypes> = ({ searchBy, sortBy }) => {
-  const context = useContext(ReviewContext);
-
-  if (!context) {
-    throw new Error("Context not found");
-  }
-
-  const { reviewData, itemIsLoading } = context;
-
-  if (!itemIsLoading && (!reviewData || reviewData.length === 0)) {
-    return <p>No reviews found.</p>;
-  }
-
-  console.log(searchBy);
-
-  return itemIsLoading ? (
-    <div className="spinner" role="status" />
-  ) : (
+const ReviewList: React.FC<PropTypes> = ({ reviewList }) => {
+  return (
     <div className="review-list">
-      {reviewData
-        // .filter((review: ReviewDataTypes) => {
-        //   if (
-        //     searchBy.title === "" &&
-        //     searchBy.author === "" &&
-        //     searchBy.rating === "" &&
-        //     searchBy.username === ""
-        //   ) {
-        //     return review;
-        //   } else if (
-        //     review.title.toLowerCase().includes(searchBy.title.toLowerCase()) &&
-        //     review.author
-        //       .toLowerCase()
-        //       .includes(searchBy.author.toLowerCase()) &&
-        //     review.rating.toString() === searchBy.rating &&
-        //     review.username
-        //       .toLowerCase()
-        //       .includes(searchBy.username.toLowerCase())
-        //   ) {
-        //     return review;
-        //   }
-        // })
-
-        .map((review: ReviewDataTypes) => (
-          <ReviewItem key={review.id} item={review} />
-        ))
-        .sort((a, b) => {
-          if (sortBy === "newest") {
-            return (
-              new Date(b.props.item.date).getTime() -
-              new Date(a.props.item.date).getTime()
-            );
-          } else if (sortBy === "oldest") {
-            return (
-              new Date(a.props.item.date).getTime() -
-              new Date(b.props.item.date).getTime()
-            );
-          } else if (sortBy === "highest") {
-            return b.props.item.rating - a.props.item.rating;
-          } else if (sortBy === "lowest") {
-            return a.props.item.rating - b.props.item.rating;
-          }
-          return b.props.item.id - a.props.item.id;
-        })}
+      {reviewList.map((review: ReviewDataTypes) => (
+        <ReviewItem key={review.id} reviewData={review} />
+      ))}
     </div>
   );
 };
