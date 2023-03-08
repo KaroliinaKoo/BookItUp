@@ -38,12 +38,25 @@ function ReviewForm() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (!user) {
+      throw new Error("user not found");
+    }
+
+    if (!volumeData) {
+      throw new Error("volumeData not found");
+    }
+
+    if (!rating) {
+      showAlert("warning", "Please select a rating");
+      return;
+    }
+
     let currentTime = new Date().toJSON();
 
     if (reviewID && reviewData) {
       let review: ReviewDataTypes = {
         ...reviewData,
-        body: sanitizeString(body, false).substring(0, 2000).trim(),
+        body: sanitizeString(body || "", false),
         rating,
         updateDate: currentTime,
       };
@@ -53,7 +66,7 @@ function ReviewForm() {
     } else {
       let newReview: ReviewDataTypes = {
         volumeID,
-        body: sanitizeString(body, false),
+        body: sanitizeString(body || "", false),
         rating,
         date: currentTime,
         id: getUUID(),
@@ -65,6 +78,7 @@ function ReviewForm() {
       navigate("/dashboard/reviews");
     }
   };
+
   useEffect(() => {
     if (reviewData) {
       setBody(reviewData.body);
@@ -109,7 +123,7 @@ function ReviewForm() {
           />
           <div className="btn-container">
             <button
-              className="btn btn-secondary"
+              className="btn btn-secondary outlined"
               type="button"
               onClick={() => navigate(-1)}
             >
@@ -118,7 +132,7 @@ function ReviewForm() {
             <button
               className="btn btn-primary"
               type="submit"
-              disabled={rating === 0}
+              disabled={!!rating ? false : true}
             >
               Submit Review
             </button>

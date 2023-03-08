@@ -1,8 +1,9 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useEffect } from "react";
 import { UserDataTypes } from "../../context/UserContext";
+import AlertContext from "../../context/AlertContext";
 
 type Props = {
   user: UserDataTypes;
@@ -14,75 +15,89 @@ function MyProfile({ user }: Props) {
   const [formIsValid, setFormIsValid] = useState(false);
   const [formErrorMessage, setFormErrorMessage] = useState("");
 
-  const [formData, setFormData] = useState({
-    currentPassword: "",
-    newPassword: "",
-    confirmPassword: "",
-  });
+  const alertContext = useContext(AlertContext);
+  if (!alertContext) {
+    throw new Error("context not found");
+  }
+  const { showAlert } = alertContext;
 
-  const [error, setError] = useState({
-    currentPassword: "",
-    newPassword: "",
-    confirmPassword: "",
+  const [formData, setFormData] = useState({
+    newPassword: {
+      value: "",
+      error: "",
+    },
+    confirmPassword: {
+      value: "",
+      error: "",
+    },
   });
 
   useEffect(() => {
     setFormErrorMessage("");
-    setFormIsValid(Object.values(error).every((err) => err === ""));
-  }, [error]);
-
-  useEffect(() => {
-    if (formData.confirmPassword !== formData.newPassword) {
-      setError({ ...error, confirmPassword: "Passwords do not match" });
+    if (
+      formData.newPassword.value &&
+      formData.confirmPassword.value &&
+      !formData.newPassword.error &&
+      !formData.confirmPassword.error
+    ) {
+      setFormIsValid(true);
     } else {
-      setError({ ...error, confirmPassword: "" });
+      setFormIsValid(false);
     }
   }, [formData]);
 
-  const handleValidation = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let { name, value } = e.target;
-    let errorObj = { ...error };
-    switch (name) {
-      case "currentPassword":
-        if (!value) {
-          errorObj.currentPassword = "Current password is required";
-        } else {
-          errorObj.currentPassword = "";
-        }
-        break;
-
-      case "newPassword":
-        if (!value) {
-          errorObj.newPassword = "New password is required";
-        } else if (value.length < 6) {
-          errorObj.newPassword = "Password must be at least 6 characters";
-        } else {
-          errorObj.newPassword = "";
-        }
-        break;
-
-      case "confirmPassword":
-        if (!value) {
-          errorObj.confirmPassword = "Confirm password is required";
-        }
-        break;
-
-      default:
-        break;
-    }
-    setError(errorObj);
-  };
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-    handleValidation(e);
+    if (e.target.name === "newPassword") {
+      if (e.target.value.length < 6) {
+        setFormData({
+          ...formData,
+          newPassword: {
+            value: e.target.value,
+            error: "Password must be at least 6 characters",
+          },
+        });
+      } else {
+        setFormData({
+          ...formData,
+          newPassword: {
+            value: e.target.value,
+            error: "",
+          },
+        });
+      }
+    }
+
+    if (e.target.name === "confirmPassword") {
+      if (e.target.value !== formData.newPassword.value) {
+        setFormData({
+          ...formData,
+          confirmPassword: {
+            value: e.target.value,
+            error: "Passwords do not match",
+          },
+        });
+      } else {
+        setFormData({
+          ...formData,
+          confirmPassword: {
+            value: e.target.value,
+            error: "",
+          },
+        });
+      }
+    }
   };
 
   const handleReset = () => {
     setFormData({
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: "",
+      newPassword: {
+        value: "",
+        error: "",
+      },
+      confirmPassword: {
+        value: "",
+        error: "",
+      },
     });
     setShowPassword(false);
     setChangePassword(false);
@@ -98,7 +113,7 @@ function MyProfile({ user }: Props) {
     setFormErrorMessage("");
 
     let param = {
-      password: formData.newPassword,
+      password: formData.newPassword.value,
     };
 
     fetch(`http://localhost:3002/users/${user.id}`, {
@@ -107,50 +122,43 @@ function MyProfile({ user }: Props) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(param),
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          return response.json();
-        } else {
-          throw new Error("Status Error: " + response.status);
-        }
-      })
-      .then((data) => {
-        console.log("Password changed successfully");
-        console.log(data);
+    }).then((response) => {
+      if (response.status === 200) {
+        showAlert("success", "Password changed successfully");
         handleReset();
-      });
+        return response.json();
+      } else {
+        showAlert("error", "Something went wrong");
+        throw new Error("Status Error: " + response.status);
+      }
+    });
   };
 
   return (
     <div className="user-profile">
       {changePassword ? (
         <form className="form-control" onSubmit={handleSubmit}>
-          <div className="input-group">
-            <label htmlFor="currentPassword">Current Password</label>
-            <input
-              className={error.currentPassword && "error"}
-              value={formData.currentPassword}
-              onChange={handleChange}
-              type={showPassword ? "text" : "password"}
-              id="currentPassword"
-              name="currentPassword"
-              placeholder="Enter your current password"
-              autoComplete="off"
-              maxLength={32}
-              minLength={6}
-              required
-            />
-            {error.currentPassword && (
-              <p className="error">{error.currentPassword}</p>
-            )}
+          <h3>Change Password</h3>
+          <div className="button-container">
+            <button
+              aria-label="Toggle password visibility"
+              type="button"
+              className="btn-neutral small"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? "Hide all passwords" : "Show all passwords"}
+              {showPassword ? (
+                <FaEyeSlash aria-label="hide" />
+              ) : (
+                <FaEye aria-label="show" />
+              )}
+            </button>
           </div>
-
           <div className="input-group">
             <label htmlFor="password">New Password</label>
             <input
-              className={error.newPassword && "error"}
-              value={formData.newPassword}
+              className={formData.newPassword.error && "error"}
+              value={formData.newPassword.value}
               onChange={handleChange}
               type={showPassword ? "text" : "password"}
               id="newPassword"
@@ -161,14 +169,16 @@ function MyProfile({ user }: Props) {
               minLength={6}
               required
             />
-            {error.newPassword && <p className="error">{error.newPassword}</p>}
+            {formData.newPassword.error && (
+              <p className="error">{formData.newPassword.error}</p>
+            )}
           </div>
 
           <div className="input-group">
             <label htmlFor="confirmPassword">Confirm New Password</label>
             <input
-              className={error.confirmPassword && "error"}
-              value={formData.confirmPassword}
+              className={formData.confirmPassword.error && "error"}
+              value={formData.confirmPassword.value}
               onChange={handleChange}
               type={showPassword ? "text" : "password"}
               id="confirmPassword"
@@ -179,32 +189,24 @@ function MyProfile({ user }: Props) {
               minLength={6}
               required
             />
-            {error.confirmPassword && (
-              <p className="error">{error.confirmPassword}</p>
+            {formData.confirmPassword.error && (
+              <p className="error">{formData.confirmPassword.error}</p>
             )}
           </div>
-          <button
-            aria-label="Toggle password visibility"
-            type="button"
-            className="show-password"
-            onClick={() => setShowPassword(!showPassword)}
-          >
-            {showPassword ? "Hide all passwords" : "Show all passwords"}
-            {showPassword ? (
-              <FaEyeSlash aria-label="hide" />
-            ) : (
-              <FaEye aria-label="show" />
-            )}
-          </button>
+
           <div className="btn-container">
             <button
-              className="btn-secondary small"
+              className="btn-secondary small outlined"
               type="button"
               onClick={() => handleReset()}
             >
               Cancel
             </button>
-            <button className="btn-primary small" type="submit">
+            <button
+              className="btn-primary small"
+              type="submit"
+              disabled={!formIsValid}
+            >
               Confirm Changes
             </button>
           </div>

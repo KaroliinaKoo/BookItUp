@@ -25,6 +25,8 @@ function ReviewItemUserTools({ reviewData }: PropTypes) {
   const handleDelete = () => {
     deleteReview(reviewData.id);
     showAlert("success", "Item deleted successfully");
+    setShowPrompt(false);
+    window.location.reload();
   };
 
   return (

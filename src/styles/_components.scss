@@ -199,10 +199,11 @@ input[type="submit"] {
 
     &:disabled,
     &:disabled:hover {
-        background-color: $color-grey-medium;
-        color: $color-grey-light;
-        cursor: unset;
-        box-shadow: none;
+        background-color: $color-grey-medium !important;
+        color: $color-grey-light !important;
+        cursor: unset !important;
+        box-shadow: none !important;
+        border: none !important;
     }
 }
 
@@ -218,11 +219,12 @@ input[type="submit"] {
 }
 
 .btn-primary,
-.btn-secondary {
+.btn-secondary,
+.btn-neutral {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: $font-size-s;
+    font-size: $font-size-xs;
     transition: all 0.2s ease-in-out;
     text-transform: capitalize;
     font-weight: 600;
@@ -241,19 +243,22 @@ input[type="submit"] {
         font-weight: 400;
         width: auto;
         border-radius: 25em;
-        box-shadow: $drop-shadow-extra-sharp;
-        padding: 0.5em;
+        box-shadow: none;
     }
 
     &.small {
         min-width: 8em;
         height: 2.4em;
         font-size: $font-size-xxs;
+        margin: 0.5em;
     }
 
     &.x-small {
+        min-width: auto;
         height: 1.6em;
         font-size: $font-size-xxxs;
+        padding-inline: 0.5em;
+        margin: 0.25em;
     }
 
 
@@ -278,14 +283,51 @@ input[type="submit"] {
     &:hover {
         background-color: $color-primary-medium-light;
     }
+
+    &.outlined {
+        background-color: $color-white;
+        color: $color-primary;
+        border: 1px solid $color-primary;
+    }
 }
 
 .btn-secondary {
     background-color: $color-secondary;
 
     &:hover {
-        background: $color-secondary-medium-light;
+        background-color: $color-secondary-medium-light;
     }
+
+    &.outlined {
+        background-color: $color-white;
+        color: $color-secondary;
+        border: 1px solid $color-secondary;
+
+        &:hover {
+            color: $color-secondary-dark;
+            border-color: $color-secondary-dark;
+        }
+    }
+}
+
+.btn-neutral {
+    background-color: $color-secondary-muted-light;
+    color: $color-grey-dark;
+
+    &:hover {
+        background-color: $color-secondary-muted;
+    }
+
+    &.outlined {
+        background-color: $color-white;
+        color: $color-grey-dark;
+        border: 1px solid $color-secondary-muted;
+
+        &:hover {
+            background-color: $color-secondary-muted-light;
+        }
+    }
+
 }
 
 .btn-icon {

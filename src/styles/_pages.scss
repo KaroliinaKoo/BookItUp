@@ -126,6 +126,7 @@
                 display: flex;
                 justify-content: flex-end;
                 gap: 0.25em;
+                z-index: 2;
 
 
                 button {
@@ -140,12 +141,14 @@
     }
 
     .user-settings {
+        width: 100%;
+
         .user-select-categories {
             background-color: $color-white;
-            padding-top: 1em;
             display: flex;
             flex-direction: column;
             width: 100%;
+            font-size: $font-size-xxs;
 
             h3 {
                 font-size: $font-size-s;
@@ -154,34 +157,57 @@
                 width: 100%;
             }
 
-            .user-select-categories__list {
-                display: flex;
-                flex-direction: column;
-                gap: 1em;
-                padding-inline: 1em;
-                padding-block-end: 1em;
-                height: 50%;
-                overflow-y: auto;
+            .user-select-categories__container {
+                border-radius: 0.5rem;
+                border: 1px solid $color-grey;
+                padding: 0.5em;
 
-                legend {
-                    color: $color-grey-dark;
-                    font-size: $font-size-xs;
-                    margin-bottom: 1em;
-                }
-
-                .user-select-categories__list__item {
+                .user-select-categories__list__current,
+                .user-select-categories__list__options {
                     display: flex;
                     flex-direction: row;
-                    gap: 1em;
-                    align-items: center;
-                    color: $color-dark;
+                    flex-wrap: wrap;
+                    padding: 1em;
+                    overflow-y: auto;
+                    width: 100%;
+                    gap: 0.5em;
+                    padding: 1em;
 
-                    label {
-                        text-transform: capitalize;
+                    legend {
+                        color: $color-grey-dark;
                         font-size: $font-size-xs;
+                        margin-bottom: 1em;
+                    }
+
+                    button {
+                        display: flex;
+                        flex-direction: row;
+                        line-height: 0;
+                        align-items: center;
+                        padding-inline: 0.5em;
+                        border-radius: 2.5em;
+                        font-size: $font-size-xxs;
+
+                        &.options {
+                            color: $color-grey-dark;
+                            background-color: $color-grey-light;
+                        }
+
+                        &.current {
+                            color: $color-white;
+                            background-color: $color-secondary;
+                        }
+
+                        &.options:disabled {
+                            color: $color-grey-medium-dark;
+                            background-color: $color-grey-light;
+                        }
                     }
                 }
             }
+
+
+
         }
     }
 }

@@ -16,7 +16,7 @@ export default function Alert() {
   useEffect(() => {
     const timeout = setTimeout(() => {
       hideAlert();
-    }, 8000);
+    }, 4000);
     return () => clearTimeout(timeout);
   }, [alert]);
 

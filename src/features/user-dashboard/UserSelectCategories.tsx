@@ -1,7 +1,8 @@
-import React, { useState, useContext, useLayoutEffect } from "react";
+import React, { useState, useContext, useRef } from "react";
 import { subjectHeadingsList } from "../../data/subjectHeadingsList";
 import UserContext from "../../context/UserContext";
 import AlertContext from "../../context/AlertContext";
+import { FaTimes, FaTrash } from "react-icons/fa";
 
 const UserSelectCategories = () => {
   const userContext = useContext(UserContext);
@@ -11,15 +12,14 @@ const UserSelectCategories = () => {
     throw new Error("context not found");
   }
 
-  const { user, setUserData } = userContext;
+  const { user, setUserData, getUserData } = userContext;
   const { showAlert } = alertContext;
-  const { categories } = user;
 
-  const [selectedUserCategories, setSelectedUserCategories] = useState([""]);
+  const [selectedUserCategories, setSelectedUserCategories] = useState(
+    getUserData().categories || [""]
+  );
 
-  useLayoutEffect(() => {
-    setSelectedUserCategories(categories);
-  }, [categories]);
+  const uneditedUserCategories = useRef(selectedUserCategories);
 
   const updateUserData = async () => {
     let param = {
@@ -53,49 +53,86 @@ const UserSelectCategories = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     updateUserData();
+    uneditedUserCategories.current = selectedUserCategories;
+  };
+
+  const handleSelect = (selectedCategory: string) => {
+    console.log(selectedUserCategories);
+    setSelectedUserCategories([...selectedUserCategories, selectedCategory]);
+  };
+
+  const handleRemove = (categoryToRemove: string) => {
+    setSelectedUserCategories(
+      selectedUserCategories.filter((category) => category !== categoryToRemove)
+    );
   };
 
   return (
     <form className="user-select-categories" onSubmit={handleSubmit}>
       <h3>Categories</h3>
-      <fieldset className="user-select-categories__list">
+      <fieldset className="user-select-categories__container">
         <legend>Select the book categories you are interested in.</legend>
-        {subjectHeadingsList
-          .map((category) => (
-            <div className="user-select-categories__list__item" key={category}>
-              <input
-                type="checkbox"
-                id={category}
-                name={category}
+        <ul className="user-select-categories__list__options">
+          {subjectHeadingsList.map((category) => (
+            <li key={category}>
+              <button
                 value={category}
-                checked={selectedUserCategories.includes(category)}
-                onChange={(e) => {
-                  if (e.target.checked) {
-                    setSelectedUserCategories([
-                      ...selectedUserCategories,
-                      e.target.value,
-                    ]);
-                  } else {
-                    setSelectedUserCategories(
-                      selectedUserCategories.filter(
-                        (item) => item !== e.target.value
-                      )
-                    );
-                  }
+                className={
+                  selectedUserCategories.includes(category)
+                    ? "current"
+                    : "options"
+                }
+                type="button"
+                onClick={() => {
+                  selectedUserCategories.includes(category)
+                    ? handleRemove(category)
+                    : handleSelect(category);
                 }}
-              />
-              <label htmlFor={category}>{category}</label>
-            </div>
-          ))
-          .sort((a, b) =>
-            a.props.children[1].props.children.localeCompare(
-              b.props.children[1].props.children
-            )
-          )}
+              >
+                {category.slice(0, 1).toUpperCase() + category.slice(1)}
+                {selectedUserCategories.includes(category) && (
+                  <FaTimes
+                    aria-label={`Remove ${category}`}
+                    className="user-select-categories__list__options__remove"
+                  />
+                )}
+              </button>
+            </li>
+          ))}
+        </ul>
+        <button
+          className="btn-neutral outlined x-small"
+          type="button"
+          onClick={() => setSelectedUserCategories([])}
+        >
+          <FaTrash /> Clear all
+        </button>
       </fieldset>
-      <button type="submit" className="btn-primary">
-        Save Settings
-      </button>
+      <div className="btn-container">
+        <button
+          type="button"
+          className="btn-secondary small outlined"
+          onClick={() =>
+            setSelectedUserCategories(uneditedUserCategories.current)
+          }
+          disabled={
+            JSON.stringify(selectedUserCategories) ===
+            JSON.stringify(uneditedUserCategories.current)
+          }
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          className="btn-primary small"
+          disabled={
+            JSON.stringify(selectedUserCategories) ===
+            JSON.stringify(uneditedUserCategories.current)
+          }
+        >
+          Save Settings
+        </button>
+      </div>
     </form>
   );
 };

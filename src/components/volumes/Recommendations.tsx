@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useMemo } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import VolumeDetails from "./VolumeDetailsModal";
 import { formatVolumeDataList } from "../../queries/utils/formatVolumeData";
@@ -14,13 +14,13 @@ const Recommendations = () => {
   }
   const { user } = context;
 
-  const [categoriesList, setCategoriesList] = useState<any[]>([]);
+  const [categoriesList, setCategoriesList] = useState<string[]>([]);
   const [currentCategory, setCurrentCategory] = useState<string>("");
   const [recommendations, setRecommendations] = useState<any>({});
   const [listIsLoading, setListIsLoading] = useState(true);
   const [isCurrentVolume, setIsCurrentVolume] = useState(false);
 
-  const getRandomizedCategoriesList = () => {
+  const getRandomizedCategoriesList = useMemo(() => {
     const random: string[] = [];
     const categories = subjectHeadingsList;
 
@@ -32,17 +32,19 @@ const Recommendations = () => {
       console.log(random);
     }
     return random;
-  };
+  }, []);
+
+  const memoizedFormatVolumeDataList = useMemo(() => formatVolumeDataList, []);
 
   useEffect(() => {
     if (categoriesList.length > 0) {
       setCurrentCategory(categoriesList[0]);
-      return;
+    } else if (!user.categories) {
+      setCategoriesList(getRandomizedCategoriesList);
+    } else {
+      setCategoriesList(user.categories);
     }
-    user.categories.length
-      ? setCategoriesList(user.categories)
-      : setCategoriesList(getRandomizedCategoriesList());
-  }, [categoriesList]);
+  }, [categoriesList, user.categories, getRandomizedCategoriesList]);
 
   useEffect(() => {
     setListIsLoading(true);
@@ -54,7 +56,7 @@ const Recommendations = () => {
           );
           const data = await response.json();
           const recommendationItem = {
-            [searchCategory]: formatVolumeDataList(data.items),
+            [searchCategory]: memoizedFormatVolumeDataList(data.items),
           };
           setRecommendations((prev: any) => ({
             ...prev,
@@ -66,7 +68,7 @@ const Recommendations = () => {
         setListIsLoading(false);
       })(currentCategory);
     }
-  }, [currentCategory]);
+  }, [currentCategory, memoizedFormatVolumeDataList]);
 
   return (
     <>
