@@ -12,33 +12,6 @@ function Header() {
     setMenuOpen(!menuOpen);
   };
 
-  /*
-  ------ DEPRECATED: Will use FocusTrap instead ------
-
-  useEffect(() => {
-    const content = document.querySelectorAll(
-      "body a,area,button,input,object,select,textarea"
-    );
-    const mobileBtns = document.querySelectorAll(".mobile-btn");
-
-    content.forEach((item) => {
-      item.setAttribute("tabindex", "0");
-    });
-    mobileBtns.forEach((btn) => {
-      btn.setAttribute("tabindex", "-1");
-    });
-
-    if (menuOpen) {
-      content.forEach((item) => {
-        item.setAttribute("tabindex", "-1");
-      });
-
-      mobileBtns.forEach((btn) => {
-        btn.setAttribute("tabindex", "0");
-      });
-    }
-  }, [windowWidth, menuOpen]); */
-
   return (
     window.addEventListener("resize", () => {
       setWindowWidth(window.innerWidth);

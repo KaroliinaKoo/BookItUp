@@ -73,32 +73,34 @@ const UserSelectCategories = () => {
       <fieldset className="user-select-categories__container">
         <legend>Select the book categories you are interested in.</legend>
         <ul className="user-select-categories__list__options">
-          {subjectHeadingsList.map((category) => (
-            <li key={category}>
-              <button
-                value={category}
-                className={
-                  selectedUserCategories.includes(category)
-                    ? "current"
-                    : "options"
-                }
-                type="button"
-                onClick={() => {
-                  selectedUserCategories.includes(category)
-                    ? handleRemove(category)
-                    : handleSelect(category);
-                }}
-              >
-                {category.slice(0, 1).toUpperCase() + category.slice(1)}
-                {selectedUserCategories.includes(category) && (
-                  <FaTimes
-                    aria-label={`Remove ${category}`}
-                    className="user-select-categories__list__options__remove"
-                  />
-                )}
-              </button>
-            </li>
-          ))}
+          {subjectHeadingsList
+            .map((category) => (
+              <li key={category}>
+                <button
+                  value={category}
+                  className={
+                    selectedUserCategories.includes(category)
+                      ? "current"
+                      : "options"
+                  }
+                  type="button"
+                  onClick={() => {
+                    selectedUserCategories.includes(category)
+                      ? handleRemove(category)
+                      : handleSelect(category);
+                  }}
+                >
+                  {category.slice(0, 1).toUpperCase() + category.slice(1)}
+                  {selectedUserCategories.includes(category) && (
+                    <FaTimes
+                      aria-label={`Remove ${category}`}
+                      className="user-select-categories__list__options__remove"
+                    />
+                  )}
+                </button>
+              </li>
+            ))
+            .sort()}
         </ul>
         <button
           className="btn-neutral outlined x-small"

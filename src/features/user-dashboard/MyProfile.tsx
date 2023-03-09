@@ -1,7 +1,5 @@
-import React from "react";
-import { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { useEffect } from "react";
 import { UserDataTypes } from "../../context/UserContext";
 import AlertContext from "../../context/AlertContext";
 
@@ -9,31 +7,26 @@ type Props = {
   user: UserDataTypes;
 };
 
+interface FormData {
+  value: string;
+  error: string;
+}
+
 function MyProfile({ user }: Props) {
   const [changePassword, setChangePassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [formIsValid, setFormIsValid] = useState(false);
-  const [formErrorMessage, setFormErrorMessage] = useState("");
 
   const alertContext = useContext(AlertContext);
-  if (!alertContext) {
-    throw new Error("context not found");
-  }
+  if (!alertContext) throw new Error("context not found");
   const { showAlert } = alertContext;
 
-  const [formData, setFormData] = useState({
-    newPassword: {
-      value: "",
-      error: "",
-    },
-    confirmPassword: {
-      value: "",
-      error: "",
-    },
+  const [formData, setFormData] = useState<Record<string, FormData>>({
+    newPassword: { value: "", error: "" },
+    confirmPassword: { value: "", error: "" },
   });
 
   useEffect(() => {
-    setFormErrorMessage("");
     if (
       formData.newPassword.value &&
       formData.confirmPassword.value &&
@@ -46,92 +39,60 @@ function MyProfile({ user }: Props) {
     }
   }, [formData]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.name === "newPassword") {
-      if (e.target.value.length < 6) {
-        setFormData({
-          ...formData,
-          newPassword: {
-            value: e.target.value,
-            error: "Password must be at least 6 characters",
-          },
-        });
-      } else {
-        setFormData({
-          ...formData,
-          newPassword: {
-            value: e.target.value,
-            error: "",
-          },
-        });
-      }
-    }
+  const handlePasswordLength = (password: string) =>
+    password.length < 6 ? "Password must be at least 6 characters" : "";
 
-    if (e.target.name === "confirmPassword") {
-      if (e.target.value !== formData.newPassword.value) {
-        setFormData({
-          ...formData,
-          confirmPassword: {
-            value: e.target.value,
-            error: "Passwords do not match",
-          },
-        });
-      } else {
-        setFormData({
-          ...formData,
-          confirmPassword: {
-            value: e.target.value,
-            error: "",
-          },
-        });
-      }
-    }
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    const error = name === "newPassword" ? handlePasswordLength(value) : "";
+    const confirmPasswordError =
+      name === "confirmPassword" && value !== formData.newPassword.value
+        ? "Passwords do not match"
+        : "";
+
+    setFormData({
+      ...formData,
+      [name]: { value, error: error || confirmPasswordError },
+    });
   };
 
   const handleReset = () => {
     setFormData({
-      newPassword: {
-        value: "",
-        error: "",
-      },
-      confirmPassword: {
-        value: "",
-        error: "",
-      },
+      newPassword: { value: "", error: "" },
+      confirmPassword: { value: "", error: "" },
     });
     setShowPassword(false);
     setChangePassword(false);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!formIsValid) {
-      setFormErrorMessage("Please fill out the form correctly");
-      return;
+      setFormIsValid(false);
+      return showAlert("error", "Please fill out the form correctly");
     }
-    setFormErrorMessage("");
 
-    let param = {
-      password: formData.newPassword.value,
-    };
+    try {
+      const response = await fetch(`http://localhost:3002/users/${user.id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ password: formData.newPassword.value }),
+      });
 
-    fetch(`http://localhost:3002/users/${user.id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(param),
-    }).then((response) => {
-      if (response.status === 200) {
-        showAlert("success", "Password changed successfully");
-        handleReset();
-        return response.json();
-      } else {
-        showAlert("error", "Something went wrong");
-        throw new Error("Status Error: " + response.status);
-      }
-    });
+      if (!response.ok) throw new Error(`Status Error: ${response.status}`);
+      setFormData({
+        newPassword: { value: "", error: "" },
+        confirmPassword: { value: "", error: "" },
+      });
+      setShowPassword(false);
+      setChangePassword(false);
+      showAlert("success", "Password changed successfully");
+    } catch (error) {
+      showAlert("error", "Something went wrong");
+    }
   };
 
   return (
@@ -210,7 +171,6 @@ function MyProfile({ user }: Props) {
               Confirm Changes
             </button>
           </div>
-          {formErrorMessage && <p className="error">{formErrorMessage}</p>}
         </form>
       ) : (
         <>

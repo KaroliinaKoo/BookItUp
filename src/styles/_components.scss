@@ -199,11 +199,11 @@ input[type="submit"] {
 
     &:disabled,
     &:disabled:hover {
-        background-color: $color-grey-medium !important;
-        color: $color-grey-light !important;
-        cursor: unset !important;
-        box-shadow: none !important;
-        border: none !important;
+        background-color: $color-grey-medium;
+        color: $color-grey-light;
+        cursor: unset;
+        box-shadow: none;
+        border: none;
     }
 }
 
